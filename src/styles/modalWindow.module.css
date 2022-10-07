@@ -1,0 +1,26 @@
+.backgroundLayout{
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    position: fixed;
+    background-color: rgb(27,27,221, 0.75);
+}
+
+.containerData{
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    min-width: 30vw;
+    max-width: 70vw;
+    min-height: 30vh;
+    max-height: 70vh;
+    border-radius: 12px;
+    padding: 10px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
