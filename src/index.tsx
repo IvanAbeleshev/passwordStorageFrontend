@@ -1,7 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { Provider } from 'react-redux';
 import App from './App'
 import Routing from './components/Routing'
+import { store } from './store/store';
 
 
 const root = ReactDOM.createRoot(
@@ -9,9 +11,11 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Routing>
-      <App />
-    </Routing>
+    <Provider store={store}>
+      <Routing>
+        <App />
+      </Routing>
+    </Provider>
   </React.StrictMode>
 );
 
