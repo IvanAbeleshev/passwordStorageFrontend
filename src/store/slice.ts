@@ -5,13 +5,15 @@ import { RootState } from "./store";
 interface IInitialStateUserSlice {
     id: number,
     login: string,
-    token: string | null
+    token: string | null,
+    authState: boolean
 }
 
 const initialStateUserSlice: IInitialStateUserSlice = {
     id: 0,
     login: '',
-    token: localStorage.getItem('token')
+    token: localStorage.getItem('token'),
+    authState: false
 }
 
 export const userSlice = createSlice({

@@ -3,12 +3,15 @@ import React, {useState, useEffect} from 'react'
 import styles from '../styles/pages/auth.module.css'
 import {useDispatch} from 'react-redux'
 import { setValue } from '../store/slice'
+import { useNavigate } from 'react-router-dom'
 
-const Auth = () =>{
+const Auth = (props: React.PropsWithChildren) =>{
     //true - user with admin role is present, else is absent
     const [checkAdminRole, setCheckAdminRole] = useState(false)
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
+
+    const navigate = useNavigate()
 
     const dispatch = useDispatch()
 
@@ -20,14 +23,32 @@ const Auth = () =>{
     const submitHandler: React.FormEventHandler=(event)=>{
         event.preventDefault()
         
-        const sendData = checkAdminRole?{login, password, role: 'admin'}:{login, password}
-        const resultRequest = axios.post(`http://localhost:5555/users/`, sendData)
-        resultRequest.then(response=>{
-            if(response.status === 200){
-                //set data in store
-                dispatch(setValue({id: 0, login, token: '123123123123123'}))
-            }
-        })
+        if(checkAdminRole){
+            const sendData = {login, password, role: 'admin'}
+            const resultRequest = axios.post(`http://localhost:5555/users/`, sendData)
+            resultRequest.then(response=>{
+                if(response.status === 200){
+                    //set data in store
+                    const {id, login, token} = response.data
+
+                    dispatch(setValue({id, login, token, authState: true}))
+                    navigate('/')
+                }
+            })
+        }else{
+            const sendData = {login, password}
+            const resultRequest = axios.post(`http://localhost:5555/users/singIn`, sendData)
+            resultRequest.then(response=>{
+                console.log(response)
+                if(response.status === 200){
+                    //set data in store
+                    const {id, login, token} = response.data
+                    dispatch(setValue({id, login, token, authState: true}))
+                    navigate('/')
+                }
+            })    
+        }
+        
     }
 
     return(
