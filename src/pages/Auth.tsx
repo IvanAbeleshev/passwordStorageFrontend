@@ -10,6 +10,7 @@ const Auth = (props: React.PropsWithChildren) =>{
     const [checkAdminRole, setCheckAdminRole] = useState(false)
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
+    const [message, setMessage] = useState('')
 
     const navigate = useNavigate()
 
@@ -29,10 +30,11 @@ const Auth = (props: React.PropsWithChildren) =>{
             resultRequest.then(response=>{
                 if(response.status === 200){
                     //set data in store
-                    const {id, login, token} = response.data
+                    const {id, login, token} = response.data.data
 
                     dispatch(setValue({id, login, token, authState: true}))
                     navigate('/')
+                    return
                 }
             })
         }else{
@@ -40,13 +42,19 @@ const Auth = (props: React.PropsWithChildren) =>{
             const resultRequest = axios.post(`http://localhost:5555/users/singIn`, sendData)
             resultRequest.then(response=>{
                 console.log(response)
+                
                 if(response.status === 200){
                     //set data in store
-                    const {id, login, token} = response.data
+                    const {id, login, token} = response.data.data
                     dispatch(setValue({id, login, token, authState: true}))
                     navigate('/')
+                    return
                 }
-            })    
+            }).catch(error=>{
+                if(axios.isAxiosError(error)){
+                    setMessage(`Server error. Status code: ${error.response?.status} - ${error.response?.data?.message?error.response?.data?.message:error.response?.statusText}`)
+                }
+            })
         }
         
     }
@@ -67,6 +75,7 @@ const Auth = (props: React.PropsWithChildren) =>{
                         <label className={styles.label} htmlFor="password">password:</label>
                         <input className={styles.input} type="password" name="password" id="password" value={password} onChange={(event)=>setPassword(event.target.value)} />
                     </div>
+                    {message&&<h5 className={styles.description}>{message}</h5>}
                     <div className={styles.submitContainer}>
                         <input className={styles.submitButton} type="submit" value={checkAdminRole?'Register':'Sing in'} />
                     </div>
