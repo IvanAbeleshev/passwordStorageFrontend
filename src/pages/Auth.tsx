@@ -34,7 +34,10 @@ const Auth = (props: React.PropsWithChildren) =>{
 
                     dispatch(setValue({id, login, token, authState: true}))
                     navigate('/')
-                    return
+                }
+            }).catch(error=>{
+                if(axios.isAxiosError(error)){
+                    setMessage(`Server error. Status code: ${error.response?.status} - ${error.response?.data?.message?error.response?.data?.message:error.response?.statusText}`)
                 }
             })
         }else{
@@ -48,7 +51,6 @@ const Auth = (props: React.PropsWithChildren) =>{
                     const {id, login, token} = response.data.data
                     dispatch(setValue({id, login, token, authState: true}))
                     navigate('/')
-                    return
                 }
             }).catch(error=>{
                 if(axios.isAxiosError(error)){

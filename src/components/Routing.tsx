@@ -21,7 +21,7 @@ const Routing = ({children}: IPropsRouting) =>{
 
     const pathAfterLogin = (<>
         <Route path="/" element={children}/>
-        <Route path="auth" element={<Auth/>}/>
+        <Route path="auth" element={<Navigate to="/" replace />}/>
         <Route path="invoices" />
         </>)
     return(
