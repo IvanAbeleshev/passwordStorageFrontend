@@ -1,0 +1,61 @@
+.globalWindow{
+    display: flex;
+    height: 100vh;
+}
+
+.navPanel{
+    max-width: 160px;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    background-color: #fff;
+    border: 1px solid rgba(204, 204, 204, 0.4);
+}
+
+.upPart{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logoContainer{
+    display: flex;
+    justify-content: center;
+}
+
+.navigationContainer{
+    width: 100%;
+}
+
+.listMenu{
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+.logo{
+    width: 50%
+}
+
+.mainContainer{
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+}
+
+.statusPanel{
+    padding-top: 10px;
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.link{
+    text-align: center;
+}
+
+.icon{
+    font-size: 50px;
+}

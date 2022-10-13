@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { currentUserState, setInitialState, setValue } from '../store/slice'
+import { currentUserState, setInitialState, setValue, upadateToken } from '../store/slice'
 
 interface ICheckUserByToken{
     children: React.ReactNode
@@ -21,7 +21,11 @@ const CheckUserByToken=({children}:ICheckUserByToken)=>{
             axios.get('http://localhost:5555/users/checkUser', config).then(response=>{
                 if(response.status === 200){
                     const {id, login, token} = response.data.data
-                    dispatch(setValue({id, login, token, authState: true}))
+                    if(userState.authState){
+                        dispatch(upadateToken(token))
+                    }else{
+                        dispatch(setValue({id, login, token, authState: true}))
+                    }
                 }
             }).catch((error)=>{
                 if(axios.isAxiosError(error)){
@@ -30,7 +34,7 @@ const CheckUserByToken=({children}:ICheckUserByToken)=>{
             })
         }
 
-    }, [])
+    }, [dispatch, userState.authState, userState.token])
     return <>{children}</>
 }
 

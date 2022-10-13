@@ -22,6 +22,7 @@ export const userSlice = createSlice({
     reducers:{
         setValue: (state, {payload})=>{
             //its work  but its piece of shit
+            //state = JSON.parse(JSON.stringify(payload))
             state.id = payload.id
             state.login = payload.login
             state.token = payload.token
@@ -29,14 +30,18 @@ export const userSlice = createSlice({
             localStorage.setItem('token', state.token as string)
         },
         setInitialState: (state)=>{
-            state = JSON.parse(JSON.stringify(initialStateUserSlice))
             localStorage.removeItem('token')
+            state = JSON.parse(JSON.stringify(initialStateUserSlice))
+        },
+        upadateToken: (state, {payload})=>{
+            state.token = payload
+            localStorage.setItem('token', payload)    
         }
     }
 })
 
 //my actions
-export const {setValue, setInitialState} = userSlice.actions
+export const {setValue, setInitialState, upadateToken} = userSlice.actions
 
 //exports selectors
 export const currentUserState = (state: RootState)=>state.user

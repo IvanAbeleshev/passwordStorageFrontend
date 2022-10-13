@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Auth from '../pages/Auth';
 import { currentUserState } from '../store/slice'
 import {useSelector} from 'react-redux'
+import NavPanel from './NavPanel';
 
 interface IPropsRouting{
     children: ReactNode
@@ -20,7 +21,7 @@ const Routing = ({children}: IPropsRouting) =>{
     </>)
 
     const pathAfterLogin = (<>
-        <Route path="/" element={children}/>
+        <Route path="/" element={<NavPanel>{children}</NavPanel>}/>
         <Route path="auth" element={<Navigate to="/" replace />}/>
         <Route path="invoices" />
         </>)
