@@ -1,9 +1,9 @@
 .globalWindow{
     display: flex;
-    height: 100vh;
+    height: 98vh;
 }
 
-.navPanel{
+.navPanelActive{
     max-width: 160px;
     padding-top: 10px;
     display: flex;
@@ -19,6 +19,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.downPart{
+    width: 100%;
+}
+
+.downPart:hover{
+    cursor: pointer;
 }
 
 .logoContainer{
@@ -53,9 +61,45 @@
 }
 
 .link{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     text-align: center;
+    text-decoration: none;
+    color: gray;
+    border-right-width: 2px;
+    border-right-style: solid;
+    border-right-color: transparent;
+}
+.link:hover{
+    border-right-color: #1B1BDD;
+}
+
+.link:active{
+    color: gray;
+}
+
+.link:active{
+    color: gray;
+}
+
+.link:hover .icon, .link:hover .titleItem{
+    transform: translateY(0px);
+    color: #1B1BDD;
 }
 
 .icon{
     font-size: 50px;
+    width: 100%;
+    z-index: 1;
+    transform: translateY(15px);
+    transition: transform 1s;
 }
+
+.titleItem{
+    transform: translateY(-15px);
+    color: #fff;
+    transition: transform 1s, color 0.5s;
+    margin: 0px;
+}
+

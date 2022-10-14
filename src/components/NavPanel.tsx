@@ -13,9 +13,13 @@ interface IPropsNavPanel{
 const NavPanel=({children}: IPropsNavPanel)=>{
     const [currentVisible, setCurrentVisible] = useState(false)
     const userState = useSelector(currentUserState)
+
+    const clickLogOut:React.MouseEventHandler=(event)=>{
+        event.stopPropagation()
+    }
     return (
         <div className={styles.globalWindow}>
-            <div className={styles.navPanel}>
+            <div className={styles.navPanelActive}>
                 <div className={styles.upPart}>
                     <button>back</button>
                     <Link className={styles.logoContainer} to='/'>
@@ -23,32 +27,24 @@ const NavPanel=({children}: IPropsNavPanel)=>{
                     </Link>
                     <nav className={styles.navigationContainer}>
                         <ul className={styles.listMenu}>
-                            <li>
-                                <Link className={styles.link} to='/employee'>
-                                    <FontAwesomeIcon className={styles.icon} icon={faPerson} />
-                                    <h2>personal</h2>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to='/servises'>
-                                    <FontAwesomeIcon icon={faBellConcierge} />
-                                    <h2>servises</h2>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to='/log'>
-                                    <FontAwesomeIcon icon={faBook} />
-                                    <h2>log</h2>
-                                </Link>
-                            </li>
+                            {[{icon: faPerson, title: 'personal', path: '/employee'}, {icon: faBellConcierge, title: 'servises', path: '/sevises'}, {icon: faBook, title: 'log', path: '/log'}].map(element=>
+                                <li className={styles.listItem} key={element.title}>
+                                    <Link className={styles.link} to={element.path}>
+                                        <FontAwesomeIcon className={styles.icon} icon={element.icon} />
+                                        <h2 className={styles.titleItem}>{element.title}</h2>
+                                    </Link>
+                                </li>    
+                            )}
                         </ul>
                     </nav>
                 </div>
-                <div className="downPArt">
-                    <Link to='/log'>
-                        <FontAwesomeIcon icon={faDoorOpen} />
-                        <h2>logOut</h2>
-                    </Link>
+                <div className={styles.downPart}>
+                    <div className={styles.listItem} onClick={clickLogOut}>
+                        <div className={styles.link}>
+                            <FontAwesomeIcon className={styles.icon} icon={faDoorOpen} />
+                            <h2 className={styles.titleItem}>logOut</h2>
+                        </div>    
+                    </div>
                 </div>
             </div>
         
