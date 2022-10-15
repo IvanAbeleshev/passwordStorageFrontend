@@ -2,26 +2,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import styles from '../styles/components/navPanel.module.css'
-import {faPerson, faBellConcierge, faBook, faDoorOpen} from '@fortawesome/free-solid-svg-icons'
-import { useSelector } from 'react-redux'
-import { currentUserState } from '../store/slice'
+import {faPerson, faBellConcierge, faBook, faDoorOpen, faAnglesRight} from '@fortawesome/free-solid-svg-icons'
+import { useDispatch, useSelector } from 'react-redux'
+import { currentUserState, setInitialState } from '../store/slice'
 
 interface IPropsNavPanel{
     children: React.ReactNode
 }
 
 const NavPanel=({children}: IPropsNavPanel)=>{
-    const [currentVisible, setCurrentVisible] = useState(false)
+    const [currentVisible, setCurrentVisible] = useState(true)
     const userState = useSelector(currentUserState)
 
+    const dispatch = useDispatch()
     const clickLogOut:React.MouseEventHandler=(event)=>{
         event.stopPropagation()
+        dispatch(setInitialState())
+    }
+
+    const hancleOnClickChangeVisible:React.MouseEventHandler=(event)=>{
+        setCurrentVisible(!currentVisible)
     }
     return (
         <div className={styles.globalWindow}>
-            <div className={styles.navPanelActive}>
+            <div className={`${styles.navPanel} ${currentVisible?styles.navPanelActive:styles.navPanelDisaple}`}>
                 <div className={styles.upPart}>
-                    <button>back</button>
                     <Link className={styles.logoContainer} to='/'>
                         <img className={styles.logo} src="ico/android-chrome-512x512.png" alt="logo" />
                     </Link>
@@ -50,7 +55,8 @@ const NavPanel=({children}: IPropsNavPanel)=>{
         
             <main className={styles.mainContainer}>
                 <div className={styles.statusPanel}>
-                {userState.login}
+                    <FontAwesomeIcon icon={faAnglesRight} className={`${styles.buttonChangeVisibeNavigation} ${currentVisible?styles.buttonChangeVisibeNavigationHide:styles.buttonChangeVisibeNavigationShow}`} onClick={hancleOnClickChangeVisible} />
+                    {userState.login}
                 </div>
                 {children}
             </main>

@@ -31,7 +31,10 @@ export const userSlice = createSlice({
         },
         setInitialState: (state)=>{
             localStorage.removeItem('token')
-            state = JSON.parse(JSON.stringify(initialStateUserSlice))
+            state.authState = false
+            state.id = 0
+            state.login = ''
+            state.token = ''
         },
         upadateToken: (state, {payload})=>{
             state.token = payload

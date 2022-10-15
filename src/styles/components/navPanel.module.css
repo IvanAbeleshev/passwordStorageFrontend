@@ -3,8 +3,7 @@
     height: 98vh;
 }
 
-.navPanelActive{
-    max-width: 160px;
+.navPanel{
     padding-top: 10px;
     display: flex;
     flex-direction: column;
@@ -14,6 +13,20 @@
     background-color: #fff;
     border: 1px solid rgba(204, 204, 204, 0.4);
 }
+
+.navPanelActive{
+    width: 160px;
+    transform: translateX(0px);
+    transition: transform 1s, width 1s;
+}
+
+.navPanelDisaple{
+    transform: translateX(-160px);
+    width: 0;
+
+    transition: transform 1s, width 1s;
+}
+
 
 .upPart{
     display: flex;
@@ -103,3 +116,22 @@
     margin: 0px;
 }
 
+.buttonChangeVisibeNavigation{
+    font-size: 20px;
+    color: gray
+}
+
+.buttonChangeVisibeNavigation:hover{
+    color: #1B1BDD;
+    cursor: pointer;
+}
+
+.buttonChangeVisibeNavigationShow{
+    transform: rotateY(0 deg);
+    transition: transform 1s;
+}
+
+.buttonChangeVisibeNavigationHide{
+    transform: rotateY(180deg);
+    transition: transform 1s;
+}
