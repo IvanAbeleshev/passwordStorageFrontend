@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { BACKEND_URL } from '../constans'
 import { currentUserState, setInitialState, setValue, upadateToken } from '../store/slice'
 
 interface ICheckUserByToken{
@@ -18,7 +19,7 @@ const CheckUserByToken=({children}:ICheckUserByToken)=>{
                   'Authorization': 'Bearer ' + userState.token
                 }
               }
-            axios.get('http://localhost:5555/users/checkUser', config).then(response=>{
+            axios.get(`${BACKEND_URL}/users/checkUser`, config).then(response=>{
                 if(response.status === 200){
                     const {id, login, token} = response.data.data
                     if(userState.authState){

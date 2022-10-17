@@ -12,9 +12,9 @@ export enum tableColumnType{
 
 const TableRow=({data, typeColumn}: IPropsTableRow)=>{
     return(
-        <>
-        {typeColumn===tableColumnType.data?data.map(element=><td>{element}</td>):data.map(element=><th>{element}</th>)}
-        </>
+        <tr>
+        {typeColumn===tableColumnType.data?data.map(element=><td key={element}>{element}</td>):data.map(element=><th key={element}>{element}</th>)}
+        </tr>
     )
 }
 

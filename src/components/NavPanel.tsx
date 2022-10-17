@@ -32,7 +32,7 @@ const NavPanel=({children}: IPropsNavPanel)=>{
                     </Link>
                     <nav className={styles.navigationContainer}>
                         <ul className={styles.listMenu}>
-                            {[{icon: faPerson, title: 'personal', path: '/employee'}, {icon: faBellConcierge, title: 'servises', path: '/servises'}, {icon: faBook, title: 'log', path: '/log'}].map(element=>
+                            {[{icon: faPerson, title: 'personal', path: '/employee'}, {icon: faBellConcierge, title: 'servises', path: '/servises/1'}, {icon: faBook, title: 'log', path: '/log'}].map(element=>
                                 <li className={styles.listItem} key={element.title}>
                                     <Link className={styles.link} to={element.path}>
                                         <FontAwesomeIcon className={styles.icon} icon={element.icon} />

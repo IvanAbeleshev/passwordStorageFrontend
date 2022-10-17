@@ -24,7 +24,9 @@ const Routing = ({children}: IPropsRouting) =>{
     const pathAfterLogin = (<>
         <Route path="/" element={<NavPanel>{children}</NavPanel>}/>
         <Route path="auth" element={<Navigate to="/" replace />}/>
-        <Route path="servises" element={<NavPanel><Servises/></NavPanel>} />
+        <Route path="servises" element={<NavPanel><Servises/></NavPanel>} >
+            <Route path=":servisesId" element={<NavPanel><Servises/></NavPanel>} />
+        </Route>
         </>)
     return(
         <BrowserRouter>

@@ -4,6 +4,7 @@ import styles from '../styles/pages/auth.module.css'
 import {useDispatch} from 'react-redux'
 import { setValue } from '../store/slice'
 import { useNavigate } from 'react-router-dom'
+import { BACKEND_URL } from '../constans'
 
 const Auth = (props: React.PropsWithChildren) =>{
     //true - user with admin role is present, else is absent
@@ -17,7 +18,7 @@ const Auth = (props: React.PropsWithChildren) =>{
     const dispatch = useDispatch()
 
     useEffect(()=>{
-        const resultRequest = axios.get(`http://localhost:5555/users/checkAdmin`)
+        const resultRequest = axios.get(`${BACKEND_URL}/users/checkAdmin`)
         resultRequest.then(request=>setCheckAdminRole(request.data.error))
     }, [])
 
@@ -26,7 +27,7 @@ const Auth = (props: React.PropsWithChildren) =>{
         
         if(checkAdminRole){
             const sendData = {login, password, role: 'admin'}
-            const resultRequest = axios.post(`http://localhost:5555/users/`, sendData)
+            const resultRequest = axios.post(`${BACKEND_URL}/users/`, sendData)
             resultRequest.then(response=>{
                 if(response.status === 200){
                     //set data in store
@@ -42,7 +43,7 @@ const Auth = (props: React.PropsWithChildren) =>{
             })
         }else{
             const sendData = {login, password}
-            const resultRequest = axios.post(`http://localhost:5555/users/singIn`, sendData)
+            const resultRequest = axios.post(`${BACKEND_URL}/users/singIn`, sendData)
             resultRequest.then(response=>{
                 console.log(response)
                 
