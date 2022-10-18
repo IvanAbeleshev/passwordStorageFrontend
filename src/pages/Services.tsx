@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, {useEffect, useState} from 'react'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Button from '../components/Button'
 import TableRow, { tableColumnType } from '../components/tableComponents/TableRow'
 import { BACKEND_URL, LIMIT_ITEMS_ON_PAGE } from '../constans'
@@ -14,21 +14,24 @@ interface IDataRows{
     creationDate: Date,
     changeDate: Date 
 }
-const Servises=()=>{
+const Services=()=>{
     //command panel + table is existanced data
     // in table mini image - name - full name - creation data
     const[countState, setCountState] = useState(0)
     const[rowsState, setRowsState] = useState()
 
-    const {servisesId} = useParams()
+    const {servicesId} = useParams()
+
     const userState = useSelector(currentUserState)
+    const navigator = useNavigate()
+    
     useEffect(()=>{
         const config = {
             headers: {
               'Authorization': 'Bearer ' + userState.token
             }
           }
-        axios.get(`${BACKEND_URL}/servises?page=${servisesId}&limit=${LIMIT_ITEMS_ON_PAGE}`, config).then(
+        axios.get(`${BACKEND_URL}/services?page=${servicesId}&limit=${LIMIT_ITEMS_ON_PAGE}`, config).then(
             response=>{
             if(response.status === 200){
                 const {count, rows}: {count:string, rows: IDataRows[]} = response.data.data
@@ -36,10 +39,10 @@ const Servises=()=>{
                 
             }
         }).catch()
-    }, [servisesId])
+    }, [servicesId])
 
     const addNewItem: React.MouseEventHandler=()=>{
-
+        navigator('/service/new')
     }
     return(
     <>
@@ -53,9 +56,9 @@ const Servises=()=>{
                 </tr>                
             </table>   
         </div>
-        <h1>This is Servises PAGE!!!!{servisesId}</h1>
+        <h1>This is Services PAGE!!!!{servicesId}</h1>
     </>
     )
 }
 
-export default Servises
+export default Services

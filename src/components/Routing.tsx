@@ -4,7 +4,8 @@ import Auth from '../pages/Auth';
 import { currentUserState } from '../store/slice'
 import {useSelector} from 'react-redux'
 import NavPanel from './NavPanel';
-import Servises from '../pages/Servises';
+import Services from '../pages/Services';
+import ServiceItem from '../pages/ServiceItem';
 
 interface IPropsRouting{
     children: ReactNode
@@ -24,8 +25,11 @@ const Routing = ({children}: IPropsRouting) =>{
     const pathAfterLogin = (<>
         <Route path="/" element={<NavPanel>{children}</NavPanel>}/>
         <Route path="auth" element={<Navigate to="/" replace />}/>
-        <Route path="servises" element={<NavPanel><Servises/></NavPanel>} >
-            <Route path=":servisesId" element={<NavPanel><Servises/></NavPanel>} />
+        <Route path="listServises" element={<NavPanel><Services/></NavPanel>} >
+            <Route path=":servicesId" element={<NavPanel><Services/></NavPanel>} />
+        </Route>
+        <Route path="service" element={<NavPanel><ServiceItem/></NavPanel>} >
+            <Route path=":servicesId" element={<NavPanel><ServiceItem/></NavPanel>} />
         </Route>
         </>)
     return(
