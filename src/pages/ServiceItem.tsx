@@ -2,6 +2,7 @@ import React,{ useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ModalWindow from '../components/ModalWindow'
 import ImgSelector from '../components/ImgSelector'
+import styles from '../styles/pages/serviceItem.module.css'
 
 enum componentMode{
     creating = 'creating',
@@ -27,16 +28,23 @@ const ServiceItem=()=>{
     }
     ,[servicesId])
 
+    useEffect(()=>{
+        if(visibleModalWindow){
+            setVisibleModalWindow(false)
+        }
+    }
+    ,[selectedImage])
+
     const creatingMode = (
-        <form>
+        <form className={styles.dataContainer}>
             <label htmlFor="name">Name:</label>
             <input type="text" name="name" id="name" value={name} onChange={(event)=>setName(event.target.value)}/>
 
             <label htmlFor="description">Description:</label>
             <input type="text" name="description" id="description" value={description} onChange={(event)=>setDescription(event.target.value)} />
             
-            <img src={selectedImage} alt="image" onClick={()=>setVisibleModalWindow(true)}/>
-            {visibleModalWindow&&<ModalWindow setVisible={setVisibleModalWindow}><ImgSelector searchString='apple' setSelectedImg={setSelectedImage} /></ModalWindow>}
+            <img className={styles.imgBox} src={selectedImage} alt="image" onClick={()=>setVisibleModalWindow(true)}/>
+            {visibleModalWindow&&<ModalWindow setVisible={setVisibleModalWindow}><ImgSelector searchString={name} setSelectedImg={setSelectedImage} /></ModalWindow>}
         </form>)
     return(<>
         {renderMode === componentMode.creating ?creatingMode:<h1>its page for see element</h1>}
