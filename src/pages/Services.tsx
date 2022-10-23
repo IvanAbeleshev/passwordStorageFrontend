@@ -2,11 +2,13 @@ import axios from 'axios'
 import React, {useEffect, useState} from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import BottomPageNavigator from '../components/BottomPageNavigator'
 import Button from '../components/Button'
 import TableRowData from '../components/tableComponents/TableRowData'
 import TableRowHead from '../components/tableComponents/TableRowHead'
 import { BACKEND_URL, LIMIT_ITEMS_ON_PAGE } from '../constans'
 import { currentUserState } from '../store/slice'
+import styles  from '../styles/pages/services.module.css'
 
 export interface IDataRows{
     id:number
@@ -46,20 +48,28 @@ const Services=()=>{
     const addNewItem: React.MouseEventHandler=()=>{
         navigator('/service/new')
     }
+
+    const navigateByPath=(path:number)=>{
+        const handleOnClick:React.MouseEventHandler=()=>{
+            navigator(`/service/${path}`)    
+        }
+        return handleOnClick
+    }
     return(
     <>
-        <div className="containerCommandPanel">
+        <div className={styles.commandPanel}>
             <Button title='Add' onClick={addNewItem}/>
         </div>
-        <div className="containerTable">
-            <table>
+        <div>
+            <table cellSpacing={0}>
                 <thead>
                     <TableRowHead data={['Id', 'Img', 'Name', 'Desription', 'Creation date', 'Update date']} />    
                 </thead>
                 <tbody>
-                    {rowsState.map(element=><TableRowData data={element} key={element.id} />)}
+                    {rowsState.map(element=><TableRowData onClick={navigateByPath(element.id)} data={element} key={element.id} />)}
                 </tbody>
             </table>   
+            {countState&&<BottomPageNavigator currentPage={Number(servicesId)} countElementOnPage={LIMIT_ITEMS_ON_PAGE} baseURL={'/listServises/'} countOfElements={countState} />}
         </div>
         <h1>This is Services PAGE!!!!{servicesId}</h1>
     </>

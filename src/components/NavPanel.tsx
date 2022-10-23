@@ -58,7 +58,9 @@ const NavPanel=({children}: IPropsNavPanel)=>{
                     <FontAwesomeIcon icon={faAnglesRight} className={`${styles.buttonChangeVisibeNavigation} ${currentVisible?styles.buttonChangeVisibeNavigationHide:styles.buttonChangeVisibeNavigationShow}`} onClick={hancleOnClickChangeVisible} />
                     {userState.login}
                 </div>
-                {children}
+                <div className={`${styles.childrenContainer} ${currentVisible?styles.childrenContainerAcvtivePanel:styles.childrenContainerDisablePanel}`}>
+                    {children}
+                </div>
             </main>
         </div>
     )

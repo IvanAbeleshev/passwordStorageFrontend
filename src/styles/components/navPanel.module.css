@@ -17,13 +17,13 @@
 }
 
 .navPanelActive{
-    width: 160px;
+    width: 10vw;
     transform: translateX(0px);
     transition: transform 1s, width 1s;
 }
 
 .navPanelDisaple{
-    transform: translateX(-160px);
+    transform: translateX(-10vw);
     width: 0;
 
     transition: transform 1s, width 1s;
@@ -135,4 +135,24 @@
 .buttonChangeVisibeNavigationHide{
     transform: rotateY(180deg);
     transition: transform 1s;
+}
+
+.childrenContainer{
+    width: 90vw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+
+}
+
+.childrenContainerAcvtivePanel{
+    width: 90vw;    
+    transition: width 1s;
+}
+
+.childrenContainerDisablePanel{
+    width: 99vw;    
+    transition: width 1s;
 }
