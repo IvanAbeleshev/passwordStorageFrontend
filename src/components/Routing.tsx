@@ -6,6 +6,7 @@ import {useSelector} from 'react-redux'
 import NavPanel from './NavPanel';
 import Services from '../pages/Services';
 import ServiceItem from '../pages/ServiceItem';
+import EmployeesList from '../pages/EmployeesList';
 
 interface IPropsRouting{
     children: ReactNode
@@ -30,6 +31,9 @@ const Routing = ({children}: IPropsRouting) =>{
         </Route>
         <Route path="service" element={<NavPanel><ServiceItem/></NavPanel>} >
             <Route path=":servicesId" element={<NavPanel><ServiceItem/></NavPanel>} />
+        </Route>
+        <Route path='employees' element={<NavPanel><EmployeesList/></NavPanel>}>
+            <Route path=":pageIndex" element={<NavPanel><EmployeesList/></NavPanel>} />
         </Route>
         </>)
     return(

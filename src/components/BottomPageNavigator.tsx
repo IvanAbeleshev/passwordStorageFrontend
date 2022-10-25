@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from '../styles/components/bottomPagePanel.module.css'
 
@@ -12,7 +12,7 @@ interface IPropsBottomPageNavigator{
 const BottomPageNavigator=({currentPage, countOfElements, countElementOnPage, baseURL }:IPropsBottomPageNavigator)=>{
     const [indexOfCurrentPage, setIndexOfCurrentPage] = useState(1)
     const navigator = useNavigate()
-
+    
     const countOfPages = countOfElements/countElementOnPage===Math.trunc(countOfElements/countElementOnPage)?countOfElements/countElementOnPage:Math.trunc(countOfElements/countElementOnPage)+1 
 
     let arrayOfPages:{id:number, title: number|string, path: number}[]
@@ -62,7 +62,7 @@ const BottomPageNavigator=({currentPage, countOfElements, countElementOnPage, ba
             counter++
         }
     }
-    
+
     const clickOnPage=(path:number)=>{
         const handleOnClick:React.MouseEventHandler=()=>{
             navigator(`${baseURL}${path}`)
@@ -91,7 +91,10 @@ const BottomPageNavigator=({currentPage, countOfElements, countElementOnPage, ba
 
     </div>
 
-    return (PagesStructure)
+    return (<>
+        {arrayOfPages.length>1?PagesStructure:<></>}
+        </>
+        )
 
 }
 
