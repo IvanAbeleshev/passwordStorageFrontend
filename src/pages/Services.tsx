@@ -58,7 +58,7 @@ const Services=()=>{
     return(
     <>
         <div className={styles.commandPanel}>
-            <Button title='Add' onClick={addNewItem}/>
+            <Button onClick={addNewItem}><h3>Add</h3></Button> 
         </div>
         <div>
             <table cellSpacing={0}>

@@ -7,6 +7,7 @@ import NavPanel from './NavPanel';
 import Services from '../pages/Services';
 import ServiceItem from '../pages/ServiceItem';
 import EmployeesList from '../pages/EmployeesList';
+import EmployeeItem from '../pages/EmployeeItem';
 
 interface IPropsRouting{
     children: ReactNode
@@ -34,6 +35,9 @@ const Routing = ({children}: IPropsRouting) =>{
         </Route>
         <Route path='employees' element={<NavPanel><EmployeesList/></NavPanel>}>
             <Route path=":pageIndex" element={<NavPanel><EmployeesList/></NavPanel>} />
+        </Route>
+        <Route path='employeeItem'>
+            <Route path=":id" element={<NavPanel><EmployeeItem/></NavPanel>} />
         </Route>
         </>)
     return(

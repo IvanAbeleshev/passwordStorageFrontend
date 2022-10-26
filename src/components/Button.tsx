@@ -2,13 +2,13 @@ import React from 'react'
 import styles from '../styles/components/button.module.css'
 
 interface IPropsButton{
-    title: string,
-    onClick: React.MouseEventHandler
+    onClick?: React.MouseEventHandler,
+    children?: React.ReactNode
 }
-const Button=({title, onClick}:IPropsButton)=>{
+const Button=({onClick, children}:IPropsButton)=>{
     return(
     <div className={styles.buttonCss} onClick={onClick}>
-        {title}
+        {children}
     </div>
     )
 }

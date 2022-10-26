@@ -104,7 +104,7 @@ const ServiceItem=()=>{
             <img className={styles.imgBox} src={selectedImage} alt="image" onClick={()=>setVisibleModalWindow(true)}/>
             {visibleModalWindow&&<ModalWindow setVisible={setVisibleModalWindow}><ImgSelector searchString={name} setSelectedImg={setSelectedImage} /></ModalWindow>}
             
-            <Button title='Create new' onClick={createNew} />
+            <Button onClick={createNew}><h3>Create new</h3></Button>
         </form>)
 
     const editMode = (
@@ -118,7 +118,7 @@ const ServiceItem=()=>{
             <img className={styles.imgBox} src={selectedImage} alt="image" onClick={()=>setVisibleModalWindow(true)}/>
             {visibleModalWindow&&<ModalWindow setVisible={setVisibleModalWindow}><ImgSelector searchString={name} setSelectedImg={setSelectedImage} /></ModalWindow>}
             
-            <Button title='save changes' onClick={saveChanges} />
+            <Button onClick={saveChanges}><h3>save changes</h3></Button>
         </form>        
     )
     return(<>

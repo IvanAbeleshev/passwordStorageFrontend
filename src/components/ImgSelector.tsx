@@ -49,7 +49,7 @@ const ImgSelector=({searchString, setSelectedImg}:IPropsImgSelector)=>{
         <div className={styles.dataContainer}>
             <div className={styles.inputContainer}>
                 <input type="text" name="searchString" id="searchString" value={findRequest} onChange={event=>setFindRequest(event.target.value)} />
-                <Button title='find' onClick={clickFindButton}/>
+                <Button onClick={clickFindButton}><h1>find</h1></Button>
             </div>
             <div className={styles.wrapper}>
                 {arrayImgs?.map(element=><img onClick={()=>setSelectedImg(element.urls.regular)} key={element.urls.regular} className={styles.imgBox} src={element.urls.regular}/>)}
