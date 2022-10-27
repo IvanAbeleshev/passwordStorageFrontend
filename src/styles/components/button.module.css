@@ -6,6 +6,8 @@
     color: #fff;
     transition: background-color 0.3s;
     text-align: center;
+
+    text-decoration: none;
 }
 
 .buttonCss:hover{
