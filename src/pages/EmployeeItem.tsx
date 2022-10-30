@@ -1,14 +1,14 @@
 import axios from 'axios'
-import { stringify } from 'querystring'
-import React, {useState, useRef, MutableRefObject} from 'react'
+import React, {useState, useRef, MutableRefObject, useEffect} from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Button from '../components/Button'
 import { BACKEND_URL } from '../constans'
 import { currentUserState } from '../store/slice'
 import styles from '../styles/pages/employeeItem.module.css'
 
-interface IData{
+export interface IDataEmployee{
+    id?: number,
     name: string,
     jobTitle?: string,
     employmentDate?: Date,
@@ -18,13 +18,39 @@ interface IData{
 
 }
 
+enum componentMode{
+    create = 'create',
+    change = 'change'
+}
 const EmployeeItem=()=>{
+    const [currentMode, setCurrentMode] = useState(componentMode.create)
     const [currentImg, setCurrentImg] = useState('/img/NoImage.jpg')
-    const [data, setData]:[IData, Function] = useState({} as IData)
-    const inputElement = useRef() as MutableRefObject<HTMLInputElement>;
+    const [data, setData]:[IDataEmployee, Function] = useState({} as IDataEmployee)
+    const inputElement = useRef() as MutableRefObject<HTMLInputElement>
 
+    const {id} = useParams()
     const navigator = useNavigate()
     const userState = useSelector(currentUserState)
+
+    useEffect(()=>{
+        if(id !== 'new'){
+            setCurrentMode(componentMode.change)
+        
+            const config = {
+                headers: {
+                'Authorization': 'Bearer ' + userState.token,
+                'Content-Type': 'multipart/form-data'
+                }
+            }
+            axios.get(`${BACKEND_URL}/employees/getOne?id=${id}`, config).then(resultRequest=>{
+                if(resultRequest.status === 200){
+                    console.log(resultRequest.data)
+                    setData(resultRequest.data.data)
+                    setCurrentImg(`${BACKEND_URL}/${data.img}`)
+                }
+            })
+        }
+    },[id])
 
     const imgSelector:React.ChangeEventHandler=(event)=>{
         const files = (event.target as HTMLInputElement).files
@@ -38,6 +64,7 @@ const EmployeeItem=()=>{
 
         setData({...data, [target.name]:target.value})
     }
+
     const createNewElement=()=>{
         const formData = new FormData()
         if(inputElement.current.files && inputElement.current.files.length>0){
@@ -59,6 +86,10 @@ const EmployeeItem=()=>{
 
 
         navigator(-1)
+    }
+
+    const saveChanges=()=>{
+
     }
 
     return(
@@ -98,7 +129,10 @@ const EmployeeItem=()=>{
                     <input type="text" name="comment" id="comment" onChange={handlerOnChange} />
                 </div>
 
-                <Button onClick={createNewElement}>Create</Button>
+                {currentMode === componentMode.create?
+                    <Button onClick={createNewElement}>Create</Button>:
+                    <Button onClick={saveChanges}>Save changes</Button>
+                }
             </form>
         </div>
     )
