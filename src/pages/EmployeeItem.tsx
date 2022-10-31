@@ -15,13 +15,13 @@ export interface IDataEmployee{
     dismissDate?: Date,
     img?: string,
     comment?:string
-
 }
 
 enum componentMode{
     create = 'create',
     change = 'change'
 }
+
 const EmployeeItem=()=>{
     const [currentMode, setCurrentMode] = useState(componentMode.create)
     const [currentImg, setCurrentImg] = useState('/img/NoImage.jpg')
@@ -33,7 +33,7 @@ const EmployeeItem=()=>{
     const userState = useSelector(currentUserState)
 
     useEffect(()=>{
-        if(id !== 'new'){
+        if(id !== 'new' && id){
             setCurrentMode(componentMode.change)
         
             const config = {
@@ -44,13 +44,56 @@ const EmployeeItem=()=>{
             }
             axios.get(`${BACKEND_URL}/employees/getOne?id=${id}`, config).then(resultRequest=>{
                 if(resultRequest.status === 200){
-                    console.log(resultRequest.data)
-                    setData(resultRequest.data.data)
-                    setCurrentImg(`${BACKEND_URL}/${data.img}`)
+                    const dataRequest = resultRequest.data.data
+                    delete dataRequest.createdAt
+                    delete dataRequest.updatedAt
+
+                    setData(dataRequest)
+                    if(dataRequest.img){
+                        setCurrentImg(`${BACKEND_URL}/${dataRequest.img}`)
+                    }
                 }
             })
         }
     },[id])
+
+    const getFormData=():FormData=>{
+        const formData = new FormData()
+        if(inputElement.current.files && inputElement.current.files.length>0){
+            formData.append('img', inputElement.current.files[0])
+        }
+        type Activity = typeof data
+
+        for(let i in data){
+            if(i==='img'){
+                continue
+            }
+            if(String(data[i as keyof Activity])==='Invalid date'){
+                continue
+            }
+            formData.append(i, String(data[i as keyof Activity]))
+        }
+    
+        return formData
+    }
+
+    const fulFillRequest=(apiPath: string)=>{
+        const formData = getFormData()
+
+        const config = {
+            headers: {
+              'Authorization': 'Bearer ' + userState.token,
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        axios.post(`${BACKEND_URL}${apiPath}`, formData, config ).then(resultRequest=>{
+            if(resultRequest.status === 200){
+                navigator(-1)
+            }
+        }).catch(error=>{
+            alert('Request failed')
+        })
+    }
 
     const imgSelector:React.ChangeEventHandler=(event)=>{
         const files = (event.target as HTMLInputElement).files
@@ -66,30 +109,11 @@ const EmployeeItem=()=>{
     }
 
     const createNewElement=()=>{
-        const formData = new FormData()
-        if(inputElement.current.files && inputElement.current.files.length>0){
-            formData.append('img', inputElement.current.files[0])
-        }
-        type Activity = typeof data
-
-        for(let i in data){
-            formData.append(i, String(data[i as keyof Activity]))
-        }
-
-        const config = {
-            headers: {
-              'Authorization': 'Bearer ' + userState.token,
-              'Content-Type': 'multipart/form-data'
-            }
-          }
-        axios.post(`${BACKEND_URL}/employees/createOne`, formData, config ).then(result=>console.log(result))
-
-
-        navigator(-1)
+        fulFillRequest('/employees/createOne')  
     }
 
     const saveChanges=()=>{
-
+        fulFillRequest(`/employees/changeOne?id=${id}`)
     }
 
     return(
@@ -97,22 +121,22 @@ const EmployeeItem=()=>{
             <form className={styles.wrapper}>
                 <div className={styles.pairsLabelAndInput}>
                     <label htmlFor="name">Name</label>
-                    <input type="text" name="name" id="name" onChange={handlerOnChange} />
+                    <input type="text" name="name" id="name" value={data.name} onChange={handlerOnChange} />
                 </div>
                 
                 <div className={styles.pairsLabelAndInput}>
                     <label htmlFor="jobTitle">Job title</label>
-                    <input type="text" name="jobTitle" id="jobTitle" onChange={handlerOnChange} />
+                    <input type="text" name="jobTitle" id="jobTitle" value={data.jobTitle} onChange={handlerOnChange} />
                 </div>
                 
                 <div className={styles.pairsLabelAndInput}>
                     <label htmlFor="employmentDate">Employment date</label>
-                    <input type="date" name="employmentDate" id="employmentDate" onChange={handlerOnChange} />
+                    <input type="date" name="employmentDate" id="employmentDate" value={data.employmentDate !== null?String(data.employmentDate).slice(0, 10):undefined} onChange={handlerOnChange} />
                 </div>
 
                 <div className={styles.pairsLabelAndInput}>
                     <label htmlFor="dismissDate">Dismiss date</label>
-                    <input type="date" name="dismissDate" id="dismissDate" onChange={handlerOnChange} />
+                    <input type="date" name="dismissDate" id="dismissDate" value={String(data.dismissDate).slice(0, 10)} onChange={handlerOnChange} />
                 </div>
 
                 <div className={styles.pairsLabelAndInput}>
@@ -126,7 +150,7 @@ const EmployeeItem=()=>{
 
                 <div className={styles.pairsLabelAndInput}>
                     <label htmlFor="comment">Comment</label>
-                    <input type="text" name="comment" id="comment" onChange={handlerOnChange} />
+                    <input type="text" name="comment" id="comment" value={data.comment} onChange={handlerOnChange} />
                 </div>
 
                 {currentMode === componentMode.create?
