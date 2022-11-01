@@ -13,7 +13,7 @@ import BottomPageNavigator from '../components/BottomPageNavigator'
 const EmployeesList=()=>{
     const {pageIndex} = useParams()
     const [rowsState, setArrayOfData]:[IDataEmployee[], Function] = useState([])
-    const [countOfData, setCountOfData] = useState()
+    const [countOfData, setCountOfData]:[number, Function] = useState(0)
     
     const userState = useSelector(currentUserState)
     const navigator = useNavigate()
@@ -24,7 +24,7 @@ const EmployeesList=()=>{
               'Authorization': 'Bearer ' + userState.token
             }
           }
-        axios.get(`${BACKEND_URL}/employees/`, config).then(resultRequest=>{
+        axios.get(`${BACKEND_URL}/employees?page=${pageIndex}&limit=${LIMIT_ITEMS_ON_PAGE}`, config).then(resultRequest=>{
             if(resultRequest.status === 200){
                 setArrayOfData(resultRequest.data.data.rows)
                 setCountOfData(resultRequest.data.data.count)
@@ -56,7 +56,7 @@ const EmployeesList=()=>{
                     {rowsState.map(element=><TableRowDataEmployee onClick={navigateByPath(element.id)} data={element} key={element.id} />)}
                 </tbody>
             </table>
-            {countOfData&&<BottomPageNavigator currentPage={Number(pageIndex)} countElementOnPage={LIMIT_ITEMS_ON_PAGE} baseURL={'/listServises/'} countOfElements={countOfData} />}
+            {countOfData&&<BottomPageNavigator currentPage={Number(pageIndex)} countElementOnPage={LIMIT_ITEMS_ON_PAGE} baseURL={'/employees/'} countOfElements={countOfData} />}
         </div>
 
         </>

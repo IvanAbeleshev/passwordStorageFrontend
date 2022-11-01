@@ -14,7 +14,7 @@ const BottomPageNavigator=({currentPage, countOfElements, countElementOnPage, ba
     const navigator = useNavigate()
     
     const countOfPages = countOfElements/countElementOnPage===Math.trunc(countOfElements/countElementOnPage)?countOfElements/countElementOnPage:Math.trunc(countOfElements/countElementOnPage)+1 
-
+    console.log(currentPage)
     let arrayOfPages:{id:number, title: number|string, path: number}[]
     if(countOfPages > 9){
         if(currentPage <=5){

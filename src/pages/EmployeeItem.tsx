@@ -55,7 +55,7 @@ const EmployeeItem=()=>{
                 }
             })
         }
-    },[id])
+    },[id, userState.token])
 
     const getFormData=():FormData=>{
         const formData = new FormData()
@@ -68,7 +68,7 @@ const EmployeeItem=()=>{
             if(i==='img'){
                 continue
             }
-            if(String(data[i as keyof Activity])==='Invalid date'){
+            if(!data[i as keyof Activity] || data[i as keyof Activity] === null ){
                 continue
             }
             formData.append(i, String(data[i as keyof Activity]))
@@ -116,6 +116,21 @@ const EmployeeItem=()=>{
         fulFillRequest(`/employees/changeOne?id=${id}`)
     }
 
+    const dateValue=(incomeDate:string|Date|undefined|null):string|undefined=>{
+        if(incomeDate === undefined){
+            return undefined
+        }
+
+        if(typeof incomeDate === 'string'){
+            return incomeDate.slice(0, 10)
+        }
+
+        if (incomeDate instanceof Date) {
+            return `${incomeDate.getFullYear()}-${incomeDate.getMonth()}-${incomeDate.getDay()}`
+        }
+        
+        return undefined
+    }
     return(
         <div>
             <form className={styles.wrapper}>
@@ -131,12 +146,12 @@ const EmployeeItem=()=>{
                 
                 <div className={styles.pairsLabelAndInput}>
                     <label htmlFor="employmentDate">Employment date</label>
-                    <input type="date" name="employmentDate" id="employmentDate" value={data.employmentDate !== null?String(data.employmentDate).slice(0, 10):undefined} onChange={handlerOnChange} />
+                    <input type="date" name="employmentDate" id="employmentDate" value={dateValue(data.employmentDate)} onChange={handlerOnChange} />
                 </div>
 
                 <div className={styles.pairsLabelAndInput}>
                     <label htmlFor="dismissDate">Dismiss date</label>
-                    <input type="date" name="dismissDate" id="dismissDate" value={String(data.dismissDate).slice(0, 10)} onChange={handlerOnChange} />
+                    <input type="date" name="dismissDate" id="dismissDate" value={dateValue(data.dismissDate)} onChange={handlerOnChange} />
                 </div>
 
                 <div className={styles.pairsLabelAndInput}>

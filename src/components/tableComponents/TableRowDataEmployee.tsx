@@ -10,7 +10,6 @@ interface IPropsTableRow{
 
 const TableRowDataEmployee=({data, onClick}: IPropsTableRow)=>{
     //'Id', 'Img', 'Name', 'Desription', 'Creation date', 'Update date'
-    console.log(`${BACKEND_URL}/${data.img}`)
     return(
         <tr onClick={onClick}className={`${styles.row} ${styles.data}`}>
             <td className={styles.cell}>{data?.id}</td>
@@ -18,7 +17,7 @@ const TableRowDataEmployee=({data, onClick}: IPropsTableRow)=>{
             <td className={styles.cell}>{data.jobTitle}</td>
             <td className={styles.cell}>{String(data.employmentDate)}</td>
             <td className={styles.cell}>{String(data.dismissDate)}</td>
-            <td className={styles.cell}><img className={styles.imgIcon} src={data.img?`${BACKEND_URL}/${data.img}`:'/img/NoImage.jpg'} alt="servicesLogo" /></td>
+            <td className={styles.cell}><img className={styles.imgIcon} src={data.img?`${BACKEND_URL}/${data.img}`:'/img/NoImage.jpg'} alt="EmployeePhoto" /></td>
             <td className={styles.cell}>{data.jobTitle}</td>
             
         </tr>
