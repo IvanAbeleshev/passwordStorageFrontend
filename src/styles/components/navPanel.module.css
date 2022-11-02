@@ -72,6 +72,8 @@
     padding-top: 10px;
     height: 50px;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .link{

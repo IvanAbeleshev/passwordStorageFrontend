@@ -2,9 +2,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import styles from '../styles/components/navPanel.module.css'
-import {faPerson, faBellConcierge, faBook, faDoorOpen, faAnglesRight} from '@fortawesome/free-solid-svg-icons'
+import {faPerson, faBellConcierge, faBook, faDoorOpen, faAnglesRight, faQuestion} from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { currentUserState, setInitialState } from '../store/slice'
+import { setValue } from '../store/sliceSearch'
 
 interface IPropsNavPanel{
     children: React.ReactNode
@@ -23,6 +24,12 @@ const NavPanel=({children}: IPropsNavPanel)=>{
     const hancleOnClickChangeVisible:React.MouseEventHandler=(event)=>{
         setCurrentVisible(!currentVisible)
     }
+
+    const handleChangeSearch:React.ChangeEventHandler=(event)=>{
+        const target = event.target as HTMLInputElement
+        dispatch(setValue(target.value))
+    }
+
     return (
         <div className={styles.globalWindow}>
             <div className={`${styles.navPanel} ${currentVisible?styles.navPanelActive:styles.navPanelDisaple}`}>
@@ -55,8 +62,12 @@ const NavPanel=({children}: IPropsNavPanel)=>{
         
             <main className={styles.mainContainer}>
                 <div className={styles.statusPanel}>
-                    <FontAwesomeIcon icon={faAnglesRight} className={`${styles.buttonChangeVisibeNavigation} ${currentVisible?styles.buttonChangeVisibeNavigationHide:styles.buttonChangeVisibeNavigationShow}`} onClick={hancleOnClickChangeVisible} />
-                    {userState.login}
+                    <div>
+                        <FontAwesomeIcon icon={faAnglesRight} className={`${styles.buttonChangeVisibeNavigation} ${currentVisible?styles.buttonChangeVisibeNavigationHide:styles.buttonChangeVisibeNavigationShow}`} onClick={hancleOnClickChangeVisible} />
+                        {userState.login}
+                    </div>
+                    <input type="text" name="searchString" id="searchString" placeholder='fing' onChange={handleChangeSearch}/>
+                    <FontAwesomeIcon className={styles.buttonChangeVisibeNavigation} icon={faQuestion} />
                 </div>
                 <div className={`${styles.childrenContainer} ${currentVisible?styles.childrenContainerAcvtivePanel:styles.childrenContainerDisablePanel}`}>
                     {children}

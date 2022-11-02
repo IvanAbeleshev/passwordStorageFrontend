@@ -63,8 +63,9 @@ const BottomPageNavigator=({currentPage, countOfElements, countElementOnPage, ba
         }
     }
 
-    const clickOnPage=(path:number)=>{
+    const clickOnPage=(path:number, index:number)=>{
         const handleOnClick:React.MouseEventHandler=()=>{
+            setIndexOfCurrentPage(index)
             navigator(`${baseURL}${path}`)
         }
 
@@ -75,18 +76,18 @@ const BottomPageNavigator=({currentPage, countOfElements, countElementOnPage, ba
     <div className={styles.wrapperPagesPanel}>
         {indexOfCurrentPage===1?
         <div className={`${styles.element} ${styles.elementDisable}`}>{'<'}</div>:
-        <div onClick={clickOnPage(currentPage-1)} className={`${styles.element} ${styles.elementStandart}`}>{'<'}</div>}
+        <div onClick={clickOnPage(currentPage-1, indexOfCurrentPage-1)} className={`${styles.element} ${styles.elementStandart}`}>{'<'}</div>}
         
 
         <div className={styles.wrapperPages}>
             {arrayOfPages.map(element=>element.id===indexOfCurrentPage?
             <div className={`${styles.element} ${styles.elementActive}`} key={element.id}>{element.title}</div>:
-            <div onClick={clickOnPage(element.path)} className={`${styles.element} ${styles.elementStandart}`} key={element.id}>{element.title}</div>)}
+            <div onClick={clickOnPage(element.path, element.id)} className={`${styles.element} ${styles.elementStandart}`} key={element.id}>{element.title}</div>)}
         </div>
 
         {indexOfCurrentPage===countOfPages?
         <div className={`${styles.element} ${styles.elementDisable}`}>{'>'}</div>:
-        <div onClick={clickOnPage(currentPage+1)} className={`${styles.element} ${styles.elementStandart}`}>{'>'}</div>
+        <div onClick={clickOnPage(currentPage+1, indexOfCurrentPage+1)} className={`${styles.element} ${styles.elementStandart}`}>{'>'}</div>
         }
 
     </div>
