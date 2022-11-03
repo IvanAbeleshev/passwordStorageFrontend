@@ -9,6 +9,7 @@ import Button from '../components/Button'
 import TableRowDataEmployee from '../components/tableComponents/TableRowDataEmployee'
 import { IDataEmployee } from './EmployeeItem'
 import BottomPageNavigator from '../components/BottomPageNavigator'
+import { searchSelectorString } from '../store/sliceSearch'
 
 const EmployeesList=()=>{
     const {pageIndex} = useParams()
@@ -16,6 +17,7 @@ const EmployeesList=()=>{
     const [countOfData, setCountOfData]:[number, Function] = useState(0)
     
     const userState = useSelector(currentUserState)
+    const searchString = useSelector(searchSelectorString)
     const navigator = useNavigate()
 
     useEffect(()=>{
@@ -24,13 +26,13 @@ const EmployeesList=()=>{
               'Authorization': 'Bearer ' + userState.token
             }
           }
-        axios.get(`${BACKEND_URL}/employees?page=${pageIndex}&limit=${LIMIT_ITEMS_ON_PAGE}`, config).then(resultRequest=>{
+        axios.get(`${BACKEND_URL}/employees?page=${pageIndex}&limit=${LIMIT_ITEMS_ON_PAGE}${searchString?`&searchString=${searchString}`:''}`, config).then(resultRequest=>{
             if(resultRequest.status === 200){
                 setArrayOfData(resultRequest.data.data.rows)
                 setCountOfData(resultRequest.data.data.count)
             }
         })
-    },[pageIndex, userState.token])
+    },[pageIndex, userState.token, searchString])
 
     const handleOnClickAdd:React.MouseEventHandler=(event)=>{
         navigator('/employeeItem/new')

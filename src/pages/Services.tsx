@@ -8,6 +8,7 @@ import TableRowData from '../components/tableComponents/TableRowData'
 import TableRowHead from '../components/tableComponents/TableRowHead'
 import { BACKEND_URL, LIMIT_ITEMS_ON_PAGE } from '../constans'
 import { currentUserState } from '../store/slice'
+import { searchSelectorString } from '../store/sliceSearch'
 import styles  from '../styles/pages/services.module.css'
 
 export interface IDataRows{
@@ -27,6 +28,8 @@ const Services=()=>{
     const {servicesId} = useParams()
 
     const userState = useSelector(currentUserState)
+    const searchString = useSelector(searchSelectorString)
+
     const navigator = useNavigate()
     
     useEffect(()=>{
@@ -35,7 +38,7 @@ const Services=()=>{
               'Authorization': 'Bearer ' + userState.token
             }
           }
-        axios.get(`${BACKEND_URL}/services?page=${servicesId}&limit=${LIMIT_ITEMS_ON_PAGE}`, config).then(
+        axios.get(`${BACKEND_URL}/services?page=${servicesId}&limit=${LIMIT_ITEMS_ON_PAGE}${searchString?`&searchString=${searchString}`:''}`, config).then(
             response=>{
             if(response.status === 200){
                 const {count, rows}: {count:string, rows: IDataRows[]} = response.data.data
@@ -43,7 +46,7 @@ const Services=()=>{
                 setRowsState(rows)                
             }
         }).catch()
-    }, [servicesId])
+    }, [servicesId, searchString, userState.token])
 
     const addNewItem: React.MouseEventHandler=()=>{
         navigator('/service/new')

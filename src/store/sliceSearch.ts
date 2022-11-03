@@ -23,7 +23,7 @@ export const searchSlice = createSlice({
 export const {setValue} = searchSlice.actions
 
 //exports selectors
-export const serchSelectorString = (state: RootState)=>state.search.searchString
+export const searchSelectorString = (state: RootState)=>state.search.searchString
 
 export default searchSlice.reducer
 
