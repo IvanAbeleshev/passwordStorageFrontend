@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import styles from '../styles/components/navPanel.module.css'
-import {faPerson, faBellConcierge, faBook, faDoorOpen, faAnglesRight, faQuestion} from '@fortawesome/free-solid-svg-icons'
+import {faPerson, faBellConcierge, faBook, faDoorOpen, faAnglesRight, faQuestion, faLock} from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { currentUserState, setInitialState } from '../store/slice'
 import { setValue } from '../store/sliceSearch'
@@ -39,7 +39,12 @@ const NavPanel=({children}: IPropsNavPanel)=>{
                     </Link>
                     <nav className={styles.navigationContainer}>
                         <ul className={styles.listMenu}>
-                            {[{icon: faPerson, title: 'Employees', path: '/employees/1'}, {icon: faBellConcierge, title: 'servises', path: '/listServises/1'}, {icon: faBook, title: 'log', path: '/log'}].map(element=>
+                            {[
+                                {icon: faPerson, title: 'Employees', path: '/employees/1'},
+                                {icon: faBellConcierge, title: 'Servises', path: '/listServises/1'},
+                                {icon: faLock, title: 'Passwords', path: '/passwordsList/1'},
+                                {icon: faBook, title: 'Log', path: '/log'}
+                            ].map(element=>
                                 <li className={styles.listItem} key={element.title}>
                                     <Link className={styles.link} to={element.path}>
                                         <FontAwesomeIcon className={styles.icon} icon={element.icon} />

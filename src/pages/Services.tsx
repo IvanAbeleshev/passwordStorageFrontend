@@ -74,7 +74,6 @@ const Services=()=>{
             </table>   
             {countState&&<BottomPageNavigator currentPage={Number(servicesId)} countElementOnPage={LIMIT_ITEMS_ON_PAGE} baseURL={'/listServises/'} countOfElements={countState} />}
         </div>
-        <h1>This is Services PAGE!!!!{servicesId}</h1>
     </>
     )
 }
