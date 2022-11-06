@@ -13,9 +13,15 @@ interface IPropsNavPanel{
 
 const NavPanel=({children}: IPropsNavPanel)=>{
     const [currentVisible, setCurrentVisible] = useState(true)
+    const [timeoutId, setTimeoutId]:[undefined|string, Function] = useState(undefined)
+
     const userState = useSelector(currentUserState)
 
     const dispatch = useDispatch()
+
+    const dispatchSearchString=(value:string)=>{
+        dispatch(setValue(value))
+    }
     const clickLogOut:React.MouseEventHandler=(event)=>{
         event.stopPropagation()
         dispatch(setInitialState())
@@ -27,7 +33,18 @@ const NavPanel=({children}: IPropsNavPanel)=>{
 
     const handleChangeSearch:React.ChangeEventHandler=(event)=>{
         const target = event.target as HTMLInputElement
-        dispatch(setValue(target.value))
+        if(timeoutId){
+            clearTimeout(timeoutId)
+            setTimeoutId(undefined)
+        }
+        
+        setTimeoutId(
+            setTimeout(()=>{
+                dispatchSearchString(target.value)
+                console.log('now is searching...')
+            }, 800)
+        )
+
     }
 
     return (
