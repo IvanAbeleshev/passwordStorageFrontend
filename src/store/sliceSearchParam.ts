@@ -28,10 +28,21 @@ export const searchParamSlice = createSlice({
     initialState: initialStateSearchParam,
     reducers:{
         setValue:(state, {payload})=>{
-            
+           if(payload.employee){
+                state.employee.selectedId = payload.employee.selectedId
+                state.employee.value = payload.employee.value
+           }
+           if(payload.service){
+                state.service.selectedId = payload.service.selectedId
+                state.service.value = payload.service.value
+           }
         },
         setInitialState:(state)=>{
+            state.employee.selectedId = undefined
+            state.employee.value = ''
 
+            state.service.selectedId = undefined
+            state.service.value = ''
         }
     }
 })

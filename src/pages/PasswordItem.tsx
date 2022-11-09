@@ -1,14 +1,68 @@
-import { useLocation, Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import Button from '../components/Button'
 import InputSelect from '../components/InputSelect'
 import { searchMode } from '../interfaces'
+import { searchEmployeeParam, searchServiceParam } from '../store/sliceSearchParam'
 import styles from '../styles/pages/passwordItem.module.css'
+import { faEyeSlash, faLock } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { currentUserState } from '../store/slice'
+import axios from 'axios'
+import { BACKEND_URL } from '../constans'
 
-
+interface IData{
+    login: string,
+    password: string,
+    comment: string
+}
 
 const PasswordItem=()=>{
+    const [visiblePassword, setVisiblePassword] = useState(false)
+    const [data, setData] = useState({} as IData)
+    const [enableSubmit, setEnableSubmit] = useState(false)
 
-    const {state} = useLocation()
-    
+    const employeeState = useSelector(searchEmployeeParam)
+    const serviceState = useSelector(searchServiceParam)
+    const userState = useSelector(currentUserState)
+
+    const navigator = useNavigate()
+
+    useEffect(()=>{
+        if(employeeState.selectedId && serviceState.selectedId){
+            return setEnableSubmit(true)
+        }
+        setEnableSubmit(false)
+    }, [employeeState.selectedId, serviceState.selectedId])
+
+    const handleCreateButton=()=>{
+        const sendingData = {login: data.login, password: data.password, comment: data.comment, serviceId: serviceState.selectedId, employeeId: employeeState.selectedId}
+        const config = {
+            headers: {
+              'Authorization': 'Bearer ' + userState.token
+            }
+          }
+        axios.post(`${BACKEND_URL}/passwords/create`, sendingData, config).then(replyRequest =>{
+            if(replyRequest.status === 200){
+                navigator(-1)
+            }
+        }).catch(error=>{
+                if(axios.isAxiosError(error)){
+                    alert(error.response?.data.message)
+                }
+            })
+    }
+
+    const changeVisible=()=>{
+        setVisiblePassword(!visiblePassword)
+    }
+
+    const onChange:React.ChangeEventHandler=(event)=>{
+        const target = event.target as HTMLInputElement
+        setData({...data, [target.name]:target.value})
+    }
+
     return <div className={styles.wrapper}>
         <label htmlFor="employee">Employee</label>
         <div>
@@ -23,11 +77,19 @@ const PasswordItem=()=>{
         </div>
         <hr />
         <label htmlFor="loginEmployee">Login</label>
-        <input type="text" name="loginEmployee" id="loginEmployee" />
+        <input type="text" name="login" id="loginEmployee" value={data.login} onChange={onChange} />
         <label htmlFor="passwordEmployee">Password</label>
-        <input type="text" name="passwordEmployee" id="passwordEmployee" />
+        <div className={styles.containerInputAndButtons}>
+            <input type={visiblePassword?'text':'password'} name="password" id="passwordEmployee" value={data.password} onChange={onChange}/>
+            <Button onClick={changeVisible}><FontAwesomeIcon icon={visiblePassword?faLock:faEyeSlash} /></Button>
+        </div>
         
-        <textarea name="comment" id="comment" cols={30} rows={10} />
+        <label htmlFor="comment">Comment</label>
+        <textarea name="comment" id="comment" cols={30} rows={10} value={data.comment} onChange={onChange} />
+        <div style={enableSubmit?{}:{pointerEvents:'none', opacity:0.4}}>
+            <Button onClick={handleCreateButton}><h3>Create</h3></Button>
+        </div>
+        
     </div>
 }
 

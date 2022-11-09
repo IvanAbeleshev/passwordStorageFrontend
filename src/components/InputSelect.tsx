@@ -1,9 +1,10 @@
 import axios from 'axios'
-import { MutableRefObject, useState, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { MutableRefObject, useState, useRef, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { BACKEND_URL, LIMIT_ITEMS_ON_PAGE } from '../constans'
 import { searchMode } from '../interfaces'
 import { currentUserState } from '../store/slice'
+import { searchEmployeeParam, searchServiceParam, setValue } from '../store/sliceSearchParam'
 import DropDownList from './DropDownList'
 
 interface IData{
@@ -27,8 +28,24 @@ const InputSelect=({mode}:IPropsInputSelect)=>{
     const [selectedData, setSelectedData] = useState({} as IData)
     const [timeoutId, setTimeoutId]:[undefined|string, Function] = useState()
     const refInput = useRef() as MutableRefObject<HTMLInputElement>
+
+    const employeeState = useSelector(searchEmployeeParam)
+    const serviceState = useSelector(searchServiceParam)
     
     const userState = useSelector(currentUserState)
+    const dispatch = useDispatch()
+
+    useEffect(()=>{
+        if(mode === searchMode.employee && employeeState){
+            setSelectedData({...{} as IData, value:employeeState.value, selectedId: employeeState.selectedId})            
+        }
+    },[employeeState, mode])
+
+    useEffect(()=>{
+        if(mode === searchMode.service && serviceState){
+            setSelectedData({...{} as IData, value:serviceState.value, selectedId: serviceState.selectedId})            
+        }
+    },[serviceState, mode])
 
     const sendRequest=(value: string)=>{
         const config = {
@@ -53,6 +70,7 @@ const InputSelect=({mode}:IPropsInputSelect)=>{
         const {value} = event.target as HTMLInputElement
         
         setSelectedData({...selectedData, value, selectedId: undefined})
+        dispatch(setValue({[mode]: {selectedId: undefined, value}}))
         if(timeoutId){
             clearTimeout(timeoutId)
         }
@@ -66,6 +84,7 @@ const InputSelect=({mode}:IPropsInputSelect)=>{
     const selectFunction=(selectedId: number, value: string)=>{
         const clickBox:React.MouseEventHandler=(event)=>{
             setSelectedData({...selectedData, selectedId, value })
+            dispatch(setValue({[mode]: {selectedId, value}}))
         }
         return clickBox
     }
