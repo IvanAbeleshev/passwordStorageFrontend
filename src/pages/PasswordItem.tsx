@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import Button from '../components/Button'
 import InputSelect from '../components/InputSelect'
 import { searchMode } from '../interfaces'
-import { searchEmployeeParam, searchServiceParam } from '../store/sliceSearchParam'
+import { searchEmployeeParam, searchServiceParam, setValue } from '../store/sliceSearchParam'
 import styles from '../styles/pages/passwordItem.module.css'
 import { faEyeSlash, faLock } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -27,7 +27,33 @@ const PasswordItem=()=>{
     const serviceState = useSelector(searchServiceParam)
     const userState = useSelector(currentUserState)
 
+    const dispatch = useDispatch()
+
     const navigator = useNavigate()
+    const{id} = useParams()
+
+    useEffect(()=>{
+        const config = {
+            headers: {
+              'Authorization': 'Bearer ' + userState.token
+            }
+          }
+        axios.get(`${BACKEND_URL}/passwords/getOne?id=${id}`, config).then(replyRequest =>{
+            if(replyRequest.status === 200){
+                console.log(replyRequest)
+                const {login, password, comment, employee, service} = replyRequest.data.data
+                setData({login, password, comment})
+                dispatch(setValue({
+                    employee:{value: employee.name, selectedId: employee.id},
+                    service:{value: service.name, selectedId: service.id}
+                }))
+            }
+        }).catch(error=>{
+                if(axios.isAxiosError(error)){
+                    alert(error.response?.data.message)
+                }
+            })   
+    },[id])
 
     useEffect(()=>{
         if(employeeState.selectedId && serviceState.selectedId){
