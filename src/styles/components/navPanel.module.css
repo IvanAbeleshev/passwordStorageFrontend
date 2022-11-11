@@ -114,7 +114,7 @@
 
 .titleItem{
     transform: translateY(-15px);
-    color: #fff;
+    color: transparent;
     transition: transform 1s, color 0.5s;
     margin: 0px;
 }

@@ -47,7 +47,7 @@ const PasswordsList=()=>{
         axios.get(`${BACKEND_URL}/passwords?page=${pageIndex}
                     &limit=${LIMIT_ITEMS_ON_PAGE}
                     ${employeeState.selectedId?`&employeeId=${employeeState.selectedId}`:''}
-                    ${serviceState.selectedId?`&serviceID=${serviceState.selectedId}`:''}`, config).then(replyRequest =>{
+                    ${serviceState.selectedId?`&serviceId=${serviceState.selectedId}`:''}`, config).then(replyRequest =>{
             if(replyRequest.status === 200){
                 console.log(replyRequest)
                 setRowState(replyRequest.data.data.rows)
