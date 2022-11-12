@@ -1,7 +1,7 @@
 import React from 'react'
 import { BACKEND_URL } from '../../constans'
 import { IDataEmployee } from '../../pages/EmployeeItem'
-import styles from '../../styles/components/table.module.css'
+import generallyStyles from '../../styles/generallyStyles.module.css'
 
 interface IPropsTableRow{
     data: IDataEmployee,
@@ -11,14 +11,14 @@ interface IPropsTableRow{
 const TableRowDataEmployee=({data, onClick}: IPropsTableRow)=>{
     //'Id', 'Img', 'Name', 'Desription', 'Creation date', 'Update date'
     return(
-        <tr onClick={onClick}className={`${styles.row} ${styles.data}`}>
-            <td className={styles.cell}>{data?.id}</td>
-            <td className={styles.cell}>{data.name}</td>
-            <td className={styles.cell}>{data.jobTitle}</td>
-            <td className={styles.cell}>{String(data.employmentDate)}</td>
-            <td className={styles.cell}>{String(data.dismissDate)}</td>
-            <td className={styles.cell}><img className={styles.imgIcon} src={data.img?`${BACKEND_URL}/${data.img}`:'/img/NoImage.jpg'} alt="EmployeePhoto" /></td>
-            <td className={styles.cell}>{data.jobTitle}</td>
+        <tr onClick={onClick}className={generallyStyles.tableRow}>
+            <td className={generallyStyles.cell}>{data?.id}</td>
+            <td className={generallyStyles.cell}>{data.name}</td>
+            <td className={generallyStyles.cell}>{data.jobTitle}</td>
+            <td className={generallyStyles.cell}>{String(data.employmentDate)}</td>
+            <td className={generallyStyles.cell}>{String(data.dismissDate)}</td>
+            <td className={generallyStyles.cell}><img className={generallyStyles.imgSmall} src={data.img?`${BACKEND_URL}/${data.img}`:'/img/NoImage.jpg'} alt="EmployeePhoto" /></td>
+            <td className={generallyStyles.cell}>{data.jobTitle}</td>
             
         </tr>
     )

@@ -10,6 +10,7 @@ import TableRowDataEmployee from '../components/tableComponents/TableRowDataEmpl
 import { IDataEmployee } from './EmployeeItem'
 import BottomPageNavigator from '../components/BottomPageNavigator'
 import { searchSelectorString } from '../store/sliceSearch'
+import generallyStyles from '../styles/generallyStyles.module.css'
 
 const EmployeesList=()=>{
     const {pageIndex} = useParams()
@@ -46,11 +47,11 @@ const EmployeesList=()=>{
     }
     return(
         <>
-        <div className="commandPanel">
-        <Button onClick={handleOnClickAdd}><h3>Add</h3></Button>    
+        <div className={generallyStyles.commandPanel}>
+        <Button onClick={handleOnClickAdd}>Add</Button>    
         </div>
-        <div>
-            <table>
+        <div className={generallyStyles.wrapper}>
+            <table cellSpacing={0}>
                 <thead>
                     <TableRowHead data={['Id', 'Name', 'JobTitle', 'Employment date', 'Dismiss date', 'Img', 'Comment']} />    
                 </thead>    

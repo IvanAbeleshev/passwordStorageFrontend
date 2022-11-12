@@ -2,12 +2,14 @@ import React,{ useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ModalWindow from '../components/ModalWindow'
 import ImgSelector from '../components/ImgSelector'
-import styles from '../styles/pages/serviceItem.module.css'
 import Button from '../components/Button'
 import axios from 'axios'
 import { BACKEND_URL } from '../constans'
 import { useSelector } from 'react-redux'
 import { currentUserState } from '../store/slice'
+
+import generallyStyles from '../styles/generallyStyles.module.css'
+
 
 enum componentMode{
     creating = 'creating',
@@ -94,31 +96,39 @@ const ServiceItem=()=>{
             })
     }
     const creatingMode = (
-        <form className={styles.dataContainer}>
-            <label htmlFor="name">Name:</label>
-            <input type="text" name="name" id="name" value={name} onChange={(event)=>setName(event.target.value)}/>
+        <form className={generallyStyles.wrapper}>
+            <div className={generallyStyles.flexRowSpaceBetween}>
+                <label htmlFor="name">Name:</label>
+                <input type="text" name="name" id="name" value={name} onChange={(event)=>setName(event.target.value)}/>
+            </div>
 
-            <label htmlFor="description">Description:</label>
-            <input type="text" name="description" id="description" value={description} onChange={(event)=>setDescription(event.target.value)} />
+            <div className={generallyStyles.flexRowSpaceBetween}>
+                <label htmlFor="description">Description:</label>
+                <input type="text" name="description" id="description" value={description} onChange={(event)=>setDescription(event.target.value)} />
+            </div>
             
-            <img className={styles.imgBox} src={selectedImage} alt="image" onClick={()=>setVisibleModalWindow(true)}/>
+            <img className={generallyStyles.imgLarge} src={selectedImage} alt="image" onClick={()=>setVisibleModalWindow(true)}/>
             {visibleModalWindow&&<ModalWindow setVisible={setVisibleModalWindow}><ImgSelector searchString={name} setSelectedImg={setSelectedImage} /></ModalWindow>}
             
-            <Button onClick={createNew}><h3>Create new</h3></Button>
+            <Button onClick={createNew}>Create new</Button>
         </form>)
 
     const editMode = (
-        <form className={styles.dataContainer}>
-            <label htmlFor="name">Name:</label>
-            <input type="text" name="name" id="name" value={name} onChange={(event)=>setName(event.target.value)}/>
+        <form className={generallyStyles.wrapper}>
+            <div className={generallyStyles.flexRowSpaceBetween}>
+                <label htmlFor="name">Name:</label>
+                <input type="text" name="name" id="name" value={name} onChange={(event)=>setName(event.target.value)}/>
+            </div>
 
-            <label htmlFor="description">Description:</label>
-            <input type="text" name="description" id="description" value={description} onChange={(event)=>setDescription(event.target.value)} />
+            <div className={generallyStyles.flexRowSpaceBetween}>
+                <label htmlFor="description">Description:</label>
+                <input type="text" name="description" id="description" value={description} onChange={(event)=>setDescription(event.target.value)} />
+            </div>
             
-            <img className={styles.imgBox} src={selectedImage} alt="image" onClick={()=>setVisibleModalWindow(true)}/>
+            <img className={generallyStyles.imgLarge} src={selectedImage} alt="image" onClick={()=>setVisibleModalWindow(true)}/>
             {visibleModalWindow&&<ModalWindow setVisible={setVisibleModalWindow}><ImgSelector searchString={name} setSelectedImg={setSelectedImage} /></ModalWindow>}
             
-            <Button onClick={saveChanges}><h3>save changes</h3></Button>
+            <Button onClick={saveChanges}>Save changes</Button>
         </form>        
     )
     return(<>

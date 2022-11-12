@@ -1,5 +1,4 @@
-import React from 'react'
-import styles from '../../styles/components/table.module.css'
+import generallyStyles from '../../styles/generallyStyles.module.css'
 
 interface IPropsTableRow{
     data: string[],
@@ -8,7 +7,7 @@ interface IPropsTableRow{
 const TableRowHead=({data, }: IPropsTableRow)=>{
 
     return(
-        <tr className={`${styles.row} ${styles.head}`}>
+        <tr className={generallyStyles.tableHead}>
         {data.map(element=><th key={element}>{element}</th>)}
         </tr>
     )

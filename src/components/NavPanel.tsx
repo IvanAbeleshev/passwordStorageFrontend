@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import styles from '../styles/components/navPanel.module.css'
-import {faPerson, faBellConcierge, faBook, faDoorOpen, faAnglesRight, faQuestion, faLock} from '@fortawesome/free-solid-svg-icons'
+import {faPerson, faBellConcierge, faBook, faDoorOpen, faAnglesRight, faQuestion, faLock, faUserLock} from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { currentUserState, setInitialState } from '../store/slice'
 import { setValue } from '../store/sliceSearch'
@@ -60,7 +60,8 @@ const NavPanel=({children}: IPropsNavPanel)=>{
                                 {icon: faPerson, title: 'Employees', path: '/employees/1'},
                                 {icon: faBellConcierge, title: 'Servises', path: '/listServises/1'},
                                 {icon: faLock, title: 'Passwords', path: '/passwordsList/1'},
-                                {icon: faBook, title: 'Log', path: '/log'}
+                                {icon: faUserLock, title: 'Users', path: '/users/1'},
+                                {icon: faBook, title: 'Log', path: '/log/1'}
                             ].map(element=>
                                 <li className={styles.listItem} key={element.title}>
                                     <Link className={styles.link} to={element.path}>
@@ -76,7 +77,7 @@ const NavPanel=({children}: IPropsNavPanel)=>{
                     <div className={styles.listItem} onClick={clickLogOut}>
                         <div className={styles.link}>
                             <FontAwesomeIcon className={styles.icon} icon={faDoorOpen} />
-                            <h2 className={styles.titleItem}>logOut</h2>
+                            <h2 className={styles.titleItem}>Log out</h2>
                         </div>    
                     </div>
                 </div>

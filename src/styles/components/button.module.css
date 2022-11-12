@@ -1,8 +1,10 @@
 .buttonCss{
-    min-width: 20px;
+    min-width: 50px;
     min-height: 30px;
     background-color: #3772FF;
     border-radius: 4px;
+    font-size: 18px;
+    padding: 3px;
     color: #fff;
     transition: background-color 0.3s;
     text-align: center;

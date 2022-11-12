@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux'
 import { currentUserState } from '../store/slice'
 import { searchEmployeeParam, searchServiceParam } from '../store/sliceSearchParam'
 import BottomPageNavigator from '../components/BottomPageNavigator'
+import generallyStyles from '../styles/generallyStyles.module.css'
 
 export interface IDataPassword{
     id?: number,
@@ -67,7 +68,7 @@ const PasswordsList=()=>{
         return handleOnClick
     }
     return (<>
-    <div className={styles.filterPanel}>
+    <div className={generallyStyles.commandPanel}>
         <label htmlFor="employee">Employee</label>
         <InputSelect mode={searchMode.employee} />
         
@@ -75,11 +76,11 @@ const PasswordsList=()=>{
         <InputSelect mode={searchMode.service} />
     </div>
     
-    <div className="commandPanel">
-        <Button onClick={()=>{navigator('/passwordItem/new')}}><h3>Add</h3></Button>
+    <div className={generallyStyles.commandPanel}>
+        <Button onClick={()=>{navigator('/passwordItem/new')}}>Add</Button>
     </div>
 
-    <div className="tableArea">
+    <div className={generallyStyles.wrapper}>
         <table cellSpacing={0}>
             <thead>
                 <TableRowHead data={['Id', 'Employee', 'Service', 'Comment', 'Creation date', 'Update date']} />    

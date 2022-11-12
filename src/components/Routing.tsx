@@ -10,6 +10,8 @@ import EmployeesList from '../pages/EmployeesList';
 import EmployeeItem from '../pages/EmployeeItem';
 import PasswordsList from '../pages/PasswordsList';
 import PasswordItem from '../pages/PasswordItem';
+import UsersList from '../pages/UsersList';
+import UserItem from '../pages/UserItem';
 
 interface IPropsRouting{
     children: ReactNode
@@ -49,6 +51,13 @@ const Routing = ({children}: IPropsRouting) =>{
         </Route>
         <Route path='passwordItem' element={<NavPanel><PasswordItem/></NavPanel>}>
             <Route path=":id" element={<NavPanel><PasswordItem/></NavPanel>} />
+        </Route>
+
+        <Route path='users' element={<NavPanel><UsersList/></NavPanel>}>
+            <Route path=":pageIndex" element={<NavPanel><UsersList/></NavPanel>} />
+        </Route>
+        <Route path='userItem' element={<NavPanel><UserItem/></NavPanel>}>
+            <Route path=":id" element={<NavPanel><UserItem/></NavPanel>} />
         </Route>
         
         <Route

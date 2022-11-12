@@ -1,0 +1,80 @@
+.commandPanel{
+    padding: 10px 10px;
+    margin-top: 15px;
+    background-color: #fff;
+    min-width: 50%;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper{
+    padding: 10px 10px;
+    margin-top: 15px;
+    background-color: #fff;
+    min-width: 50%;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tableHead{
+    font-size: 22px;
+    font-weight: 500;
+    padding: 0px 8px;
+}
+
+.tableRow{
+    background-color: #fff;
+    min-width: 50%;
+    color: #000;
+}
+
+.tableRow{
+    background-color: #fff;
+    min-width: 50%;
+    line-height: 35px;
+}
+
+.tableRow:hover{
+    cursor: pointer;
+    background-color: #1B1BDD;
+    color: white
+}
+
+.tableRow:last-child{
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.cell{
+    padding: 0px 8px;
+}
+
+.flexRowSpaceBetween{
+    padding: 6px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.imgLarge{
+    margin: 5px;
+    width: 300px;
+    height: 300px;
+}
+
+.imgLarge:hover{
+    cursor: pointer;
+}
+
+.imgSmall{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}

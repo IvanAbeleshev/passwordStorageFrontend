@@ -9,7 +9,7 @@ import TableRowHead from '../components/tableComponents/TableRowHead'
 import { BACKEND_URL, LIMIT_ITEMS_ON_PAGE } from '../constans'
 import { currentUserState } from '../store/slice'
 import { searchSelectorString } from '../store/sliceSearch'
-import styles  from '../styles/pages/services.module.css'
+import generallyStyles from '../styles/generallyStyles.module.css'
 
 export interface IDataRows{
     id:number
@@ -60,10 +60,10 @@ const Services=()=>{
     }
     return(
     <>
-        <div className={styles.commandPanel}>
-            <Button onClick={addNewItem}><h3>Add</h3></Button> 
+        <div className={generallyStyles.commandPanel}>
+            <Button onClick={addNewItem}>Add</Button> 
         </div>
-        <div>
+        <div className={generallyStyles.wrapper}>
             <table cellSpacing={0}>
                 <thead>
                     <TableRowHead data={['Id', 'Img', 'Name', 'Desription', 'Creation date', 'Update date']} />    
