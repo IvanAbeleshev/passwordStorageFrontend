@@ -1,10 +1,11 @@
-import axios from 'axios'
+import axios, { Axios, AxiosError, AxiosResponse } from 'axios'
 import React, {useState, useEffect} from 'react'
 import styles from '../styles/pages/auth.module.css'
 import {useDispatch} from 'react-redux'
 import { setValue } from '../store/slice'
 import { useNavigate } from 'react-router-dom'
 import { BACKEND_URL } from '../constans'
+import { fulfillGetRequest, fulfillPostRequest } from '../common'
 
 const Auth = (props: React.PropsWithChildren) =>{
     //true - user with admin role is present, else is absent
@@ -18,46 +19,64 @@ const Auth = (props: React.PropsWithChildren) =>{
     const dispatch = useDispatch()
 
     useEffect(()=>{
-        const resultRequest = axios.get(`${BACKEND_URL}/users/checkAdmin`)
-        resultRequest.then(request=>setCheckAdminRole(request.data.error))
+        const resolveRequest=(response: AxiosResponse)=>{
+            setCheckAdminRole(response.data.error)
+        }
+
+        fulfillGetRequest(`${BACKEND_URL}/users/checkAdmin`, resolveRequest)
+        
+        // const resultRequest = axios.get(`${BACKEND_URL}/users/checkAdmin`)
+        // resultRequest.then(request=>setCheckAdminRole(request.data.error))
     }, [])
 
     const submitHandler: React.FormEventHandler=(event)=>{
         event.preventDefault()
         
+        const resolveFunction=(response: AxiosResponse)=>{
+            const {id, login, token} = response.data.data
+            dispatch(setValue({id, login, token, authState: true}))
+            navigate('/')    
+        }
+
+        const rejectFunction=(error:AxiosError)=>{
+            setMessage(`Server error. Status code: ${error.response?.status} - ${error.response?.statusText}`)
+        }
+
         if(checkAdminRole){
             const sendData = {login, password, role: 'admin'}
-            const resultRequest = axios.post(`${BACKEND_URL}/users/`, sendData)
-            resultRequest.then(response=>{
-                if(response.status === 200){
-                    //set data in store
-                    const {id, login, token} = response.data.data
+            fulfillPostRequest(`${BACKEND_URL}/users/`, resolveFunction, rejectFunction, sendData)
+            // const resultRequest = axios.post(`${BACKEND_URL}/users/`, sendData)
+            // resultRequest.then(response=>{
+            //     if(response.status === 200){
+            //         //set data in store
+            //         const {id, login, token} = response.data.data
 
-                    dispatch(setValue({id, login, token, authState: true}))
-                    navigate('/')
-                }
-            }).catch(error=>{
-                if(axios.isAxiosError(error)){
-                    setMessage(`Server error. Status code: ${error.response?.status} - ${error.response?.data?.message?error.response?.data?.message:error.response?.statusText}`)
-                }
-            })
+            //         dispatch(setValue({id, login, token, authState: true}))
+            //         navigate('/')
+            //     }
+            // }).catch(error=>{
+            //     if(axios.isAxiosError(error)){
+            //         setMessage(`Server error. Status code: ${error.response?.status} - ${error.response?.data?.message? error.response?.data?.message : error.response?.statusText}`)
+            //     }
+            // })
         }else{
             const sendData = {login, password}
-            const resultRequest = axios.post(`${BACKEND_URL}/users/singIn`, sendData)
-            resultRequest.then(response=>{
-                console.log(response)
+            fulfillPostRequest(`${BACKEND_URL}/users/singIn`, resolveFunction, rejectFunction, sendData)
+            // const resultRequest = axios.post(`${BACKEND_URL}/users/singIn`, sendData)
+            // resultRequest.then(response=>{
+            //     console.log(response)
                 
-                if(response.status === 200){
-                    //set data in store
-                    const {id, login, token} = response.data.data
-                    dispatch(setValue({id, login, token, authState: true}))
-                    navigate('/')
-                }
-            }).catch(error=>{
-                if(axios.isAxiosError(error)){
-                    setMessage(`Server error. Status code: ${error.response?.status} - ${error.response?.data?.message?error.response?.data?.message:error.response?.statusText}`)
-                }
-            })
+            //     if(response.status === 200){
+            //         //set data in store
+            //         const {id, login, token} = response.data.data
+            //         dispatch(setValue({id, login, token, authState: true}))
+            //         navigate('/')
+            //     }
+            // }).catch(error=>{
+            //     if(axios.isAxiosError(error)){
+            //         setMessage(`Server error. Status code: ${error.response?.status} - ${error.response?.data?.message?error.response?.data?.message:error.response?.statusText}`)
+            //     }
+            // })
         }
         
     }
