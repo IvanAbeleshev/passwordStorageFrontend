@@ -1,11 +1,10 @@
-import axios, { Axios, AxiosError, AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 import React, {useState, useEffect} from 'react'
 import styles from '../styles/pages/auth.module.css'
 import {useDispatch} from 'react-redux'
 import { setValue } from '../store/slice'
 import { useNavigate } from 'react-router-dom'
 import { ACCESS_TOKEN, BACKEND_URL, REFRESH_TOKEN } from '../constans'
-import axiosInstance from '../common'
 
 const Auth = (props: React.PropsWithChildren) =>{
     //true - user with admin role is present, else is absent
