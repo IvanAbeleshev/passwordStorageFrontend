@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
-import { BACKEND_URL, LIMIT_ITEMS_ON_PAGE } from '../constans'
+import { LIMIT_ITEMS_ON_PAGE } from '../constans'
 import { useSelector } from 'react-redux'
 import { currentUserState } from '../store/slice'
 import TableRowHead from '../components/tableComponents/TableRowHead'
@@ -11,6 +10,7 @@ import { IDataEmployee } from './EmployeeItem'
 import BottomPageNavigator from '../components/BottomPageNavigator'
 import { searchSelectorString } from '../store/sliceSearch'
 import generallyStyles from '../styles/generallyStyles.module.css'
+import axiosInstance from '../common'
 
 const EmployeesList=()=>{
     const {pageIndex} = useParams()
@@ -22,18 +22,12 @@ const EmployeesList=()=>{
     const navigator = useNavigate()
 
     useEffect(()=>{
-        const config = {
-            headers: {
-              'Authorization': 'Bearer ' + userState.token
-            }
-          }
-        axios.get(`${BACKEND_URL}/employees?page=${pageIndex}&limit=${LIMIT_ITEMS_ON_PAGE}${searchString?`&searchString=${searchString}`:''}`, config).then(resultRequest=>{
-            if(resultRequest.status === 200){
-                setArrayOfData(resultRequest.data.data.rows)
-                setCountOfData(resultRequest.data.data.count)
-            }
+
+        axiosInstance.get(`/employees?page=${pageIndex}&limit=${LIMIT_ITEMS_ON_PAGE}${searchString?`&searchString=${searchString}`:''}`).then(resultRequest=>{
+            setArrayOfData(resultRequest.data.data.rows)
+            setCountOfData(resultRequest.data.data.count)
         })
-    },[pageIndex, userState.token, searchString])
+    },[pageIndex, searchString])
 
     const handleOnClickAdd:React.MouseEventHandler=(event)=>{
         navigator('/employeeItem/new')

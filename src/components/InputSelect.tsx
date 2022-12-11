@@ -1,9 +1,8 @@
-import axios from 'axios'
 import { MutableRefObject, useState, useRef, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BACKEND_URL, LIMIT_ITEMS_ON_PAGE } from '../constans'
+import axiosInstance from '../common'
+import { LIMIT_ITEMS_ON_PAGE } from '../constans'
 import { searchMode } from '../interfaces'
-import { currentUserState } from '../store/slice'
 import { searchEmployeeParam, searchServiceParam, setValue } from '../store/sliceSearchParam'
 import DropDownList from './DropDownList'
 
@@ -32,7 +31,6 @@ const InputSelect=({mode}:IPropsInputSelect)=>{
     const employeeState = useSelector(searchEmployeeParam)
     const serviceState = useSelector(searchServiceParam)
     
-    const userState = useSelector(currentUserState)
     const dispatch = useDispatch()
 
     useEffect(()=>{
@@ -48,17 +46,10 @@ const InputSelect=({mode}:IPropsInputSelect)=>{
     },[serviceState, mode])
 
     const sendRequest=(value: string)=>{
-        const config = {
-            headers: {
-              'Authorization': 'Bearer ' + userState.token
-            }
-          }
-
+ 
         try{
-            axios.get(`${BACKEND_URL}/${mode}s?page=1&limit=${LIMIT_ITEMS_ON_PAGE}${value?`&searchString=${value}`:''}`, config).then(result=>{
-                if(result.status === 200){
-                    setSelectedData({...selectedData, selectedId: undefined, value, count: result.data.data.count, rows: result.data.data.rows})
-                }
+            axiosInstance.get(`/${mode}s?page=1&limit=${LIMIT_ITEMS_ON_PAGE}${value?`&searchString=${value}`:''}`).then(result=>{
+                setSelectedData({...selectedData, selectedId: undefined, value, count: result.data.data.count, rows: result.data.data.rows})
             })
         }catch(error){
             setSelectedData({...selectedData, value})    

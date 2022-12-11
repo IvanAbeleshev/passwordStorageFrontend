@@ -3,16 +3,14 @@ import { useState, useEffect } from 'react'
 import Button from '../components/Button'
 import TableRowHead from '../components/tableComponents/TableRowHead'
 import { searchMode } from '../interfaces'
-import styles from '../styles/pages/passwordsList.module.css'
 import InputSelect from '../components/InputSelect'
 import TableRowDataPassword from '../components/tableComponents/TableRowDataPassword'
-import axios from 'axios'
 import { BACKEND_URL, LIMIT_ITEMS_ON_PAGE } from '../constans'
 import { useSelector } from 'react-redux'
-import { currentUserState } from '../store/slice'
 import { searchEmployeeParam, searchServiceParam } from '../store/sliceSearchParam'
 import BottomPageNavigator from '../components/BottomPageNavigator'
 import generallyStyles from '../styles/generallyStyles.module.css'
+import axiosInstance, { defaultErrorHandler } from '../common'
 
 export interface IDataPassword{
     id?: number,
@@ -34,31 +32,19 @@ const PasswordsList=()=>{
     const [countState, setCountState] = useState(0)
 
     const navigator = useNavigate()
-    const userState = useSelector(currentUserState)
     const employeeState = useSelector(searchEmployeeParam)
     const serviceState = useSelector(searchServiceParam)
     const {pageIndex} = useParams()
 
     useEffect(()=>{
-        const config = {
-            headers: {
-              'Authorization': 'Bearer ' + userState.token
-            }
-          }
-        axios.get(`${BACKEND_URL}/passwords?page=${pageIndex}
+
+        axiosInstance.get(`${BACKEND_URL}/passwords?page=${pageIndex}
                     &limit=${LIMIT_ITEMS_ON_PAGE}
                     ${employeeState.selectedId?`&employeeId=${employeeState.selectedId}`:''}
-                    ${serviceState.selectedId?`&serviceId=${serviceState.selectedId}`:''}`, config).then(replyRequest =>{
-            if(replyRequest.status === 200){
-                console.log(replyRequest)
+                    ${serviceState.selectedId?`&serviceId=${serviceState.selectedId}`:''}`).then(replyRequest =>{
                 setRowState(replyRequest.data.data.rows)
                 setCountState(replyRequest.data.data.count)
-            }
-        }).catch(error=>{
-                if(axios.isAxiosError(error)){
-                    alert(error.response?.data.message)
-                }
-            })
+        }).catch(defaultErrorHandler)
     },[employeeState.selectedId, serviceState.selectedId, pageIndex])
 
     const navigateByPath=(path:number)=>{

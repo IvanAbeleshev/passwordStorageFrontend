@@ -1,66 +1,60 @@
-import axios, { AxiosError } from 'axios'
+import axios, {AxiosRequestConfig } from 'axios'
+import { ACCESS_TOKEN, BACKEND_URL, REFRESH_TOKEN } from './constans'
 
-interface iOptionRequest{
-    statusCode: number,
-    authHeader?: boolean,
-    token?: string | null | undefined,
-    useFormData? : boolean
+export const defaultErrorHandler=(error:any)=>{
+    if(axios.isAxiosError(error)){
+        alert(error.response?.data.message)
+    }
 }
 
-const initialOption:iOptionRequest={
-    statusCode: 200,
-    authHeader: false,
-    token: '',
-    useFormData: false
-}
+const axiosInstance = axios.create({
+    baseURL: BACKEND_URL,
 
-const defaultRejectFunction=(error:AxiosError)=>{
-    alert(`Server error. Status code: ${error.response?.status} - ${error.response?.statusText}`)
+})
+  
+axiosInstance.interceptors.request.use(
+(config:AxiosRequestConfig) => {
+    const token = String(localStorage.getItem(ACCESS_TOKEN))
+    if (token) {
+        config.headers!["Authorization"] = 'Bearer ' + token
+    }
+    return config
+},
+(error) => {
+    return Promise.reject(error)
 }
+)
+  
+axiosInstance.interceptors.response.use(
+(res) => {
+    return res
+},
 
-export const fulfillGetRequest=(queryString:string, resolve: Function, reject: Function = defaultRejectFunction, option:iOptionRequest=initialOption)=>{
-    let config:any = {}
-    if(option.authHeader){
-        config.headers={
-            'Authorization': 'Bearer ' + option.token
+async (err) => {
+    const originalConfig = err.config
+
+    if (originalConfig.url !== "/" && err.response) {
+    // Access Token was expired
+    if (err.response.status === 401 && !originalConfig._retry) {
+        originalConfig._retry = true
+
+        try {
+        const rs = await axiosInstance.post('/login/refresh/', {
+            refresh: localStorage.getItem(REFRESH_TOKEN),
+        });
+
+        const { accessToken } = rs.data
+        localStorage.setItem(ACCESS_TOKEN, accessToken)
+
+        return axiosInstance(originalConfig)
+        } catch (_error) {
+        return Promise.reject(_error)
         }
     }
-    
-    if(option.useFormData){
-        config.headers['Content-Type'] = 'multipart/form-data'   
     }
 
-    axios.get(queryString, config).then(response=>{        
-        if(response.status === option.statusCode){
-            resolve(response)
-        }
-    }).catch(error=>{
-        if(axios.isAxiosError(error)){
-            reject()
-        }
-    })
+    return Promise.reject(err)
 }
+)
 
-export const fulfillPostRequest=(queryString:string, resolve: Function, reject: Function = defaultRejectFunction, sendingData:any, option:iOptionRequest=initialOption)=>{
-    let config:any = {}
-    if(option.authHeader){
-        config.headers={
-            'Authorization': 'Bearer ' + option.token
-        }
-    }
-    
-    if(option.useFormData){
-        config.headers['Content-Type'] = 'multipart/form-data'   
-    }
-
-    axios.post(queryString, sendingData, config).then(response=>{        
-        if(response.status === option.statusCode){
-            resolve(response)
-        }
-    }).catch(error=>{
-        if(axios.isAxiosError(error)){
-            reject()
-        }
-    })
-}
-
+export default axiosInstance

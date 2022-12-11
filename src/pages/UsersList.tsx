@@ -5,12 +5,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { currentUserState } from '../store/slice'
 import { useSelector } from 'react-redux'
 import { searchSelectorString } from '../store/sliceSearch'
-import axios, { AxiosResponse } from 'axios'
-import { BACKEND_URL, LIMIT_ITEMS_ON_PAGE } from '../constans'
+import { AxiosResponse } from 'axios'
+import { LIMIT_ITEMS_ON_PAGE } from '../constans'
 import BottomPageNavigator from '../components/BottomPageNavigator'
 import styles from '../styles/generallyStyles.module.css'
 import TableRowDataUsers from '../components/tableComponents/TableRowDataUsers'
-import { fulfillGetRequest } from '../common'
+import axiosInstance from '../common'
 
 export interface IDataRowsUser{
     id:number
@@ -37,22 +37,9 @@ const UsersList=()=>{
             setRowsState(rows)     
         }
 
-        fulfillGetRequest(`${BACKEND_URL}/users?page=${pageIndex}&limit=${LIMIT_ITEMS_ON_PAGE}${searchString?`&searchString=${searchString}`:''}`,
-                        resolveFunction, undefined, {authHeader: true, token: userState.token, statusCode: 200})
-        // const config = {
-        //     headers: {
-        //       'Authorization': 'Bearer ' + userState.token
-        //     }
-        //   }
-        // axios.get(`${BACKEND_URL}/users?page=${pageIndex}&limit=${LIMIT_ITEMS_ON_PAGE}${searchString?`&searchString=${searchString}`:''}`, config).then(
-        //     response=>{
-        //     if(response.status === 200){
-        //         const {count, rows}: {count:string, rows: IDataRowsUser[]} = response.data.data
-        //         setCountState(count)
-        //         setRowsState(rows)                
-        //     }
-        // }).catch()
-    }, [pageIndex, searchString, userState.token])
+        axiosInstance.get(`/users?page=${pageIndex}&limit=${LIMIT_ITEMS_ON_PAGE}${searchString?`&searchString=${searchString}`:''}`).then(resolveFunction)
+
+    }, [pageIndex, searchString])
 
     const addNewItem: React.MouseEventHandler=()=>{
         navigator('/userItem/new')

@@ -1,12 +1,8 @@
-import axios from 'axios'
 import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { rootCertificates } from 'tls'
+import axiosInstance, { defaultErrorHandler } from '../common'
 import Button from '../components/Button'
-import { BACKEND_URL } from '../constans'
 import { userRoleType } from '../interfaces'
-import { currentUserState } from '../store/slice'
 import generallyStyles from '../styles/generallyStyles.module.css'
 
 interface IData {
@@ -20,19 +16,12 @@ const UserItem=()=>{
     
     const{id} = useParams()
     const navigator = useNavigate()
-    const userState = useSelector(currentUserState)
 
     useEffect(()=>{
-        const config = {
-            headers: {
-              'Authorization': 'Bearer ' + userState.token
-            }
-          }
+
         if(id !=='new'){
-            axios.get(`${BACKEND_URL}/users/getOne?id=${id}`, config).then(resultRequest=>{
-                if(resultRequest.status === 200){
-                    setData(resultRequest.data.data)
-                }
+            axiosInstance.get(`/users/getOne?id=${id}`).then(resultRequest=>{
+                setData(resultRequest.data.data)
             })
         }else{
             setData({...data, role: userRoleType.user})
@@ -46,34 +35,16 @@ const UserItem=()=>{
 
     const createButtonHandle:React.MouseEventHandler=()=>{
         
-        axios.post(`${BACKEND_URL}/users`, data).then(response=>{
-            if(response.status === 200){
-                //set data in store
-                navigator(-1)
-            }
-        }).catch(error=>{
-            if(axios.isAxiosError(error)){
-                alert(error.response?.statusText)    
-            }
-        }) 
+        axiosInstance.post(`/users`, data).then(response=>{
+            navigator(-1)
+        }).catch(defaultErrorHandler) 
     }
 
     const changeItemHandler:React.MouseEventHandler=()=>{
-        const config = {
-            headers: {
-              'Authorization': 'Bearer ' + userState.token
-            }
-          }
-        axios.post(`${BACKEND_URL}/users/changeUser?id=${id}`, data, config).then(response=>{
-            if(response.status === 200){
-                //set data in store
-                navigator(-1)
-            }
-        }).catch(error=>{
-            if(axios.isAxiosError(error)){
-                alert(error.response?.statusText)    
-            }
-        })    
+
+        axiosInstance.post(`/users/changeUser?id=${id}`, data).then(response=>{
+            navigator(-1)
+        }).catch(defaultErrorHandler)    
     }
 
     return (

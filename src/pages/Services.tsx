@@ -2,12 +2,12 @@ import axios from 'axios'
 import React, {useEffect, useState} from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import axiosInstance from '../common'
 import BottomPageNavigator from '../components/BottomPageNavigator'
 import Button from '../components/Button'
 import TableRowData from '../components/tableComponents/TableRowData'
 import TableRowHead from '../components/tableComponents/TableRowHead'
-import { BACKEND_URL, LIMIT_ITEMS_ON_PAGE } from '../constans'
-import { currentUserState } from '../store/slice'
+import { LIMIT_ITEMS_ON_PAGE } from '../constans'
 import { searchSelectorString } from '../store/sliceSearch'
 import generallyStyles from '../styles/generallyStyles.module.css'
 
@@ -27,26 +27,19 @@ const Services=()=>{
 
     const {servicesId} = useParams()
 
-    const userState = useSelector(currentUserState)
     const searchString = useSelector(searchSelectorString)
 
     const navigator = useNavigate()
     
     useEffect(()=>{
-        const config = {
-            headers: {
-              'Authorization': 'Bearer ' + userState.token
-            }
-          }
-        axios.get(`${BACKEND_URL}/services?page=${servicesId}&limit=${LIMIT_ITEMS_ON_PAGE}${searchString?`&searchString=${searchString}`:''}`, config).then(
+
+        axiosInstance.get(`/services?page=${servicesId}&limit=${LIMIT_ITEMS_ON_PAGE}${searchString?`&searchString=${searchString}`:''}`).then(
             response=>{
-            if(response.status === 200){
                 const {count, rows}: {count:string, rows: IDataRows[]} = response.data.data
                 setCountState(count)
                 setRowsState(rows)                
-            }
         }).catch()
-    }, [servicesId, searchString, userState.token])
+    }, [servicesId, searchString])
 
     const addNewItem: React.MouseEventHandler=()=>{
         navigator('/service/new')

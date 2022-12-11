@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, {useState, useRef, MutableRefObject, useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import axiosInstance from '../common'
 import Button from '../components/Button'
 import { BACKEND_URL } from '../constans'
 import { currentUserState } from '../store/slice'
@@ -36,26 +37,18 @@ const EmployeeItem=()=>{
         if(id !== 'new' && id){
             setCurrentMode(componentMode.change)
         
-            const config = {
-                headers: {
-                'Authorization': 'Bearer ' + userState.token,
-                'Content-Type': 'multipart/form-data'
-                }
-            }
-            axios.get(`${BACKEND_URL}/employees/getOne?id=${id}`, config).then(resultRequest=>{
-                if(resultRequest.status === 200){
-                    const dataRequest = resultRequest.data.data
-                    delete dataRequest.createdAt
-                    delete dataRequest.updatedAt
+            axiosInstance.get(`/employees/getOne?id=${id}`, {headers: {'Content-Type': 'multipart/form-data'}}).then(resultRequest=>{
+                const dataRequest = resultRequest.data.data
+                delete dataRequest.createdAt
+                delete dataRequest.updatedAt
 
-                    setData(dataRequest)
-                    if(dataRequest.img){
-                        setCurrentImg(`${BACKEND_URL}/${dataRequest.img}`)
-                    }
+                setData(dataRequest)
+                if(dataRequest.img){
+                    setCurrentImg(`${BACKEND_URL}/${dataRequest.img}`)
                 }
             })
         }
-    },[id, userState.token])
+    },[id])
 
     const getFormData=():FormData=>{
         const formData = new FormData()
@@ -80,19 +73,7 @@ const EmployeeItem=()=>{
     const fulFillRequest=(apiPath: string)=>{
         const formData = getFormData()
 
-        const config = {
-            headers: {
-              'Authorization': 'Bearer ' + userState.token,
-              'Content-Type': 'multipart/form-data'
-            }
-          }
-        axios.post(`${BACKEND_URL}${apiPath}`, formData, config ).then(resultRequest=>{
-            if(resultRequest.status === 200){
-                navigator(-1)
-            }
-        }).catch(error=>{
-            alert('Request failed')
-        })
+        axiosInstance.post(`/${apiPath}`, formData, {headers: {'Content-Type': 'multipart/form-data'}} ).then(resultRequest=>{navigator(-1)}).catch(error=>{alert('Request failed')})
     }
 
     const imgSelector:React.ChangeEventHandler=(event)=>{

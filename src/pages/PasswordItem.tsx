@@ -8,9 +8,7 @@ import { searchEmployeeParam, searchServiceParam, setValue } from '../store/slic
 import styles from '../styles/pages/passwordItem.module.css'
 import { faEyeSlash, faLock } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { currentUserState } from '../store/slice'
-import axios from 'axios'
-import { BACKEND_URL } from '../constans'
+import axiosInstance, { defaultErrorHandler } from '../common'
 
 interface IData{
     login: string,
@@ -27,7 +25,6 @@ const PasswordItem=()=>{
 
     const employeeState = useSelector(searchEmployeeParam)
     const serviceState = useSelector(searchServiceParam)
-    const userState = useSelector(currentUserState)
 
     const dispatch = useDispatch()
 
@@ -43,26 +40,14 @@ const PasswordItem=()=>{
 
     useEffect(()=>{
         if(id !== 'new'){
-            const config = {
-                headers: {
-                'Authorization': 'Bearer ' + userState.token
-                }
-            }
-            axios.get(`${BACKEND_URL}/passwords/getOne?id=${id}`, config).then(replyRequest =>{
-                if(replyRequest.status === 200){
-                    console.log(replyRequest)
-                    const {login, password, comment, employee, service} = replyRequest.data.data
-                    setData({login, password, comment})
-                    dispatch(setValue({
-                        employee:{value: employee.name, selectedId: employee.id},
-                        service:{value: service.name, selectedId: service.id}
-                    }))
-                }
-            }).catch(error=>{
-                    if(axios.isAxiosError(error)){
-                        alert(error.response?.data.message)
-                    }
-                })   
+            axiosInstance.get(`/passwords/getOne?id=${id}`).then(replyRequest =>{
+                const {login, password, comment, employee, service} = replyRequest.data.data
+                setData({login, password, comment})
+                dispatch(setValue({
+                    employee:{value: employee.name, selectedId: employee.id},
+                    service:{value: service.name, selectedId: service.id}
+                }))
+            }).catch(defaultErrorHandler)   
         }
     },[id])
 
@@ -75,58 +60,23 @@ const PasswordItem=()=>{
 
     const handleCreateButton=()=>{
         const sendingData = {login: data.login, password: data.password, comment: data.comment, serviceId: serviceState.selectedId, employeeId: employeeState.selectedId}
-        const config = {
-            headers: {
-              'Authorization': 'Bearer ' + userState.token
-            }
-          }
-        axios.post(`${BACKEND_URL}/passwords/create`, sendingData, config).then(replyRequest =>{
-            if(replyRequest.status === 200){
-                navigator(-1)
-            }
-        }).catch(error=>{
-                if(axios.isAxiosError(error)){
-                    alert(error.response?.data.message)
-                }
-            })
+       
+        axiosInstance.post(`/passwords/create`, sendingData).then(replyRequest =>{navigator(-1)}).catch(defaultErrorHandler)
     }
 
     const handleChangeItem=()=>{
         const sendingData = {login: data.login, password: data.password, comment: data.comment, serviceId: serviceState.selectedId, employeeId: employeeState.selectedId}
-        const config = {
-            headers: {
-              'Authorization': 'Bearer ' + userState.token
-            }
-          }
-        axios.post(`${BACKEND_URL}/passwords/changeItem?id=${id}`, sendingData, config).then(replyRequest =>{
-            if(replyRequest.status === 200){
-                navigator(-1)
-            }
-        }).catch(error=>{
-                if(axios.isAxiosError(error)){
-                    alert(error.response?.data.message)
-                }
-            })
+        
+        axiosInstance.post(`/passwords/changeItem?id=${id}`, sendingData).then(replyRequest =>{navigator(-1)}).catch(defaultErrorHandler)
     }
 
     const changeVisible=()=>{
         if(id!=='new' && !properPassword){
-            const config = {
-                headers: {
-                'Authorization': 'Bearer ' + userState.token
-                }
-            }
-            axios.get(`${BACKEND_URL}/passwords/getCorectPassword?id=${id}`, config).then(replyRequest =>{
-                if(replyRequest.status === 200){
-                    setData({...data, password: replyRequest.data.data})
-                    setProperPassword(true)
-                    setVisiblePassword(!visiblePassword)
-                }
-            }).catch(error=>{
-                    if(axios.isAxiosError(error)){
-                        alert(error.response?.data.message)
-                    }
-                })
+            axiosInstance.get(`/passwords/getCorectPassword?id=${id}`).then(replyRequest =>{
+                setData({...data, password: replyRequest.data.data})
+                setProperPassword(true)
+                setVisiblePassword(!visiblePassword)
+            }).catch(defaultErrorHandler)
         }else{
             setVisiblePassword(!visiblePassword)
         }
@@ -137,21 +87,10 @@ const PasswordItem=()=>{
         const target = event.target as HTMLInputElement
         if(target.name === 'password' && !properPassword){
             const additionalValue = target.value.replace(passwordBeforeChange, '')
-            const config = {
-                headers: {
-                'Authorization': 'Bearer ' + userState.token
-                }
-            }
-            axios.get(`${BACKEND_URL}/passwords/getCorectPassword?id=${id}`, config).then(replyRequest =>{
-                if(replyRequest.status === 200){
-                    setData({...data, password: replyRequest.data.data+additionalValue})
-                    setProperPassword(true)
-                }
-            }).catch(error=>{
-                    if(axios.isAxiosError(error)){
-                        alert(error.response?.data.message)
-                    }
-                })
+            axiosInstance.get(`/passwords/getCorectPassword?id=${id}`).then(replyRequest =>{
+                setData({...data, password: replyRequest.data.data+additionalValue})
+                setProperPassword(true)
+            }).catch(defaultErrorHandler)
         }else(
             setData({...data, [target.name]:target.value})
         )

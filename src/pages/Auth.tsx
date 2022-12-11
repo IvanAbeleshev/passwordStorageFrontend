@@ -4,8 +4,8 @@ import styles from '../styles/pages/auth.module.css'
 import {useDispatch} from 'react-redux'
 import { setValue } from '../store/slice'
 import { useNavigate } from 'react-router-dom'
-import { BACKEND_URL } from '../constans'
-import { fulfillGetRequest, fulfillPostRequest } from '../common'
+import { ACCESS_TOKEN, BACKEND_URL, REFRESH_TOKEN } from '../constans'
+import axiosInstance from '../common'
 
 const Auth = (props: React.PropsWithChildren) =>{
     //true - user with admin role is present, else is absent
@@ -23,18 +23,18 @@ const Auth = (props: React.PropsWithChildren) =>{
             setCheckAdminRole(response.data.error)
         }
 
-        fulfillGetRequest(`${BACKEND_URL}/users/checkAdmin`, resolveRequest)
-        
-        // const resultRequest = axios.get(`${BACKEND_URL}/users/checkAdmin`)
-        // resultRequest.then(request=>setCheckAdminRole(request.data.error))
+        axios.get(`${BACKEND_URL}/users/checkAdmin`).then(resolveRequest)        
+
     }, [])
 
     const submitHandler: React.FormEventHandler=(event)=>{
         event.preventDefault()
         
         const resolveFunction=(response: AxiosResponse)=>{
-            const {id, login, token} = response.data.data
-            dispatch(setValue({id, login, token, authState: true}))
+            const {id, login, accessToken, refreshToken} = response.data.data
+            localStorage.setItem(ACCESS_TOKEN, accessToken)
+            localStorage.setItem(REFRESH_TOKEN, refreshToken)
+            dispatch(setValue({id, login, authState: true}))
             navigate('/')    
         }
 
@@ -44,39 +44,10 @@ const Auth = (props: React.PropsWithChildren) =>{
 
         if(checkAdminRole){
             const sendData = {login, password, role: 'admin'}
-            fulfillPostRequest(`${BACKEND_URL}/users/`, resolveFunction, rejectFunction, sendData)
-            // const resultRequest = axios.post(`${BACKEND_URL}/users/`, sendData)
-            // resultRequest.then(response=>{
-            //     if(response.status === 200){
-            //         //set data in store
-            //         const {id, login, token} = response.data.data
-
-            //         dispatch(setValue({id, login, token, authState: true}))
-            //         navigate('/')
-            //     }
-            // }).catch(error=>{
-            //     if(axios.isAxiosError(error)){
-            //         setMessage(`Server error. Status code: ${error.response?.status} - ${error.response?.data?.message? error.response?.data?.message : error.response?.statusText}`)
-            //     }
-            // })
+            axios.post(`${BACKEND_URL}/users/`, sendData).then(resolveFunction).catch(rejectFunction)
         }else{
             const sendData = {login, password}
-            fulfillPostRequest(`${BACKEND_URL}/users/singIn`, resolveFunction, rejectFunction, sendData)
-            // const resultRequest = axios.post(`${BACKEND_URL}/users/singIn`, sendData)
-            // resultRequest.then(response=>{
-            //     console.log(response)
-                
-            //     if(response.status === 200){
-            //         //set data in store
-            //         const {id, login, token} = response.data.data
-            //         dispatch(setValue({id, login, token, authState: true}))
-            //         navigate('/')
-            //     }
-            // }).catch(error=>{
-            //     if(axios.isAxiosError(error)){
-            //         setMessage(`Server error. Status code: ${error.response?.status} - ${error.response?.data?.message?error.response?.data?.message:error.response?.statusText}`)
-            //     }
-            // })
+            axios.post(`${BACKEND_URL}/users/singIn`, sendData).then(resolveFunction).catch(rejectFunction)
         }
         
     }
