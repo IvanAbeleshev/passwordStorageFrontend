@@ -1,4 +1,4 @@
-export const BACKEND_URL = 'http://localhost:5555'
+export const BACKEND_URL = 'http://localhost:7000'
 export const LIMIT_ITEMS_ON_PAGE = 10
 
 export const API_KEY_UNSPLASH = 'CKeoTf6sFeQLRgeqKdztLgEttZxnym716dMseBbKkcg'

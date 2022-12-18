@@ -25,6 +25,7 @@ axiosInstance.interceptors.request.use(
 }
 )
   
+let indicateLoop = 0
 axiosInstance.interceptors.response.use(
 (res) => {
     return res
@@ -35,16 +36,15 @@ async (err) => {
 
     if (originalConfig.url !== "/" && err.response) {
     // Access Token was expired
-    if (err.response.status === 401 && !originalConfig._retry) {
+    if (err.response.status === 401 && !originalConfig._retry && indicateLoop<3) {
         originalConfig._retry = true
-
         try {
-        const rs = await axiosInstance.post('/login/refresh/', {
+        const rs = await axiosInstance.post('/users/checkUser', {
             refresh: localStorage.getItem(REFRESH_TOKEN),
-        });
-
-        const { accessToken } = rs.data
+        })
+        const { accessToken, refreshToken } = rs.data.data
         localStorage.setItem(ACCESS_TOKEN, accessToken)
+        localStorage.setItem(REFRESH_TOKEN, refreshToken)
 
         return axiosInstance(originalConfig)
         } catch (_error) {

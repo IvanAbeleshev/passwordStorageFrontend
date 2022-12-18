@@ -1,37 +1,30 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { ACCESS_TOKEN } from "../constans";
-import { RootState } from "./store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from "./store"
 
 
 interface IInitialStateUserSlice {
     id: number,
     login: string,
-
-    authState: boolean
+    authState: boolean | undefined
 }
 
 const initialStateUserSlice: IInitialStateUserSlice = {
     id: 0,
     login: '',
-    authState: false
+    authState: undefined
 }
 
 export const userSlice = createSlice({
     name: 'user',
     initialState: initialStateUserSlice,
     reducers:{
-        setValue: (state, {payload})=>{
-            //its work  but its piece of shit
-            //state = JSON.parse(JSON.stringify(payload))
-            state.id = payload.id
-            state.login = payload.login
-            state.authState = payload.authState
+        setValue: (state, action:PayloadAction<IInitialStateUserSlice>)=>{
+            Object.assign(state, action.payload)
         },
         setInitialState: (state)=>{
-            state.authState = false
+            state.authState = undefined
             state.id = 0
             state.login = ''
-
         },
 
     }

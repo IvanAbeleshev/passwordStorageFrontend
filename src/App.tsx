@@ -1,8 +1,12 @@
-import React from 'react'
-import * as dotenv from "dotenv"
+import Routing from './components/Routing'
+import AuthWrapper from './layouts/AuthWrapper'
 
 function App() {
-  return (<h1>This page will be display statistic of each catalog db</h1>);
+  return(
+    <AuthWrapper>
+      <Routing />
+    </AuthWrapper>
+  ) 
 }
 
-export default App;
+export default App

@@ -6,6 +6,7 @@ import {faPerson, faBellConcierge, faBook, faDoorOpen, faAnglesRight, faQuestion
 import { useDispatch, useSelector } from 'react-redux'
 import { currentUserState, setInitialState } from '../store/slice'
 import { setValue } from '../store/sliceSearch'
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constans'
 
 interface IPropsNavPanel{
     children: React.ReactNode
@@ -24,6 +25,8 @@ const NavPanel=({children}: IPropsNavPanel)=>{
     }
     const clickLogOut:React.MouseEventHandler=(event)=>{
         event.stopPropagation()
+        localStorage.removeItem(ACCESS_TOKEN)
+        localStorage.removeItem(REFRESH_TOKEN)
         dispatch(setInitialState())
     }
 

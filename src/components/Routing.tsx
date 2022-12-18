@@ -13,11 +13,8 @@ import PasswordItem from '../pages/PasswordItem';
 import UsersList from '../pages/UsersList';
 import UserItem from '../pages/UserItem';
 
-interface IPropsRouting{
-    children: ReactNode
-}
 
-const Routing = ({children}: IPropsRouting) =>{
+const Routing = () =>{
     const {authState} = useSelector(currentUserState)
 
     const pathBeforeLogin = (<>
@@ -29,9 +26,6 @@ const Routing = ({children}: IPropsRouting) =>{
     </>)
 
     const pathAfterLogin = (<>
-        <Route path="/" element={<NavPanel>{children}</NavPanel>}/>
-        <Route path="auth" element={<Navigate to="/" replace />}/>
-
         <Route path="listServises" element={<NavPanel><Services/></NavPanel>} >
             <Route path=":servicesId" element={<NavPanel><Services/></NavPanel>} />
         </Route>
@@ -62,7 +56,7 @@ const Routing = ({children}: IPropsRouting) =>{
         
         <Route
             path="*"
-            element={<Navigate to="/" replace />}
+            element={<Navigate to="passwordsList" replace />}
         />
         </>)
     return(
