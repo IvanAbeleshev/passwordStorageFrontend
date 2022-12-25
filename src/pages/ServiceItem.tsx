@@ -1,6 +1,6 @@
 import React,{ useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import ModalWindow from '../components/ModalWindow'
+import ModalWindow from '../layouts/ModalWindow'
 import ImgSelector from '../components/ImgSelector'
 import Button from '../components/Button'
 

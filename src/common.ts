@@ -1,5 +1,7 @@
 import axios, {AxiosRequestConfig } from 'axios'
 import { ACCESS_TOKEN, BACKEND_URL, REFRESH_TOKEN } from './constans'
+import { store } from './store/store'
+import { setFalseAuth } from './store/slice'
 
 export const defaultErrorHandler=(error:any)=>{
     if(axios.isAxiosError(error)){
@@ -25,30 +27,30 @@ axiosInstance.interceptors.request.use(
 }
 )
   
-let indicateLoop = 0
 axiosInstance.interceptors.response.use(
 (res) => {
     return res
 },
 
 async (err) => {
-    const originalConfig = err.config
-
+    const originalConfig: AxiosRequestConfig = err.config
     if (originalConfig.url !== "/" && err.response) {
     // Access Token was expired
-    if (err.response.status === 401 && !originalConfig._retry && indicateLoop<3) {
-        originalConfig._retry = true
+    if (err.response.status === 401) {
         try {
-        const rs = await axiosInstance.post('/users/checkUser', {
-            refresh: localStorage.getItem(REFRESH_TOKEN),
-        })
-        const { accessToken, refreshToken } = rs.data.data
-        localStorage.setItem(ACCESS_TOKEN, accessToken)
-        localStorage.setItem(REFRESH_TOKEN, refreshToken)
+            const rs = await axios.post(`${BACKEND_URL}/users/checkUser`, {
+                refresh: localStorage.getItem(REFRESH_TOKEN),
+            })
+            const { accessToken, refreshToken } = rs.data.data
+            localStorage.setItem(ACCESS_TOKEN, accessToken)
+            localStorage.setItem(REFRESH_TOKEN, refreshToken)
 
-        return axiosInstance(originalConfig)
+            return axiosInstance(originalConfig)
         } catch (_error) {
-        return Promise.reject(_error)
+            localStorage.removeItem(ACCESS_TOKEN)
+            localStorage.removeItem(REFRESH_TOKEN)
+            store.dispatch(setFalseAuth())
+            return Promise.reject(_error)
         }
     }
     }

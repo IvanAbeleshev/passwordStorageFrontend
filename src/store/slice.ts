@@ -26,12 +26,17 @@ export const userSlice = createSlice({
             state.id = 0
             state.login = ''
         },
+        setFalseAuth: (state)=>{
+            state.authState = undefined
+            state.id = 0
+            state.login = ''
+        }
 
     }
 })
 
 //my actions
-export const {setValue, setInitialState} = userSlice.actions
+export const {setValue, setInitialState, setFalseAuth} = userSlice.actions
 
 //exports selectors
 export const currentUserState = (state: RootState)=>state.user
