@@ -76,11 +76,11 @@ const NavPanel = ({ children }: IPropsNavPanel) => {
   }
 
   return (
-    <div className='flex h-screen w-screen'>
+    <div className='flex h-screen w-screen bg-main-background bg-400% animate-movebg'>
       <div 
         className={currentVisible?
-                  'flex flex-col justify-between items-stretch border-2 shadow-xl bg-white transition-all':
-                  'transition-all flex flex-col justify-between items-stretch border-2 shadow-xl bg-white hidden'}
+                  'flex flex-col justify-between rounded-r-xl items-stretch shadow-2xl bg-white/25 transition-all':
+                  'transition-all flex flex-col justify-between items-stretch shadow-2xl bg-white hidden'}
       >
         <div>
           <Link className={styles.logoContainer} to='/'>
@@ -97,8 +97,8 @@ const NavPanel = ({ children }: IPropsNavPanel) => {
                 <li key={element.title}>
                   <Link 
                     className={navigationLocation.pathname===element.path?
-                                'group text-green-500 text-center':
-                                'group text-gray-400 transition-all hover:text-main text-center'} 
+                                'group text-white text-center':
+                                'group transition-all hover:text-main text-center'} 
                     to={element.path}
                   >
                     <FontAwesomeIcon
@@ -123,7 +123,7 @@ const NavPanel = ({ children }: IPropsNavPanel) => {
         
         <div>
           <div className={styles.listItem} onClick={clickLogOut}>
-            <div className='group text-gray-400 transition-all hover:text-main text-center cursor-pointer'>
+            <div className='group transition-all hover:text-main text-center cursor-pointer'>
               <FontAwesomeIcon 
                 className='text-5xl w-[100%] transition-all translate-y-4 group-hover:translate-y-0' 
                 icon={faDoorOpen} />
@@ -140,11 +140,13 @@ const NavPanel = ({ children }: IPropsNavPanel) => {
               icon={faAnglesRight}
               className={
                 currentVisible
-                  ? 'text-gray-400 hover:text-main transition-all rotate-180 cursor-pointer'
-                  : 'text-gray-400 hover:text-main transition-all cursor-pointer'}
+                  ? 'hover:text-main transition-all rotate-180 cursor-pointer'
+                  : 'hover:text-main transition-all cursor-pointer'}
               onClick={hancleOnClickChangeVisible}
             />
-            {userState.login}
+            <span className='text-white'>
+              {userState.login}
+            </span>
           </div>
           <input
             type='text'
