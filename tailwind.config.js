@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors:{
-        'main': '#1B1BDD'
+        'main': '#000',
+        'hover': '#FDE68A'
       },
       keyframes: {
         movebg: {

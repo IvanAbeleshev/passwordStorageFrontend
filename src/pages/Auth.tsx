@@ -86,7 +86,7 @@ const Auth = () =>{
 						{message&&<h5 className='text-center'>{message}</h5>}
 
 						<div className='flex flex-row-reverse'>
-								<input className='p-2 rounded-xl shadow-md bg-main hover:cursor-pointer hover:bg-main/75' 
+								<input className='p-2 rounded-xl shadow-md bg-main hover:cursor-pointer hover:bg-hover' 
 												type='submit' 
 												value={checkAdminRole?'Register':'Sign in'} 
 								/>
