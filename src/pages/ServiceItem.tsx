@@ -6,6 +6,8 @@ import Button from '../components/Button'
 
 import generallyStyles from '../styles/generallyStyles.module.css'
 import axiosInstance, { defaultErrorHandler } from '../common'
+import { useDispatch, useSelector } from 'react-redux'
+import { hideModalWindow, selectorModalWindowVisible, showModalWindow } from '../store/modalWindowSlice'
 
 
 enum componentMode{
@@ -20,10 +22,11 @@ const ServiceItem=()=>{
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
 
-    const [visibleModalWindow, setVisibleModalWindow] = useState(false)
-
     const{servicesId} = useParams()
     const navigator = useNavigate()
+
+    const dispatch = useDispatch()
+    const modalWindowVisible = useSelector(selectorModalWindowVisible)
 
     useEffect(()=>{
 
@@ -40,8 +43,8 @@ const ServiceItem=()=>{
     ,[servicesId])
 
     useEffect(()=>{
-        if(visibleModalWindow){
-            setVisibleModalWindow(false)
+        if(modalWindowVisible){
+            dispatch(hideModalWindow())
         }
     }
     ,[selectedImage])
@@ -74,8 +77,8 @@ const ServiceItem=()=>{
                 <input type="text" name="description" id="description" value={description} onChange={(event)=>setDescription(event.target.value)} />
             </div>
             
-            <img className={generallyStyles.imgLarge} src={selectedImage} alt="image" onClick={()=>setVisibleModalWindow(true)}/>
-            {visibleModalWindow&&<ModalWindow setVisible={setVisibleModalWindow}><ImgSelector searchString={name} setSelectedImg={setSelectedImage} /></ModalWindow>}
+            <img className={generallyStyles.imgLarge} src={selectedImage} alt="image" onClick={()=>dispatch(showModalWindow())}/>
+            {modalWindowVisible&&<ModalWindow><ImgSelector searchString={name} setSelectedImg={setSelectedImage} /></ModalWindow>}
             
             <Button onClick={createNew}>Create new</Button>
         </form>)
@@ -92,8 +95,8 @@ const ServiceItem=()=>{
                 <input type="text" name="description" id="description" value={description} onChange={(event)=>setDescription(event.target.value)} />
             </div>
             
-            <img className={generallyStyles.imgLarge} src={selectedImage} alt="image" onClick={()=>setVisibleModalWindow(true)}/>
-            {visibleModalWindow&&<ModalWindow setVisible={setVisibleModalWindow}><ImgSelector searchString={name} setSelectedImg={setSelectedImage} /></ModalWindow>}
+            <img className={generallyStyles.imgLarge} src={selectedImage} alt="image" onClick={()=>dispatch(hideModalWindow())}/>
+            {modalWindowVisible&&<ModalWindow><ImgSelector searchString={name} setSelectedImg={setSelectedImage} /></ModalWindow>}
             
             <Button onClick={saveChanges}>Save changes</Button>
         </form>        

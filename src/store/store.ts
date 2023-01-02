@@ -1,4 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
+import modalWindowSlice from './modalWindowSlice'
+import passwordsGroupsSlice from './passwordsGroupsSlice'
 import { userSlice } from './slice'
 import { searchSlice } from './sliceSearch'
 import { searchParamSlice } from './sliceSearchParam'
@@ -9,8 +11,11 @@ export const store = configureStore({
     user: userSlice.reducer,
     search: searchSlice.reducer,
     searchParam: searchParamSlice.reducer,
-    subNavPanel: subPanelStatusSlice
+    subNavPanel: subPanelStatusSlice,
+    modalWindow: modalWindowSlice,
+    passwordsGroups: passwordsGroupsSlice,
   },
+
 })
 
 
