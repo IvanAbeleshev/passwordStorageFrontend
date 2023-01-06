@@ -9,6 +9,16 @@ class PasswordGroupsServices{
       return undefined
     }
   }
+
+  public createGroup=async(name: string)=>{
+    try{
+      const resultRequest = await axiosInstance.post('/groups/create', {name})
+      return resultRequest.data.data
+    }catch(error){
+      return undefined
+    }
+
+  }
 }
 
 export default new PasswordGroupsServices()

@@ -1,24 +1,21 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { iItemSubNavPanel } from '../../interfaces'
-import ModalWindow from '../../layouts/ModalWindow'
-import PasswordGroupItem from '../../pages/PasswordGroupItem'
-import { selectorModalWindowVisible, showModalWindow } from '../../store/modalWindowSlice'
-import { fetchPasswordsGroups, selectorPasswordsGroups } from '../../store/passwordsGroupsSlice'
+import { useAppDispatch, useAppSelector } from '../../store/hooks/storeHooks'
+import { showModalWindow } from '../../store/modalWindowSlice'
 import ItemSubNavPanel from '../ItemSubNavPanel'
 
 const SubNavPanelGroups=()=>{
   const [subNavItems, setSubNavItems] = useState([] as iItemSubNavPanel[])
 
-  const visibleModalWindow = useSelector(selectorModalWindowVisible)
-  const passwordsGroupSelector = useSelector(selectorPasswordsGroups)
-  const dispatch = useDispatch()
+  const passwordsGroupSelector = useAppSelector(store=>store.passwordsGroups)
+  const dispatch = useAppDispatch()
 
   useEffect(()=>{
-    if(!passwordsGroupSelector.loading && passwordsGroupSelector.passwordsGroups.length){
-      // cant dispatch thunk action maybe need correct config to store, some middlewares
-      //dispatch(fetchPasswordsGroups())
-    }
+    
+    // console.log(passwordsGroupSelector)
+    // if(!passwordsGroupSelector.loading && !passwordsGroupSelector.passwordsGroups.length){
+    //   dispatch(fetchPasswordsGroups())
+    // }
   },[])
   return(
     <div className='max-w-[250px] flex flex-col items-center gap-3'>
@@ -28,13 +25,7 @@ const SubNavPanelGroups=()=>{
       >+</button>
       <div className='flex flex-col min-w-[100px]'>
         {subNavItems.map(element=><ItemSubNavPanel delay={200}/>)}
-        {/* <ItemSubNavPanel delay={200}/>
-        <ItemSubNavPanel delay={300}/>
-        <ItemSubNavPanel delay={400}/>
-        <ItemSubNavPanel delay={500}/> */}
       </div>
-      
-      {visibleModalWindow&&<ModalWindow><PasswordGroupItem /></ModalWindow>}
     </div>
   )
 }

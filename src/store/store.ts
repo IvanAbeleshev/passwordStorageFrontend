@@ -13,9 +13,8 @@ export const store = configureStore({
     searchParam: searchParamSlice.reducer,
     subNavPanel: subPanelStatusSlice,
     modalWindow: modalWindowSlice,
-    passwordsGroups: passwordsGroupsSlice,
-  },
-
+    passwordsGroups: passwordsGroupsSlice
+  }
 })
 
 

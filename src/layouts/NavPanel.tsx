@@ -13,13 +13,16 @@ import {
   faUserLock,
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons'
-import { useDispatch, useSelector } from 'react-redux'
 import { currentUserState, setInitialState } from '../store/slice'
 import { setValue } from '../store/sliceSearch'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constans'
 import ItemNavPanel from '../components/navPanel/ItemNavPanel'
 import { hideSubNavPanel, selectorStatusSubMenu, showSubNavPanel } from '../store/subMenuStatusSlice'
 import SubNavPanelGroups from '../components/navPanel/SubNavPanelGroups'
+import ModalWindow from './ModalWindow'
+import PasswordGroupItem from '../pages/PasswordGroupItem'
+import { useAppDispatch, useAppSelector } from '../store/hooks/storeHooks'
+import { selectorModalWindowVisible } from '../store/modalWindowSlice'
 
 interface IPropsNavPanel {
   children: React.ReactNode,
@@ -43,11 +46,12 @@ const NavPanel = ({ children }: IPropsNavPanel) => {
   const [currentVisible, setCurrentVisible] = useState(true)
   const [timeoutId, setTimeoutId]: [undefined | string, Function] = useState(undefined)
   
-  const subNavPanelStatus = useSelector(selectorStatusSubMenu)
+  const subNavPanelStatus = useAppSelector(selectorStatusSubMenu)
+  const visibleModalWindow = useAppSelector(selectorModalWindowVisible)
 
-  const userState = useSelector(currentUserState)
+  const userState = useAppSelector(currentUserState)
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const dispatchSearchString = (value: string) => {
     dispatch(setValue(value))
@@ -80,6 +84,7 @@ const NavPanel = ({ children }: IPropsNavPanel) => {
 
   return (
     <div className='flex h-screen w-screen bg-main-background bg-400% animate-movebg'>
+      {visibleModalWindow&&<ModalWindow><PasswordGroupItem /></ModalWindow>}
       <div 
         className={currentVisible?
                   'flex flex-col justify-between items-stretch shadow-2xl transition-all':

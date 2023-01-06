@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { iItemSubNavPanel } from '../interfaces'
 import passwordsGroups from '../services/passwordsGroups'
 import { RootState } from './store'
@@ -16,10 +16,10 @@ const initialState: iInitialState = {
   error: ''
 }
 
-export const fetchPasswordsGroups = createAsyncThunk('passwordsGroups/fetchGroups', ()=>
+export const fetchPasswordsGroups = createAsyncThunk('passwordsGroups/fetchPasswordsGroups', ()=>
   passwordsGroups.getAllGroups().then(response => response)
 )
-export const passwordsGroupsSlice = createSlice({
+const passwordsGroupsSlice = createSlice({
   name: 'passwordsGroups',
   initialState: initialState,
   reducers:{
@@ -32,7 +32,7 @@ export const passwordsGroupsSlice = createSlice({
     })
     builder.addCase(fetchPasswordsGroups.fulfilled, (state, action)=>{
       state.loading = false
-      state.passwordsGroups = action.payload!
+      state.passwordsGroups = action.payload
     })
     builder.addCase(fetchPasswordsGroups.rejected, (state, action)=>{
       state.loading = false
