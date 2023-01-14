@@ -5,7 +5,9 @@ module.exports = {
     extend: {
       colors:{
         'main': '#000',
-        'hover': '#fff'
+        'hover': '#fff',
+        'btn': '#23a6d5',
+        'btn-hover': '#16ddf7',
       },
       keyframes: {
         movebg: {

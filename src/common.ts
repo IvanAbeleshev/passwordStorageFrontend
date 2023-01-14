@@ -1,8 +1,12 @@
+import { EnhancedStore } from '@reduxjs/toolkit'
 import axios, {AxiosRequestConfig } from 'axios'
 import { ACCESS_TOKEN, BACKEND_URL, REFRESH_TOKEN } from './constans'
-import { store } from './store/store'
 import { setFalseAuth } from './store/slice'
 
+let store:EnhancedStore
+export const injectStore = (incomingStore:EnhancedStore) => {
+  store = incomingStore
+}
 export const defaultErrorHandler=(error:any)=>{
     if(axios.isAxiosError(error)){
         alert(error.response?.data.message)

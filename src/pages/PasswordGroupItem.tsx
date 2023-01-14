@@ -1,9 +1,8 @@
-import { Upload } from 'antd'
-import { UploadOutlined } from '@ant-design/icons'
+import { Image, Upload } from 'antd'
 import { RcFile, UploadFile, UploadProps } from 'antd/es/upload'
 import { useState, FormEventHandler, ChangeEventHandler } from 'react'
 import passwordsGroups from '../services/passwordsGroups'
-import Button from 'antd/es/button'
+
 
 interface iInputsData{
   name: string,
@@ -17,12 +16,12 @@ const getBase64 = (file: RcFile): Promise<string> =>
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result as string);
     reader.onerror = (error) => reject(error);
-  });
+  })
 
 const PasswordGroupItem=()=>{
   const [inputsData, setInputsData] = useState<iInputsData>({name:''})
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const [uploading, setUploading] = useState(false);
+  const [previewImage, setPreviewImage] = useState('')
 
   const props: UploadProps = {
     onRemove: (file) => {
@@ -32,8 +31,8 @@ const PasswordGroupItem=()=>{
       setFileList(newFileList)
     },
     beforeUpload: (file) => {
-      setFileList([...fileList, file])
-
+      setPreviewImage(URL.createObjectURL(file))
+      
       return false
     },
     fileList,
@@ -50,21 +49,65 @@ const PasswordGroupItem=()=>{
   }
 
   return(
-    <form className='flex flex-col items-center gap-3 p-5' onSubmit={submitForm}>
+    <form 
+      className='flex flex-col items-center gap-3 p-5' 
+      onSubmit={submitForm}
+    >
       <div className='flex items-center gap-3'>
         <div>
-          <Upload {...props}>
-            <button className='transition-all border-8 border-[#23a6d5] h-[150px] w-[150px] rounded-full shadow-xl hover:border-[#16ddf7]'>upload</button>
-          </Upload>
+          {
+            previewImage===''?
+            <Upload {...props}>
+              <button 
+                className='
+                  transition-all 
+                  border-8 
+                  border-btn 
+                  h-[150px] 
+                  w-[150px] 
+                  rounded-full 
+                  shadow-xl 
+                  hover:border-btn-hover'
+              >
+                upload
+              </button>
+            </Upload>:
+            <div className='pic-container relative'>
+              <Image
+                className='rounded-full'
+                width={150}
+                src={previewImage}
+              />
+              <div className='absolute top-0 right-0 text-white pic-container-hover:cursor-pointer'>
+                escape
+              </div>
+            </div>
+          }
         </div>
         
         <div className='flex flex-col gap-5'>
-          <input className='shadow-2xl border-2 shadow-black' value={inputsData?.name} onChange={changeInputHandler} type='text' name='name' id='name' placeholder='Name' />
-          <input className='shadow-2xl border-2 shadow-black' type='text' name='ownew' id='owner' placeholder='Owner' />
+          <input 
+            className='border-2 shadow-black shadow-md rounded-md' 
+            value={inputsData?.name} 
+            onChange={changeInputHandler} 
+            type='text' 
+            name='name' 
+            id='name'
+            placeholder='Name' 
+          />
+          <input 
+            className='border-2 shadow-black shadow-md rounded-md' 
+            type='text' 
+            name='ownew' 
+            id='owner' 
+            placeholder='Owner' 
+          />
         </div>
       </div>
       
-      <button className='bg-black text-white hover:bg-black/80'>Create</button>
+      <button className='bg-btn px-3 py-2 rounded-full hover:bg-btn-hover'>
+        Create
+      </button>
     </form>
   )
 }

@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styles from '../styles/components/navPanel.module.css'
 import {
@@ -23,6 +23,7 @@ import ModalWindow from './ModalWindow'
 import PasswordGroupItem from '../pages/PasswordGroupItem'
 import { useAppDispatch, useAppSelector } from '../store/hooks/storeHooks'
 import { selectorModalWindowVisible } from '../store/modalWindowSlice'
+import { fetchPasswordsGroups } from '../store/passwordsGroupsSlice'
 
 interface IPropsNavPanel {
   children: React.ReactNode,
@@ -52,6 +53,10 @@ const NavPanel = ({ children }: IPropsNavPanel) => {
   const userState = useAppSelector(currentUserState)
 
   const dispatch = useAppDispatch()
+  
+  useEffect(()=>{
+    dispatch(fetchPasswordsGroups())
+  },[dispatch])
 
   const dispatchSearchString = (value: string) => {
     dispatch(setValue(value))
