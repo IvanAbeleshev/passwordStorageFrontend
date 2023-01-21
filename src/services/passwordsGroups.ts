@@ -4,6 +4,7 @@ class PasswordGroupsServices{
   public getAllGroups=async()=>{
     try{
       const resultRequest = await axiosInstance.get('/groups/')
+      console.log(resultRequest.data.data)
       return resultRequest.data.data
     }catch(error){
       return undefined

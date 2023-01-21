@@ -8,6 +8,11 @@ export enum userRoleType{
   user = 'user'
 }
 
+export interface iDefaultResponseService{
+  isError: boolean,
+  message?: string,
+}
+
 export interface iItemSubNavPanel{
   id: number,
   name: string,

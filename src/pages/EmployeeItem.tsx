@@ -73,7 +73,7 @@ const EmployeeItem=()=>{
     const fulFillRequest=(apiPath: string)=>{
         const formData = getFormData()
 
-        axiosInstance.post(`/${apiPath}`, formData, {headers: {'Content-Type': 'multipart/form-data'}} ).then(resultRequest=>{navigator(-1)}).catch(error=>{alert('Request failed')})
+        axiosInstance.post(`${apiPath}`, formData, {headers: {'Content-Type': 'multipart/form-data'}} ).then(resultRequest=>{navigator(-1)}).catch(error=>{alert('Request failed')})
     }
 
     const imgSelector:React.ChangeEventHandler=(event)=>{
