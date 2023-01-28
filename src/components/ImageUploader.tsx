@@ -2,12 +2,12 @@ import { Image, Upload, UploadFile, UploadProps } from 'antd'
 import { MouseEventHandler, useState } from 'react'
 
 interface iPropsImageUploader{
-  fileList: UploadFile[],
-  setFileList: Function
+  setBlob: Function
 }
 
-const ImageUploader=({fileList, setFileList}:iPropsImageUploader)=>{
+const ImageUploader=({setBlob}:iPropsImageUploader)=>{
   const [previewImage, setPreviewImage] = useState('')
+  const [fileList, setFileList] = useState<UploadFile[]>([])
 
   const props: UploadProps = {
     onRemove: (file) => {
@@ -18,7 +18,8 @@ const ImageUploader=({fileList, setFileList}:iPropsImageUploader)=>{
     },
     beforeUpload: (file) => {
       setPreviewImage(URL.createObjectURL(file))
-      
+      setFileList([file])
+      setBlob(file as Blob)
       return false
     },
     fileList,
@@ -29,6 +30,9 @@ const ImageUploader=({fileList, setFileList}:iPropsImageUploader)=>{
     setFileList([])
   }
 
+  const previewImg={
+    maskClassName:'rounded-full'
+  }
   return(
     <div className='p-3'>
       {
@@ -54,6 +58,7 @@ const ImageUploader=({fileList, setFileList}:iPropsImageUploader)=>{
             width={150}
             height={150}
             src={previewImage}
+            preview={previewImg}
           />
           <span 
             className='

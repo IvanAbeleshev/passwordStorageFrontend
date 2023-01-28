@@ -40,14 +40,23 @@ const ItemNavPanel=({title, path, icon}:iItemNavMenu)=>{
       >
         <FontAwesomeIcon
           className={navigationLocation.pathname===path?
-                    'text-5xl w-[100%]':
-                    'text-5xl w-[100%] transition-all translate-y-4 group-hover:translate-y-0'}
+                    'text-5xl w-[100%]'
+                    :
+                    `text-5xl w-[100%] 
+                     transition-all
+                     translate-y-4 
+                     group-hover:translate-y-0`}
           icon={icon}
         />
         <h2 
           className={navigationLocation.pathname===path?
             'text-md w-[100%]':
-            'text-md w-[100%] text-transparent -translate-y-4 group-hover:translate-y-0 group-hover:text-hover'}
+            `text-md w-[100%] 
+             text-transparent 
+             -translate-y-4 
+             group-hover:translate-y-0 
+             group-hover:text-hover`
+          }
         >
           {title}
         </h2>

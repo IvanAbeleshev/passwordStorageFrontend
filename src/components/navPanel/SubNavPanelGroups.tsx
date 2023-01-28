@@ -13,12 +13,26 @@ const SubNavPanelGroups=()=>{
 
   return(
     <div 
-      className='w-[200px] flex flex-col items-center gap-3 h-full overflow-hidden'
+      className='
+        w-[200px] 
+        flex 
+        flex-col 
+        items-center 
+        gap-3 
+        h-full 
+        overflow-hidden'
       style={{scrollbarWidth: 'none'}} 
       >
       <div className='flex'>
         <button 
-          className='px-7 py-2 border-2 border-transparent rounded-full hover:bg-white hover:text-black'
+          className='
+            px-7 
+            py-2 
+            border-2 
+            border-transparent 
+            rounded-full 
+            hover:bg-white 
+            hover:text-black'
           onClick={()=>dispatch(showModalWindow())}  
         >
           <FontAwesomeIcon
@@ -28,7 +42,14 @@ const SubNavPanelGroups=()=>{
         </button>
 
         <button 
-          className='px-7 py-2 border-2 border-transparent rounded-full hover:bg-white hover:text-black'
+          className='
+            px-7 
+            py-2 
+            border-2 
+            border-transparent 
+            rounded-full 
+            hover:bg-white 
+            hover:text-black'
           onClick={()=>{
             dispatch(fetchPasswordsGroups())}
           }
@@ -41,8 +62,21 @@ const SubNavPanelGroups=()=>{
       </div>
       
 
-      <div className='flex flex-col px-[25px] w-[240px] content-box overflow-y-scroll'>
-        {passwordsGroupSelector.map(element=><ItemSubNavPanel data={element} delay={element.id*50}/>)}
+      <div 
+        className='
+          flex 
+          flex-col 
+          px-[25px] 
+          w-[240px] 
+          content-box 
+          overflow-y-scroll'
+      >
+        {passwordsGroupSelector.map(element=>
+          <ItemSubNavPanel 
+            data={element} 
+            delay={element.id!*50}
+          />)
+        }
       </div>
     </div>
   )

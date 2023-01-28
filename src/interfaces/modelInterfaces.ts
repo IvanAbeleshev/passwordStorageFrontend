@@ -7,3 +7,10 @@ export interface iEmployee{
   img?: string,
   comment?:string
 }
+
+export interface iPasswordGroup{
+  id:number,
+  name:string,
+  icon?:string,
+  id_employee?:number
+}

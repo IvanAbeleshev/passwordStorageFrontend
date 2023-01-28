@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { iItemSubNavPanel } from '../interfaces'
-import passwordsGroups from '../services/passwordsGroups'
+import { iPasswordGroup } from '../interfaces/modelInterfaces'
+import passwordsGroups from '../services/ServicePasswordGroup'
 import { RootState } from './store'
 
 
 interface iInitialState {
   loading: boolean,
-  passwordsGroups: iItemSubNavPanel[],
+  passwordsGroups: iPasswordGroup[],
   error: string
 }
 
@@ -17,7 +17,7 @@ const initialState: iInitialState = {
 }
 
 export const fetchPasswordsGroups = createAsyncThunk('passwordsGroups/fetchPasswordsGroups', ()=>
-  passwordsGroups.getAllGroups().then(response => response)
+  passwordsGroups.getAllGroups().then(({payload}) => payload.map(element=>element.getStucturedData()))
 )
 const passwordsGroupsSlice = createSlice({
   name: 'passwordsGroups',
