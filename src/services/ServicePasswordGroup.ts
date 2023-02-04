@@ -10,6 +10,7 @@ class ServicePasswordGroup{
   public getAllGroups=async():Promise<iGetAllGroups>=>{
     try{
       const resultRequest = await axiosSecureInstance.get('/groups')
+      console.log(resultRequest)
       const payload:ModelPasswordsGroup[] = []
       for(let item of resultRequest.data.data){
         payload.push(new ModelPasswordsGroup(item))

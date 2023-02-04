@@ -57,7 +57,7 @@ const EmployeeSelector=({ setSelect }:iPropsEmployeeSelector)=>{
           className='border border-main shadow-main shadow-md rounded-md' 
           name='employeeName'
           type='text' 
-          autoComplete='new-password'
+          autoComplete='off'
           value={searchText}
           onChange={changeTitle}
         />
@@ -76,12 +76,7 @@ const EmployeeSelector=({ setSelect }:iPropsEmployeeSelector)=>{
             shadow-md 
             rounded-md'
         >
-          <div className='table-header-group '>
-            <div className='table-row'>
-              <div className='table-cell text-left '>icon</div>
-              <div className='table-cell text-left '>Name</div>
-            </div>
-          </div>
+          
           <div className='table-row-group'>
           {
             findedData.map(
@@ -98,7 +93,7 @@ const EmployeeSelector=({ setSelect }:iPropsEmployeeSelector)=>{
               >
                 <img 
                   src={element.img} 
-                  alt='photo' 
+                  alt='groupItem' 
                   className='w-10 h-10 rounded-full table-cell' 
                 />
                 <span className=' table-cell'>{element.name}</span>

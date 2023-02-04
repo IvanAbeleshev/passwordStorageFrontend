@@ -1,26 +1,24 @@
 import { useEffect, useState } from 'react'
-import { iPasswordGroup } from '../interfaces/modelInterfaces'
+import { iPasswordGroup } from '../../interfaces/modelInterfaces'
 
 interface iPropsItemSubNavPanel{
-  delay: number,
   data: iPasswordGroup,
+  subElement: boolean,
 }
-const ItemSubNavPanel=({data, delay}: iPropsItemSubNavPanel)=>{
-  const [currentVisible, setCurrentVisible] = useState(0)
-  useEffect(()=>{
-    setTimeout(() => {
-      setCurrentVisible(delay)
-    }, delay)
-  },[delay])
+const ItemSubNavPanel=({ data, subElement }: iPropsItemSubNavPanel)=>{
+  const [currentVisible, setCurrentVisible] = useState<boolean>(false)
   
+  useEffect(()=>{
+    setCurrentVisible(true)
+  },[])
   return(
     <div 
       className={`
         transition-all 
-        duration-300 
-        ${currentVisible>0?
-          'translate-y-0 opacity-100':
-          'translate-y-[20px] opacity-0'
+        duration-500
+        ${currentVisible?
+          `${subElement?'translate-x-[12px]':'translate-x-0' } opacity-100`:
+          '-translate-x-[100px] opacity-0'
         }`
       }
     >

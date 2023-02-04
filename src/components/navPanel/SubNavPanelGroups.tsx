@@ -2,14 +2,51 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppDispatch, useAppSelector } from '../../store/hooks/storeHooks'
 import { showModalWindow } from '../../store/modalWindowSlice'
-import ItemSubNavPanel from '../ItemSubNavPanel'
+import ItemSubNavPanel from './ItemSubNavPanel'
 import { faPlus, faRepeat} from '@fortawesome/free-solid-svg-icons'
 import { fetchPasswordsGroups } from '../../store/passwordsGroupsSlice'
+import { useEffect, useState } from 'react'
+import { iEmployee, iPasswordGroup } from '../../interfaces/modelInterfaces'
+import ItemsParentNavPanel from './ItemsParentNavPanel'
 
+interface iWithParents{
+  parent: iEmployee,
+  groups: iPasswordGroup[]
+}
+interface iGroupFilter{
+  withoutParent:iPasswordGroup[],
+  withParent:iWithParents[]
+}
 const SubNavPanelGroups=()=>{
-
+  const [filtredGroups, setFiltredGroups] = useState<iGroupFilter>()
   const passwordsGroupSelector = useAppSelector(store=>store.passwordsGroups.passwordsGroups)
   const dispatch = useAppDispatch()
+
+  useEffect(()=>{
+    //sort array without parent go first another go after
+    const withoutParent: iPasswordGroup[] = []
+    const withParent: iWithParents[] = []
+
+    const getParentInFiltredArray=(item:iEmployee):boolean=>{
+      return withParent.filter(element=>element.parent.id===item.id).length>0?true:false
+    }
+
+    for(let item of passwordsGroupSelector){
+      if(item.employee){
+        if(!getParentInFiltredArray(item.employee)){
+          withParent.push({
+            parent: item.employee,
+            groups: passwordsGroupSelector.filter(element=>element.employee?.id===item.employee?.id)
+          })
+        }
+      }else{
+        withoutParent.push(item)
+      }
+    }
+
+    setFiltredGroups({withoutParent, withParent})
+
+  },[passwordsGroupSelector])
 
   return(
     <div 
@@ -66,17 +103,40 @@ const SubNavPanelGroups=()=>{
         className='
           flex 
           flex-col 
+          gap-1
           px-[25px] 
           w-[240px] 
           content-box 
           overflow-y-scroll'
       >
-        {passwordsGroupSelector.map(element=>
+        <>
+        
+        {
+          filtredGroups?.withoutParent.map((element, index)=>
           <ItemSubNavPanel 
-            data={element} 
-            delay={element.id!*50}
+            key={element.id}
+            data={element}
+            subElement={false}
           />)
         }
+        {
+          filtredGroups?.withParent.map(parentItems=>
+            <ItemsParentNavPanel 
+              key={parentItems.parent.id}
+              item={parentItems.parent}
+            >
+              {
+                parentItems.groups.map((groupsItem, index)=>
+                <ItemSubNavPanel 
+                  key={groupsItem.id}
+                  data={groupsItem} 
+                  subElement={true}
+                />)
+              }
+            </ItemsParentNavPanel>
+          )
+        }
+        </>
       </div>
     </div>
   )

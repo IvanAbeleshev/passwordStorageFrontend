@@ -12,5 +12,6 @@ export interface iPasswordGroup{
   id:number,
   name:string,
   icon?:string,
-  id_employee?:number
+  id_employee?:number,
+  employee?: iEmployee
 }

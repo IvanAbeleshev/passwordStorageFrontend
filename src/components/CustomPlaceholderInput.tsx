@@ -17,19 +17,20 @@ const CustomPlaceholderInput=({ value, children, placeholder }:iPropsCustomPlace
     {children}
     <span 
       className={`
-        ${(focusGroup||fillInput)&&
+        ${(focusGroup||fillInput)?
           `-translate-y-[18px] 
           translate-x-[6px]
           text-sm 
           px-2 
           bg-white 
           opacity-100
-        `}
+        `:
+        'opacity-40'
+        }
         absolute 
         pointer-events-none
         left-1
         top-0
-        opacity-40
         transition-all`}
     >
       {placeholder}

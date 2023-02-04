@@ -1,4 +1,3 @@
-import { UploadFile } from 'antd'
 import { useState, FormEventHandler, ChangeEventHandler, MouseEventHandler } from 'react'
 import CustomPlaceholderInput from '../components/CustomPlaceholderInput'
 import ImageUploader from '../components/ImageUploader'
@@ -27,6 +26,7 @@ const PasswordGroupItem=()=>{
   const [validation, setValidation] = useState<iValidationPasswordGroupForm>({name: false})
 
   const dispatch = useAppDispatch()
+
   const submitForm: FormEventHandler=(event)=>{
     event.preventDefault()
   }
@@ -43,6 +43,16 @@ const PasswordGroupItem=()=>{
         setValidation({...validation, [name]:true})
       }
     }
+  }
+
+  const getSummaryValidationStatus=():boolean=>{
+    let summaryStatus = true
+    let key: keyof typeof validation
+    for(key in validation){
+      summaryStatus = summaryStatus&&validation[key]
+    }
+
+    return summaryStatus
   }
 
   const changeInputHandler: ChangeEventHandler=(event)=>{
@@ -75,6 +85,7 @@ const PasswordGroupItem=()=>{
             value={inputsData?.name}
           >
             <input 
+              autoComplete='off'
               className={`
                 ${!validation.name&&'bg-rose-300'}
                 border 
@@ -94,8 +105,19 @@ const PasswordGroupItem=()=>{
       </div>
       
       <button 
+        disabled={!getSummaryValidationStatus()}
         onClick={clickCreate}
-        className='bg-btn px-4 py-3 text-xl rounded-full hover:bg-btn-hover'
+        className={`
+          px-4 
+          py-3 
+          text-xl 
+          rounded-full 
+          ${
+            getSummaryValidationStatus()?
+            'bg-btn hover:bg-btn-hover':
+            'bg-rose-300 hover:bg-rose-400'
+          }
+        `}
       >
         Create
       </button>
