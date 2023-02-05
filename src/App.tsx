@@ -1,11 +1,14 @@
 import Routing from './components/Routing'
 import AuthWrapper from './layouts/AuthWrapper'
+import Background from './layouts/Background'
 
 function App() {
   return(
-    <AuthWrapper>
-      <Routing />
-    </AuthWrapper>
+    <Background>
+      <AuthWrapper>
+        <Routing />
+      </AuthWrapper>
+    </Background>
   ) 
 }
 

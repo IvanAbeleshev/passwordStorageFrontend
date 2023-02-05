@@ -24,6 +24,7 @@ const CustomPlaceholderInput=({ value, children, placeholder }:iPropsCustomPlace
           px-2 
           bg-white 
           opacity-100
+          rounded-t-lg
         `:
         'opacity-40'
         }

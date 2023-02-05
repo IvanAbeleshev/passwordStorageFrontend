@@ -13,7 +13,7 @@ import {
   faUserLock,
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons'
-import { currentUserState, setInitialState } from '../store/slice'
+import { currentUserState, setAuthInitialState } from '../store/authSlice'
 import { setValue } from '../store/sliceSearch'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constans'
 import ItemNavPanel from '../components/navPanel/ItemNavPanel'
@@ -65,7 +65,7 @@ const NavPanel = ({ children }: IPropsNavPanel) => {
     event.stopPropagation()
     localStorage.removeItem(ACCESS_TOKEN)
     localStorage.removeItem(REFRESH_TOKEN)
-    dispatch(setInitialState())
+    dispatch(setAuthInitialState())
   }
 
   const hancleOnClickChangeVisible: React.MouseEventHandler = (event) => {

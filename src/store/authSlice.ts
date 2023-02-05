@@ -14,14 +14,14 @@ const initialStateUserSlice: IInitialStateUserSlice = {
     authState: undefined
 }
 
-export const userSlice = createSlice({
+export const authSlice = createSlice({
     name: 'user',
     initialState: initialStateUserSlice,
     reducers:{
-        setValue: (state, action:PayloadAction<IInitialStateUserSlice>)=>{
+        setAuthValue: (state, action)=>{
             Object.assign(state, action.payload)
         },
-        setInitialState: (state)=>{
+        setAuthInitialState: (state)=>{
             state.authState = undefined
             state.id = 0
             state.login = ''
@@ -36,10 +36,10 @@ export const userSlice = createSlice({
 })
 
 //my actions
-export const {setValue, setInitialState, setFalseAuth} = userSlice.actions
+export const {setAuthInitialState, setAuthValue, setFalseAuth} = authSlice.actions
 
 //exports selectors
 export const currentUserState = (state: RootState)=>state.user
 
-export default userSlice.reducer
+export default authSlice.reducer
 

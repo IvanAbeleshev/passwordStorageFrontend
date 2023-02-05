@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../common'
 import Button from '../components/Button'
 import { BACKEND_URL } from '../constans'
-import { currentUserState } from '../store/slice'
+import { currentUserState } from '../store/authSlice'
 import styles from '../styles/pages/employeeItem.module.css'
 
 export interface IDataEmployee{

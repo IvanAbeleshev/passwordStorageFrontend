@@ -1,7 +1,7 @@
 import { EnhancedStore } from '@reduxjs/toolkit'
 import axios, { AxiosRequestConfig } from 'axios'
 import { ACCESS_TOKEN, BACKEND_URL, REFRESH_TOKEN } from '../constans'
-import { setFalseAuth } from '../store/slice'
+import { setFalseAuth } from '../store/authSlice'
 
 let store:EnhancedStore
 export const injectStore = (incomingStore:EnhancedStore) => {
@@ -25,7 +25,7 @@ axiosSecureInstance.interceptors.request.use(
 (config:AxiosRequestConfig) => {
   const token = localStorage.getItem(ACCESS_TOKEN)
   if (token) {
-    config.headers!["Authorization"] = 'Bearer ' + token
+    config.headers!['Authorization'] = 'Bearer ' + token
   }
   return config
 },
@@ -45,7 +45,7 @@ async (err) => {
   // Access Token was expired
   if (err.response.status === 401) {
     try {
-      const rs = await axiosFreeInstance.post('/users/checkUser', {
+      const rs = await axiosFreeInstance.post('/users/refresh', {
         refresh: localStorage.getItem(REFRESH_TOKEN),
       })
       const { accessToken, refreshToken } = rs.data.data

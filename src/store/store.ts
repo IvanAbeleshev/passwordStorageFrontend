@@ -1,14 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import modalWindowSlice from './modalWindowSlice'
 import passwordsGroupsSlice from './passwordsGroupsSlice'
-import { userSlice } from './slice'
+import authSlice from './authSlice'
 import { searchSlice } from './sliceSearch'
 import { searchParamSlice } from './sliceSearchParam'
 import subPanelStatusSlice from './subMenuStatusSlice'
 
 export const store = configureStore({
   reducer: {
-    user: userSlice.reducer,
+    user: authSlice,
     search: searchSlice.reducer,
     searchParam: searchParamSlice.reducer,
     subNavPanel: subPanelStatusSlice,

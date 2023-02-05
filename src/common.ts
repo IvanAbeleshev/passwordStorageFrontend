@@ -1,7 +1,7 @@
 import { EnhancedStore } from '@reduxjs/toolkit'
 import axios, {AxiosRequestConfig } from 'axios'
 import { ACCESS_TOKEN, BACKEND_URL, REFRESH_TOKEN } from './constans'
-import { setFalseAuth } from './store/slice'
+import { setFalseAuth } from './store/authSlice'
 
 let store:EnhancedStore
 export const injectStore = (incomingStore:EnhancedStore) => {

@@ -8,6 +8,8 @@ module.exports = {
         'hover': '#fff',
         'btn': '#23a6d5',
         'btn-hover': '#16ddf7',
+        'btn-s': '#242526',
+        'btn-s-hover': '#696969',
         'btn-err': 'rgb(253 164 175)',
         'btn-err-hover': 'rgb(251 113 133)',
       },

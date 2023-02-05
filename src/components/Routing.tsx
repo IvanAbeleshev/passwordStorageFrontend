@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Auth from '../pages/Auth';
-import { currentUserState } from '../store/slice'
+import { currentUserState } from '../store/authSlice'
 import {useSelector} from 'react-redux'
 import NavPanel from '../layouts/NavPanel';
 import Services from '../pages/Services';
