@@ -2,7 +2,6 @@ import Button from '../components/Button'
 import TableRowHead from '../components/tableComponents/TableRowHead'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { currentUserState } from '../store/authSlice'
 import { useSelector } from 'react-redux'
 import { searchSelectorString } from '../store/sliceSearch'
 import { AxiosResponse } from 'axios'
@@ -25,7 +24,6 @@ const UsersList=()=>{
 
     const {pageIndex} = useParams()
 
-    const userState = useSelector(currentUserState)
     const searchString = useSelector(searchSelectorString)
 
     const navigator = useNavigate()

@@ -7,6 +7,7 @@ let store:EnhancedStore
 export const injectStore = (incomingStore:EnhancedStore) => {
   store = incomingStore
 }
+
 export const defaultErrorHandler=(error:any)=>{
   if(axios.isAxiosError(error)){
     alert(error.response?.data.message)

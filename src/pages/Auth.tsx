@@ -6,6 +6,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constans'
 import ServiceAthentication from '../services/ServiceAthentication'
 import { setAuthValue } from '../store/authSlice'
 import { useAppDispatch } from '../store/hooks/storeHooks'
+import { decodeToken } from '../utils/tokensFuntion'
 
 enum en_authPages{
 	auth,
@@ -62,7 +63,12 @@ const Auth = () =>{
 			({payload})=>{
 				localStorage.setItem(ACCESS_TOKEN, payload.accessToken)
 				localStorage.setItem(REFRESH_TOKEN, payload.refreshToken)
-				dispatch(setAuthValue({authState:true}))
+				const result = decodeToken(payload.accessToken)
+				dispatch(setAuthValue({
+					id:result.id, 
+					login:result.login, 
+					authState:true
+				}))
 			}
 		)
 	}

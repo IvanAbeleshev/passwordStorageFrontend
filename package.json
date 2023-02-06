@@ -19,6 +19,7 @@
     "antd": "^5.1.2",
     "axios": "^1.1.2",
     "dotenv": "^16.0.3",
+    "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
     "react-auth-code-input": "^3.2.1",
     "react-dom": "^18.2.0",

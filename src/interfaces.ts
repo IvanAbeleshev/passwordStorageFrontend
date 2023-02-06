@@ -19,3 +19,9 @@ export interface iItemSubNavPanel{
   icon: string | null,
   idOwner: number | null
 }
+
+export interface iJWTDecode{
+  id:number, 
+  role: userRoleType, 
+  login:string
+}
