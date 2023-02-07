@@ -1,27 +1,35 @@
-import React from 'react'
-import { BACKEND_URL } from '../../constans'
-import { IDataEmployee } from '../../pages/EmployeeItem'
-import generallyStyles from '../../styles/generallyStyles.module.css'
+import { Image } from 'antd'
+import { iEmployee } from '../../interfaces/modelInterfaces'
+import { formatDateToStandartDateFormat } from '../../utils/dateFunction'
 
-interface IPropsTableRow{
-    data: IDataEmployee,
-    onClick?: React.MouseEventHandler
+interface iPropsTableRow{
+  data: iEmployee,
 }
 
-const TableRowDataEmployee=({data, onClick}: IPropsTableRow)=>{
-    //'Id', 'Img', 'Name', 'Desription', 'Creation date', 'Update date'
-    return(
-        <tr onClick={onClick}className={generallyStyles.tableRow}>
-            <td className={generallyStyles.cell}>{data?.id}</td>
-            <td className={generallyStyles.cell}>{data.name}</td>
-            <td className={generallyStyles.cell}>{data.jobTitle}</td>
-            <td className={generallyStyles.cell}>{String(data.employmentDate)}</td>
-            <td className={generallyStyles.cell}>{String(data.dismissDate)}</td>
-            <td className={generallyStyles.cell}><img className={generallyStyles.imgSmall} src={data.img?`${BACKEND_URL}/${data.img}`:'/img/NoImage.jpg'} alt="EmployeePhoto" /></td>
-            <td className={generallyStyles.cell}>{data.jobTitle}</td>
-            
-        </tr>
-    )
+const TableRowDataEmployee=({data}: iPropsTableRow)=>{
+  //'Photo', 'Name', 'Job title', 'Employment date', 'Dismiss date', 'Comment'
+  return(
+    <div className='table-row text-xl'>
+      <div className='table-cell'>
+        <Image src={data.img} width={40} height={40} loading='lazy' alt='profile_photo'/>
+      </div>
+      <div className='table-cell'>
+        {data.name}
+      </div>
+      <div className='table-cell'>
+        {data.jobTitle}
+      </div>
+      <div className='table-cell'>
+        {data.employmentDate&&formatDateToStandartDateFormat(data.employmentDate)}
+      </div>
+      <div className='table-cell'>
+        {data.dismissDate&&formatDateToStandartDateFormat(data.dismissDate)}
+      </div>
+      <div className='table-cell'>
+        {data.comment}
+      </div>
+    </div>
+  )
 }
 
 export default TableRowDataEmployee

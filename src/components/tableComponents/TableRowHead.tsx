@@ -1,16 +1,17 @@
-import generallyStyles from '../../styles/generallyStyles.module.css'
-
 interface IPropsTableRow{
     data: string[],
 }
 
-const TableRowHead=({data, }: IPropsTableRow)=>{
+const TableRowHead=({ data,}: IPropsTableRow)=>{
 
-    return(
-        <tr className={generallyStyles.tableHead}>
-        {data.map(element=><th key={element}>{element}</th>)}
-        </tr>
-    )
+  return(
+  <div className='table-row text-xl '>
+    {
+    data.map((element, index)=>
+      <div key={index} className='table-cell text-left border-b-2 border-main'>{element}</div>
+    )}
+  </div>
+  )
 }
 
 export default TableRowHead

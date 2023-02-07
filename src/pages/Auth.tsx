@@ -92,7 +92,7 @@ const Auth = () =>{
 									value={login}
 								>
 									<input 	
-										className='flex-3 text-black w-full'
+										className='flex-3 text-black w-full rounded-full p-2'
 										autoComplete='off'
 										type='text' 
 										name='login' 
@@ -108,7 +108,7 @@ const Auth = () =>{
 									value={password}
 								>
 									<input 	
-										className='flex-3 text-black w-full'
+										className='flex-3 text-black w-full rounded-full p-2'
 										autoComplete='off'
 										type='password' 
 										name='password' 

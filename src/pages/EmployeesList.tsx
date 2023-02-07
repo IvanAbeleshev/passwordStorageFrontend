@@ -1,63 +1,78 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { LIMIT_ITEMS_ON_PAGE } from '../constans'
-import { useSelector } from 'react-redux'
-import { currentUserState } from '../store/authSlice'
 import TableRowHead from '../components/tableComponents/TableRowHead'
-import Button from '../components/Button'
 import TableRowDataEmployee from '../components/tableComponents/TableRowDataEmployee'
-import { IDataEmployee } from './EmployeeItem'
-import BottomPageNavigator from '../components/BottomPageNavigator'
 import { searchSelectorString } from '../store/sliceSearch'
-import generallyStyles from '../styles/generallyStyles.module.css'
-import axiosInstance from '../common'
+import { useAppSelector } from '../store/hooks/storeHooks'
+import { iEmployee } from '../interfaces/modelInterfaces'
+import DefaultContainerData from '../components/DefaultContainerData'
+import ServiceEmployee from '../services/ServiceEmployee'
+import Paginator from '../components/Paginator'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 const EmployeesList=()=>{
-    const {pageIndex} = useParams()
-    const [rowsState, setArrayOfData]:[IDataEmployee[], Function] = useState([])
-    const [countOfData, setCountOfData]:[number, Function] = useState(0)
+  const [dataList, setDataList] = useState<iEmployee[]>([])
+  const [countPages, setCountPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  
+  const searchString = useAppSelector(searchSelectorString)
+  const navigator = useNavigate()
+
+  useEffect(()=>{
     
-    const userState = useSelector(currentUserState)
-    const searchString = useSelector(searchSelectorString)
-    const navigator = useNavigate()
-
-    useEffect(()=>{
-
-        axiosInstance.get(`/employees?page=${pageIndex}&limit=${LIMIT_ITEMS_ON_PAGE}${searchString?`&searchString=${searchString}`:''}`).then(resultRequest=>{
-            setArrayOfData(resultRequest.data.data.rows)
-            setCountOfData(resultRequest.data.data.count)
-        })
-    },[pageIndex, searchString])
-
-    const handleOnClickAdd:React.MouseEventHandler=(event)=>{
-        navigator('/employeeItem/new')
-    }
-
-    const navigateByPath=(id: number | undefined)=>{
-        const handleSelectedRow:React.MouseEventHandler=()=>{
-            navigator(`/employeeItem/${id}`)
-        }
-        return handleSelectedRow
-    }
-    return(
-        <>
-        <div className={generallyStyles.commandPanel}>
-        <Button onClick={handleOnClickAdd}>Add</Button>    
-        </div>
-        <div className={generallyStyles.wrapper}>
-            <table cellSpacing={0}>
-                <thead>
-                    <TableRowHead data={['Id', 'Name', 'JobTitle', 'Employment date', 'Dismiss date', 'Img', 'Comment']} />    
-                </thead>    
-                <tbody>
-                    {rowsState.map(element=><TableRowDataEmployee onClick={navigateByPath(element.id)} data={element} key={element.id} />)}
-                </tbody>
-            </table>
-            {countOfData&&<BottomPageNavigator currentPage={Number(pageIndex)} countElementOnPage={LIMIT_ITEMS_ON_PAGE} baseURL={'/employees/'} countOfElements={countOfData} />}
-        </div>
-
-        </>
+    ServiceEmployee.getEmployeeList(currentPage, searchString).then(
+      ({dataList, pages})=>{
+        setDataList(dataList.map(element=>element.getStructureData()))
+        setCountPages(pages)
+      }
     )
+    
+  },[currentPage, searchString])
+
+  return(
+    <>
+      
+      <DefaultContainerData>
+      <button 
+          className='
+            px-7 
+            py-2 
+            border-2 
+            border-transparent 
+            rounded-full
+            bg-btn
+            hover:bg-btn-hover
+            text-hover'
+          onClick={()=>navigator('/employeeItem/new')}  
+        >
+          <FontAwesomeIcon
+              className=''
+              icon={faPlus}
+            />
+        </button>
+      </DefaultContainerData>
+      
+      <div className='h-10'></div>
+
+      <DefaultContainerData>
+        <div className='table w-full'>
+          <div className='table-header-group'>
+            <TableRowHead 
+              data={['Photo', 'Name', 'Job title', 'Employment date', 'Dismiss date', 'Comment']}
+            />    
+          </div>
+          <div className='table-row-group'>
+            {dataList.map(element=><TableRowDataEmployee data={element} key={element.id} />)}
+          </div>
+        </div>
+      </DefaultContainerData>
+
+      <div>
+        <Paginator countPages={countPages} currentPage={currentPage} onChange={setCurrentPage}/>
+      </div>
+    </>
+  )
 }
 
 export default EmployeesList

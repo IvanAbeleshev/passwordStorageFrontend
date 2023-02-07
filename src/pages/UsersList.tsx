@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux'
 import { searchSelectorString } from '../store/sliceSearch'
 import { AxiosResponse } from 'axios'
 import { LIMIT_ITEMS_ON_PAGE } from '../constans'
-import BottomPageNavigator from '../components/BottomPageNavigator'
 import styles from '../styles/generallyStyles.module.css'
 import TableRowDataUsers from '../components/tableComponents/TableRowDataUsers'
 import axiosInstance from '../common'
@@ -63,7 +62,6 @@ const UsersList=()=>{
                     {rowsState.map(element=><TableRowDataUsers data={element} onClick={navigateByPath(element.id)} key={element.id} />)}
                 </tbody>
             </table>   
-            {countState&&<BottomPageNavigator currentPage={Number(pageIndex)} countElementOnPage={LIMIT_ITEMS_ON_PAGE} baseURL={'/users/'} countOfElements={countState} />}
         </div>
     </>
     )

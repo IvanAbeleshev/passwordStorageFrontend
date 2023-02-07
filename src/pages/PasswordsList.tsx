@@ -8,7 +8,7 @@ import TableRowDataPassword from '../components/tableComponents/TableRowDataPass
 import { BACKEND_URL, LIMIT_ITEMS_ON_PAGE } from '../constans'
 import { useSelector } from 'react-redux'
 import { searchEmployeeParam, searchServiceParam } from '../store/sliceSearchParam'
-import BottomPageNavigator from '../components/BottomPageNavigator'
+import BottomPageNavigator from '../components/Paginator'
 import generallyStyles from '../styles/generallyStyles.module.css'
 import axiosInstance, { defaultErrorHandler } from '../common'
 
@@ -75,7 +75,6 @@ const PasswordsList=()=>{
                 {rowsState.map(element=><TableRowDataPassword onClick={navigateByPath(Number(element.id))} data={element} key={element.id}/>)}   
             </tbody>
         </table>
-        {countState&&<BottomPageNavigator currentPage={Number(pageIndex)} countElementOnPage={LIMIT_ITEMS_ON_PAGE} baseURL={'/listServises/'} countOfElements={countState} />}
     </div>
 
     </>)

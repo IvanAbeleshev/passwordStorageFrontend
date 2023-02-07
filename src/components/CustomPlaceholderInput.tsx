@@ -30,7 +30,7 @@ const CustomPlaceholderInput=({ value, children, placeholder }:iPropsCustomPlace
         }
         absolute 
         pointer-events-none
-        left-1
+        left-2
         top-0
         transition-all`}
     >

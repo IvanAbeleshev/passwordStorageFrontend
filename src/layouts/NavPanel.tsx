@@ -82,13 +82,12 @@ const NavPanel = ({ children }: IPropsNavPanel) => {
     setTimeoutId(
       setTimeout(() => {
         dispatchSearchString(target.value)
-        console.log('now is searching...')
       }, 800),
     )
   }
 
   return (
-    <div className='flex h-screen w-screen bg-main-background bg-400% animate-movebg'>
+    <div className='flex h-screen w-screen'>
       {visibleModalWindow&&<ModalWindow><PasswordGroupItem /></ModalWindow>}
       <div 
         className={currentVisible?
@@ -156,6 +155,7 @@ const NavPanel = ({ children }: IPropsNavPanel) => {
             name='searchString'
             id='searchString'
             placeholder='fing'
+            className='p-2 rounded-full'
             onChange={handleChangeSearch}
           />
           <FontAwesomeIcon
@@ -163,7 +163,7 @@ const NavPanel = ({ children }: IPropsNavPanel) => {
             icon={faQuestion}
           />
         </div>
-        <div className='p-6'>
+        <div className='p-6 box-border'>
           {children}
         </div>
       </main>

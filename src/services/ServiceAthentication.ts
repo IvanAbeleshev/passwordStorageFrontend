@@ -1,7 +1,7 @@
 import { isAxiosError } from 'axios'
 import { REFRESH_TOKEN } from '../constans'
 import { iDefaultResponseService } from '../interfaces'
-import { axiosSecureInstance } from './axiosInstances'
+import { axiosFreeInstance, axiosSecureInstance } from './axiosInstances'
 
 interface iCheckExistanceUser extends iDefaultResponseService{
   payload?:{
@@ -37,7 +37,7 @@ class ServiceAuthentication{
     try{
       const refresh = localStorage.getItem(REFRESH_TOKEN)
       if(refresh){
-        const resultRequest = await axiosSecureInstance.post('/users/refresh', {refresh})
+        const resultRequest = await axiosFreeInstance.post('/users/refresh', {refresh})
         const {accessToken, refreshToken} = resultRequest.data.data
         return {isError: false, payload:{accessToken, refreshToken}}
       }

@@ -43,24 +43,23 @@ axiosSecureInstance.interceptors.response.use(
 async (err) => {
   const originalConfig: AxiosRequestConfig = err.config
   if (originalConfig.url !== "/" && err.response) {
-  // Access Token was expired
-  if (err.response.status === 401) {
-    try {
-      const rs = await axiosFreeInstance.post('/users/refresh', {
-        refresh: localStorage.getItem(REFRESH_TOKEN),
-      })
-      const { accessToken, refreshToken } = rs.data.data
-      localStorage.setItem(ACCESS_TOKEN, accessToken)
-      localStorage.setItem(REFRESH_TOKEN, refreshToken)
+    // Access Token was expired
+    const refresh = localStorage.getItem(REFRESH_TOKEN)
+    if (err.response.status === 401&&refresh) {
+      try {
+        const rs = await axiosFreeInstance.post('/users/refresh', {refresh})
+        const { accessToken, refreshToken } = rs.data.data
+        localStorage.setItem(ACCESS_TOKEN, accessToken)
+        localStorage.setItem(REFRESH_TOKEN, refreshToken)
 
-      return axiosSecureInstance(originalConfig)
-    } catch (_error) {
-      localStorage.removeItem(ACCESS_TOKEN)
-      localStorage.removeItem(REFRESH_TOKEN)
-      store.dispatch(setFalseAuth())
-      return Promise.reject(_error)
+        return axiosSecureInstance(originalConfig)
+      }catch (_error) {
+        localStorage.removeItem(ACCESS_TOKEN)
+        localStorage.removeItem(REFRESH_TOKEN)
+        store.dispatch(setFalseAuth())
+        return Promise.reject(_error)
+      }
     }
-  }
   }
 
   return Promise.reject(err)

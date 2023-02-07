@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../common'
-import BottomPageNavigator from '../components/BottomPageNavigator'
 import Button from '../components/Button'
 import TableRowData from '../components/tableComponents/TableRowData'
 import TableRowHead from '../components/tableComponents/TableRowHead'
@@ -65,7 +64,6 @@ const Services=()=>{
                     {rowsState.map(element=><TableRowData onClick={navigateByPath(element.id)} data={element} key={element.id} />)}
                 </tbody>
             </table>   
-            {countState&&<BottomPageNavigator currentPage={Number(servicesId)} countElementOnPage={LIMIT_ITEMS_ON_PAGE} baseURL={'/listServises/'} countOfElements={countState} />}
         </div>
     </>
     )

@@ -42,7 +42,7 @@ async (err) => {
     // Access Token was expired
     if (err.response.status === 401) {
         try {
-            const rs = await axios.post(`${BACKEND_URL}/users/checkUser`, {
+            const rs = await axios.post(`${BACKEND_URL}/users/refresh`, {
                 refresh: localStorage.getItem(REFRESH_TOKEN),
             })
             const { accessToken, refreshToken } = rs.data.data
