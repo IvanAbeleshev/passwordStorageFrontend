@@ -15,14 +15,50 @@ interface iEmployeeList extends iDefaultResponseService{
   dataList: ModelEmployee[]
 }
 
+interface iGetItemEmloyee extends iDefaultResponseService{
+  payload: ModelEmployee
+}
+
 class ServiceEmployee{
   private requiredAmountItems = 5
   private requiredAmountItemsForList = 20
 
+  public changeItemEmployee=async(data:iEmployee, id?:string, profileImage?:Blob):Promise<iDefaultResponseService>=>{
+    if(!id)
+      throw new Error('id employee is missing!')
+
+    try{
+      const formData = new ModelEmployee(data).getFormDataPackage(profileImage)
+      await axiosSecureInstance.post(`/employees/changeOne?id=${id}`, formData)
+      return {isError: false}
+    }catch(error){
+      if(isAxiosError(error)){
+        throw new Error(error.message)
+      }
+      throw new Error('error in algoritm frontEnd part')
+    }
+  }
+
+  public getItemEmployee=async(id?:string):Promise<iGetItemEmloyee>=>{
+    if(!id)
+      throw new Error('id employee is missing!')
+
+    try{
+      const requestResult = await axiosSecureInstance.get(`/employees/getOne?id=${id}`)
+      const payload = new ModelEmployee(requestResult.data.data)
+      return {isError: false, payload}
+    }catch(error){
+      if(isAxiosError(error)){
+        throw new Error(error.message)
+      }
+      throw new Error('error in algoritm frontEnd part')
+    }
+
+  }
+
   public getEmployeeList=async(page:number, searchString:string):Promise<iEmployeeList>=>{
     try{
       const requestResult = await axiosSecureInstance.get(`/employees?page=${page}&limit=${this.requiredAmountItemsForList}${searchString?`&searchString=${searchString}`:''}`)
-      console.log('result request: ', requestResult)
       const {rows, count} = requestResult.data.data
       const dataList:ModelEmployee[] = []
       for(let item of rows){
@@ -34,7 +70,10 @@ class ServiceEmployee{
 
       return {isError: false, dataList, pages}
     }catch(error){
-      throw new Error('cant`t get emploees list')
+      if(isAxiosError(error)){
+        throw new Error(error.message)
+      }
+      throw new Error('error in algoritm frontEnd part')
     }
 
   }
@@ -53,7 +92,10 @@ class ServiceEmployee{
       }
       return {isError: false, payload, countOfFinded }
     }catch(error){
-      throw new Error('cant`t get emploees list')
+      if(isAxiosError(error)){
+        throw new Error(error.message)
+      }
+      throw new Error('error in algoritm frontEnd part')
     }
   }
 

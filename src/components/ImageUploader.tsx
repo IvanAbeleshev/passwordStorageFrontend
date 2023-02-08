@@ -1,13 +1,19 @@
 import { Image, Upload, UploadFile, UploadProps } from 'antd'
-import { MouseEventHandler, useState } from 'react'
+import { MouseEventHandler, useEffect, useState } from 'react'
 
 interface iPropsImageUploader{
   setBlob: Function
+  urlImg?: string
 }
 
-const ImageUploader=({setBlob}:iPropsImageUploader)=>{
+const ImageUploader=({ setBlob, urlImg }:iPropsImageUploader)=>{
   const [previewImage, setPreviewImage] = useState('')
   const [fileList, setFileList] = useState<UploadFile[]>([])
+
+  useEffect(()=>{
+    if(urlImg)
+      setPreviewImage(urlImg)
+  },[urlImg])
 
   const props: UploadProps = {
     onRemove: (file) => {

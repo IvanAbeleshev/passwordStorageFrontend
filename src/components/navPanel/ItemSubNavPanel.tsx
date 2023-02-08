@@ -11,6 +11,7 @@ const ItemSubNavPanel=({ data, subElement }: iPropsItemSubNavPanel)=>{
   useEffect(()=>{
     setCurrentVisible(true)
   },[])
+
   return(
     <div 
       className={`

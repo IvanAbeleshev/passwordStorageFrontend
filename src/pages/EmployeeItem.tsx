@@ -1,5 +1,5 @@
 import { DatePicker } from 'antd'
-import { ChangeEventHandler, MouseEventHandler, useState } from 'react'
+import { ChangeEventHandler, MouseEventHandler, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import CustomPlaceholderInput from '../components/CustomPlaceholderInput'
 import DefaultContainerData from '../components/DefaultContainerData'
@@ -7,6 +7,7 @@ import ImageUploader from '../components/ImageUploader'
 import { iEmployee } from '../interfaces/modelInterfaces'
 import ServiceEmployee from '../services/ServiceEmployee'
 import type { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 
 
 const { RangePicker } = DatePicker
@@ -19,12 +20,24 @@ const EmployeeItem=()=>{
   const {id} = useParams()
   const navigator = useNavigate()
 
+  useEffect(()=>{
+    ServiceEmployee.getItemEmployee(id).then(({payload})=>{
+      setInputsData(payload.getStructureData())
+    })
+  }, [id])
+
   const changeInputsHandler:ChangeEventHandler<HTMLInputElement|HTMLTextAreaElement>=(event)=>{
     setInputsData({...inputsData, [event.target.name]:event.target.value})
   }
 
   const createNewItem:MouseEventHandler=()=>{
     ServiceEmployee.createEmployee(inputsData, profileBlob).then(
+      ()=>navigator(-1)
+    )
+  }
+
+  const saveChanges:MouseEventHandler=()=>{
+    ServiceEmployee.changeItemEmployee(inputsData, id, profileBlob).then(
       ()=>navigator(-1)
     )
   }
@@ -45,7 +58,7 @@ const EmployeeItem=()=>{
         className='flex flex-col justify-center items-center w-full'
       >
         <div className='flex'>
-          <ImageUploader setBlob={setProfileBlob} />
+          <ImageUploader setBlob={setProfileBlob} urlImg={inputsData.img} />
           <div className='flex flex-col justify-between p-5'>
             <CustomPlaceholderInput
               placeholder='Name'
@@ -75,7 +88,14 @@ const EmployeeItem=()=>{
               />
             </CustomPlaceholderInput>
 
-            <RangePicker onChange={changeRange} className='rounded-full shadow-md ' />
+            <RangePicker 
+              value={[
+                inputsData.employmentDate?dayjs(inputsData.employmentDate):null,
+                inputsData.dismissDate?dayjs(inputsData.dismissDate):null
+              ]}
+              onChange={changeRange} 
+              className='rounded-full shadow-md ' 
+            />
           </div>
         </div>
         <div className='pt-7'>
@@ -111,19 +131,34 @@ const EmployeeItem=()=>{
               hover:bg-btn-s-hover 
               hover:cursor-pointer'
           />
-          <input 
-            onClick={createNewItem}
-            type='button' 
-            value='Create' 
-            className='
-              py-2 
-              px-6 
-              rounded-xl 
-              shadow-md 
-              bg-btn 
-              hover:bg-btn-hover 
-              hover:cursor-pointer' 
-          />
+          {id==='new'?
+            <input 
+              onClick={createNewItem}
+              type='button' 
+              value='Create' 
+              className='
+                py-2 
+                px-6 
+                rounded-xl 
+                shadow-md 
+                bg-btn 
+                hover:bg-btn-hover 
+                hover:cursor-pointer' 
+            />:
+            <input 
+              onClick={saveChanges}
+              type='button' 
+              value='Save changes' 
+              className='
+                py-2 
+                px-6 
+                rounded-xl 
+                shadow-md 
+                bg-btn 
+                hover:bg-btn-hover 
+                hover:cursor-pointer' 
+            />
+          }
         </div>
       </form>
       

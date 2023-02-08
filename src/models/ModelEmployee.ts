@@ -39,7 +39,7 @@ class ModelEmployee implements iEmployee{
     this.employmentDate&&formData.append('employmentDate', String(this.employmentDate))
     this.dismissDate&&formData.append('dismissDate', String(this.dismissDate))
     this.comment&&formData.append('comment', this.comment)
-    image&&formData.append('profileImg', image)
+    image?formData.append('profileImg', image):this.img&&formData.append('img', this.img.replaceAll(BACKEND_URL, ''))
 
     return formData
   }

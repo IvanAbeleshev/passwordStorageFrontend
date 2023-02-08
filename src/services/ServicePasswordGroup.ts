@@ -1,3 +1,4 @@
+import { isAxiosError } from 'axios'
 import { iDefaultResponseService } from '../interfaces'
 import ModelPasswordsGroup from '../models/ModelPasswordGroup'
 import { axiosSecureInstance } from './axiosInstances'
@@ -16,7 +17,10 @@ class ServicePasswordGroup{
       }
       return {isError: false, payload}
     }catch(error){
-      throw new Error('cant get password group list from server')
+      if(isAxiosError(error)){
+        throw new Error(error.message)
+      }
+      throw new Error('error in algoritm frontEnd part')
     }
   }
 
@@ -36,7 +40,10 @@ class ServicePasswordGroup{
       await axiosSecureInstance.post('/groups/create', formData , additionalContentType)
       return {isError:false}
     }catch(error){
-      throw new Error('We have a problem on server when create new element')
+      if(isAxiosError(error)){
+        throw new Error(error.message)
+      }
+      throw new Error('error in algoritm frontEnd part')
     }
 
   }
