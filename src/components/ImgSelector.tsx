@@ -1,78 +1,128 @@
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import axios from 'axios'
-import { MouseEventHandler, useEffect, useState } from 'react'
-import { API_KEY_UNSPLASH } from '../constans'
+import { Image } from 'antd'
+import { FormEventHandler, useCallback, useEffect, useState } from 'react'
+import ServiceUnsplash from '../services/ServiceUnsplash'
 import CustomPlaceholderInput from './CustomPlaceholderInput'
+import DefaultContainerData from './DefaultContainerData'
 
 interface iPropsImgSelector{
   searchString: string,
-  setSelectedImg: Function
+  setVisibleSelector: Function,
+  setUrl: Function
 }
-
-interface IResultImgRequest{
-  urls:{
-    regular:string
-  }
-}
-
-const ImgSelector=({ searchString, setSelectedImg }:iPropsImgSelector)=>{
-  const [arrayImgs, setArrayImgs]:[IResultImgRequest[] | undefined, Function] = useState()
+const ImgSelector=({ searchString, setVisibleSelector, setUrl }:iPropsImgSelector)=>{
+  const [arrayImgs, setArrayImgs] = useState<string[]>([])
   const [findRequest, setFindRequest] = useState(searchString)
 
+  const executeRequest=useCallback(()=>{
+    ServiceUnsplash.getImage(findRequest).then(
+      ({payload})=>setArrayImgs(payload)
+    )
+  },[findRequest])
   
-  const fulfillRequest=()=>{
-    if(findRequest.length===0){
-      return
-    }
-    const config = {
-      headers: {
-        'Authorization': 'Client-ID ' + API_KEY_UNSPLASH
-      }
-    }
-    axios.get(`https://api.unsplash.com/search/photos?page=1&query=${findRequest.replaceAll(' ','-')}&per_page=9`, config).then(request=>
-    {            
-      if(request.status === 200){
-        setArrayImgs(request.data.results)
-      }
-    })
-  }
-
   useEffect(()=>{
-    fulfillRequest()    
-  }, [searchString])
-
-  const clickFindButton:MouseEventHandler=()=>{
-    fulfillRequest()
+    executeRequest()
+  },[executeRequest])
+  
+  const submitSearchForm:FormEventHandler<HTMLElement>=(event)=>{
+    event.preventDefault()
+    executeRequest()
   }
 
   return(
-    <div>
-      <form 
-        onSubmit={event=>event.preventDefault()}
-        className='relative'
-      >
-        <CustomPlaceholderInput
-          placeholder='Search'
-        >
-          <input 
-            type='text' 
-            name='query'
-            value={findRequest} 
-            onChange={event=>setFindRequest(event.target.value)}
-            className='shadow-md border w-full rounded-full px-2'
-          />
-        </CustomPlaceholderInput>
-        <button 
-          type='submit' 
-          className='absolute top-0 right-5'
-        >
-          <FontAwesomeIcon icon={faSearch} />
-        </button>
-      </form>
-      <div className='p-5'>
-
-      </div>
+    <div
+      className='
+        absolute 
+        top-0 
+        left-0 
+        h-screen 
+        w-screen 
+        bg-main/70 
+        flex 
+        justify-center 
+        items-center'
+    >
+      <DefaultContainerData>
+        <div className='relative'>
+          <button 
+            onClick={()=>setVisibleSelector(false)}
+            className='
+              group 
+              transition-all 
+              flex 
+              justify-center 
+              items-center 
+              absolute 
+              right-3 
+              top-3 
+              border-2 
+              p-1 
+              w-7 
+              h-7 
+              rounded-md 
+              border-black 
+              hover:rounded-full 
+              hover:bg-btn-err-hover'
+          >
+            <FontAwesomeIcon 
+              className='transition-all group-hover:rotate-180' 
+              icon={faXmark} 
+            /> 
+          </button>
+          <h1 className='text-2xl text-center'>Select image by search query</h1>
+          <form 
+            onSubmit={submitSearchForm}
+            className='relative mt-10'
+          >
+            <CustomPlaceholderInput
+              placeholder='Search'
+              value={findRequest}
+            >
+              <input 
+                autoComplete='off'
+                type='text' 
+                name='query'
+                value={findRequest} 
+                onChange={event=>setFindRequest(event.target.value)}
+                className='shadow-md border w-full rounded-full px-2'
+              />
+            </CustomPlaceholderInput>
+            <button 
+              type='submit' 
+              className='absolute top-0 right-3'
+            >
+              <FontAwesomeIcon icon={faSearch} />
+            </button>
+          </form>
+          <div className='grid grid-cols-3 gap-8 p-3 mt-5 place-items-center'>
+            {
+              arrayImgs.map((item)=>
+                <Image 
+                  onClick={()=>{
+                    setUrl(item)
+                    setVisibleSelector(false)
+                  }}
+                  key={item}
+                  className='
+                    transition 
+                    rounded-full 
+                    hover:scale-110 
+                    hover:cursor-pointer 
+                    shadow-md 
+                    shadow-main'
+                  preview={false} 
+                  src={item} 
+                  alt='logo_candidat' 
+                  loading='lazy' 
+                  width={200} 
+                  height={200} 
+                />
+              )
+            }
+          </div>
+        </div>
+      </DefaultContainerData>
     </div>
   )
 }

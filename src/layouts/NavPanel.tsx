@@ -135,7 +135,7 @@ const NavPanel = ({ children }: IPropsNavPanel) => {
         </div>
       }
 
-      <main className='w-[100%]'>
+      <main className='w-[100%] overflow-y-auto'>
         <div className='flex justify-between items-center py-1 pr-5 text-md'>
           <div>
             <FontAwesomeIcon
@@ -163,7 +163,7 @@ const NavPanel = ({ children }: IPropsNavPanel) => {
             icon={faQuestion}
           />
         </div>
-        <div className='p-6 box-border'>
+        <div className='p-6 box-border '>
           {children}
         </div>
       </main>

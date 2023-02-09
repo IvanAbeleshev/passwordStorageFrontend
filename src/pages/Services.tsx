@@ -2,40 +2,32 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
-import axiosInstance from '../common'
+import { useNavigate} from 'react-router-dom'
 import DefaultContainerData from '../components/DefaultContainerData'
+import Paginator from '../components/Paginator'
+import TableRowDataService from '../components/tableComponents/TableRowDataService'
 import TableRowHead from '../components/tableComponents/TableRowHead'
-import { LIMIT_ITEMS_ON_PAGE } from '../constans'
+import { iService } from '../interfaces/modelInterfaces'
+import ServicesOfServices from '../services/ServicesOfServices'
 import { searchSelectorString } from '../store/sliceSearch'
 
-export interface IDataRows{
-  id:number
-  img?: string,
-  name: string,
-  desctiption?: string,
-  createdAt: Date,
-  updatedAt: Date,
-}
 const Services=()=>{
-  const[countState, setCountState]:[number, Function] = useState(0)
-  const[rowsState, setRowsState]:[IDataRows[], Function] = useState([])
-
-  const {servicesId} = useParams()
+  const [currentPage, setCurrentPage] = useState(1)
+  const [countPages, setCountPages] = useState(0)
+  const [data, setData] = useState<iService[]>([])
 
   const searchString = useSelector(searchSelectorString)
 
   const navigator = useNavigate()
   
   useEffect(()=>{
-
-    axiosInstance.get(`/services?page=${servicesId}&limit=${LIMIT_ITEMS_ON_PAGE}${searchString?`&searchString=${searchString}`:''}`).then(
-      response=>{
-          const {count, rows}: {count:string, rows: IDataRows[]} = response.data.data
-          setCountState(count)
-          setRowsState(rows)                
-    }).catch()
-  }, [servicesId, searchString])
+    ServicesOfServices.getServiceList(currentPage, searchString).then(
+      ({ pages, payload })=>{
+        setData(payload.map(item=>item.getStructureData()))
+        setCountPages(pages)
+      }
+    )
+  }, [currentPage, searchString])
 
   return(
   <>
@@ -69,10 +61,16 @@ const Services=()=>{
           />    
         </div>
         <div className='table-row-group'>
-        
+          {data.map(element=><TableRowDataService key={element.id} data={element} />)}
         </div>
       </div>
     </DefaultContainerData>
+
+    <Paginator 
+      countPages={countPages}
+      currentPage={currentPage}
+      onChange={setCurrentPage}
+    />
   </>
   )
 }

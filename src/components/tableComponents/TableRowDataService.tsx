@@ -1,9 +1,10 @@
 import { Image } from 'antd'
 import { MouseEventHandler, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { iService } from '../../interfaces/modelInterfaces'
 
 interface iPropsTableRow{
-  data: any,
+  data: iService,
 }
 
 const TableRowDataService=({data}: iPropsTableRow)=>{
@@ -31,24 +32,28 @@ const TableRowDataService=({data}: iPropsTableRow)=>{
         align-middle'
     >
       <div 
-        ref={refPreviewEmployeeImg}
         className='table-cell rounded-l-full align-middle'
       >
-        <Image 
-          preview={previewImg} 
-          src={data.img} 
-          width={40} 
-          height={40} 
-          loading='lazy' 
-          alt='profile_photo'
-          className='rounded-full pt-1'
-        />
+        <div ref={refPreviewEmployeeImg} className='w-fit '>
+          <Image 
+            preview={previewImg} 
+            src={data.img} 
+            width={40} 
+            height={40} 
+            loading='lazy' 
+            alt='profile_photo'
+            className='rounded-full pt-1'
+          />
+        </div>
       </div>
       <div className='table-cell'>
         {data.name}
       </div>
       <div className='table-cell'>
-        {data.desctiption}
+        {
+          data.description&&
+            (data.description.length>50?data.description?.slice(0, 47)+'...':data.description)
+        }
       </div>
     </div>
   )

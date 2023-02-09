@@ -11,8 +11,10 @@ const ImageUploader=({ setBlob, urlImg }:iPropsImageUploader)=>{
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
   useEffect(()=>{
-    if(urlImg)
+    if(urlImg){
       setPreviewImage(urlImg)
+      setFileList([])
+    }
   },[urlImg])
 
   const props: UploadProps = {
@@ -34,6 +36,7 @@ const ImageUploader=({ setBlob, urlImg }:iPropsImageUploader)=>{
   const removeFile:MouseEventHandler=()=>{
     setPreviewImage('')
     setFileList([])
+    setBlob(undefined)
   }
 
   const previewImg={
