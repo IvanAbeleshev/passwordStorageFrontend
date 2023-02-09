@@ -53,7 +53,7 @@ const EmployeesList=()=>{
         </button>
       </DefaultContainerData>
       
-      <div className='h-10'></div>
+      <div className='h-10' />
 
       <DefaultContainerData>
         <div className='table w-full'>

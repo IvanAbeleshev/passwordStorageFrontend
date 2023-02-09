@@ -15,3 +15,10 @@ export interface iPasswordGroup{
   id_employee?:number,
   employee?: iEmployee
 }
+
+export interface iService{
+  id?:number,
+  name:string,
+  description?:string,
+  img?: string
+}
