@@ -4,11 +4,9 @@ import { Provider } from 'react-redux'
 import App from './App'
 import { store } from './store/store'
 import './index.css'
-import { injectStore } from './services/axiosInstances'
-import { injectStore as tempIjection } from './common'
+import { injectStore } from './constans'
 
 injectStore(store)
-tempIjection(store)
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,

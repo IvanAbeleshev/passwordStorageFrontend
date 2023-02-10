@@ -16,14 +16,17 @@ interface iGetServiceItem extends iDefaultResponseService{
 class ServiceOfServices{
   private requiredAmountItemsForList = 20
 
-  public changeService=async(dataItem:iService, imgFile?:Blob):Promise<iDefaultResponseService>=>{
+  public changeService=async(dataItem:iService, id?:string, imgFile?:Blob):Promise<iDefaultResponseService>=>{
+    if(!id)
+      throw new Error('id employee is missing!')
     try{
       const formData = new ModelService(dataItem).getFormDataPackage(imgFile)
-      axiosSecureInstance.post('/services/update', formData)
+      axiosSecureInstance.post(`/services/update?id=${id}`, formData)
       return {isError: false}
     }catch(error){
       if(isAxiosError(error)){
-        throw new Error(error.message)
+        const message=error.response?.data.message||error.message
+        throw new Error(message)
       }
       throw new Error('error in algoritm frontEnd part')
     }
@@ -39,7 +42,8 @@ class ServiceOfServices{
       return {isError: false, payload}
     }catch(error){
       if(isAxiosError(error)){
-        throw new Error(error.message)
+        const message=error.response?.data.message||error.message
+        throw new Error(message)
       }
       throw new Error('error in algoritm frontEnd part')
     }
@@ -59,7 +63,8 @@ class ServiceOfServices{
       return{isError:false, payload, pages}
     }catch(error){
       if(isAxiosError(error)){
-        throw new Error(error.message)
+        const message=error.response?.data.message||error.message
+        throw new Error(message)
       }
       throw new Error('error in algoritm frontEnd part')
     }
@@ -72,7 +77,8 @@ class ServiceOfServices{
       return {isError: false}
     }catch(error){
       if(isAxiosError(error)){
-        throw new Error(error.message)
+        const message=error.response?.data.message||error.message
+        throw new Error(message)
       }
       throw new Error('error in algoritm frontEnd part')
     }

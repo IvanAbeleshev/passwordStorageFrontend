@@ -25,3 +25,10 @@ export interface iJWTDecode{
   role: userRoleType, 
   login:string
 }
+
+export enum en_notificationStatus{
+  success,
+  error,
+  info,
+  warning
+}

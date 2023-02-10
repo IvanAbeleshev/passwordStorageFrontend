@@ -6,6 +6,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constans'
 import ServiceAthentication from '../services/ServiceAthentication'
 import { setAuthValue } from '../store/authSlice'
 import { useAppDispatch } from '../store/hooks/storeHooks'
+import { errorNotificator, infoNotificator } from '../utils/notificator'
 import { decodeToken } from '../utils/tokensFuntion'
 
 enum en_authPages{
@@ -31,8 +32,12 @@ const Auth = () =>{
 
 	useEffect(()=>{
 		ServiceAthentication.checkAdminUser().then(
-			({isError})=>setCheckAdminRole(isError)
+			({isError})=>{
+				setCheckAdminRole(isError)
+				isError&&infoNotificator('Welcome', 'Create first user')
+			}
 		)
+		// eslint-disable-next-line
 	},[])
 
 	const subminAut:FormEventHandler=(event)=>{
@@ -53,7 +58,7 @@ const Auth = () =>{
 						en_authPages.auth2Fa
 					)
 				}
-			)
+			).catch(error=>errorNotificator('Authentication error', error.message))
 		}
 	}
 
@@ -70,7 +75,7 @@ const Auth = () =>{
 					authState:true
 				}))
 			}
-		)
+		).catch(error=>errorNotificator('Authentication error', error.message))
 	}
 
 	return(

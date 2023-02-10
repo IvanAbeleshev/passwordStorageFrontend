@@ -1,12 +1,8 @@
-import { EnhancedStore } from '@reduxjs/toolkit'
 import axios, { AxiosRequestConfig } from 'axios'
 import { ACCESS_TOKEN, BACKEND_URL, REFRESH_TOKEN } from '../constans'
 import { setFalseAuth } from '../store/authSlice'
-
-let store:EnhancedStore
-export const injectStore = (incomingStore:EnhancedStore) => {
-  store = incomingStore
-}
+import { globalStore } from '../constans'
+import { setSpinerStatus } from '../store/spinerSlice'
 
 export const defaultErrorHandler=(error:any)=>{
   if(axios.isAxiosError(error)){
@@ -24,6 +20,7 @@ const axiosSecureInstance = axios.create({
   
 axiosSecureInstance.interceptors.request.use(
 (config:AxiosRequestConfig) => {
+  globalStore.dispatch(setSpinerStatus(true))
   const token = localStorage.getItem(ACCESS_TOKEN)
   if (token) {
     config.headers!['Authorization'] = 'Bearer ' + token
@@ -37,10 +34,12 @@ axiosSecureInstance.interceptors.request.use(
   
 axiosSecureInstance.interceptors.response.use(
 (res) => {
+  globalStore.dispatch(setSpinerStatus(false))
   return res
 },
 
 async (err) => {
+  globalStore.dispatch(setSpinerStatus(false))
   const originalConfig: AxiosRequestConfig = err.config
   if (originalConfig.url !== "/" && err.response) {
     // Access Token was expired
@@ -56,7 +55,7 @@ async (err) => {
       }catch (_error) {
         localStorage.removeItem(ACCESS_TOKEN)
         localStorage.removeItem(REFRESH_TOKEN)
-        store.dispatch(setFalseAuth())
+        globalStore.dispatch(setFalseAuth())
         return Promise.reject(_error)
       }
     }

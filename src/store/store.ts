@@ -4,16 +4,18 @@ import passwordsGroupsSlice from './passwordsGroupsSlice'
 import authSlice from './authSlice'
 import { searchSlice } from './sliceSearch'
 import { searchParamSlice } from './sliceSearchParam'
-import subPanelStatusSlice from './subMenuStatusSlice'
+import notificationMessageSlice from './notificationMessageSlice'
+import spinerSlice from './spinerSlice'
 
 export const store = configureStore({
   reducer: {
     user: authSlice,
     search: searchSlice.reducer,
     searchParam: searchParamSlice.reducer,
-    subNavPanel: subPanelStatusSlice,
     modalWindow: modalWindowSlice,
-    passwordsGroups: passwordsGroupsSlice
+    notification: notificationMessageSlice,
+    spiner: spinerSlice, 
+    passwordsGroups: passwordsGroupsSlice,
   }
 })
 

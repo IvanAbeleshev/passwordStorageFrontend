@@ -8,6 +8,7 @@ import { iEmployee } from '../interfaces/modelInterfaces'
 import ServiceEmployee from '../services/ServiceEmployee'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
+import { errorNotificator, successNotificator } from '../utils/notificator'
 
 
 const { RangePicker } = DatePicker
@@ -21,9 +22,12 @@ const EmployeeItem=()=>{
   const navigator = useNavigate()
 
   useEffect(()=>{
-    ServiceEmployee.getItemEmployee(id).then(({payload})=>{
-      setInputsData(payload.getStructureData())
-    })
+    if(id !=='new'){ 
+      ServiceEmployee.getItemEmployee(id).then(({payload})=>{
+        setInputsData(payload.getStructureData())
+      }).catch(error=>errorNotificator('Read error', error.message))
+    }
+  // eslint-disable-next-line
   }, [id])
 
   const changeInputsHandler:ChangeEventHandler<HTMLInputElement|HTMLTextAreaElement>=(event)=>{
@@ -32,14 +36,20 @@ const EmployeeItem=()=>{
 
   const createNewItem:MouseEventHandler=()=>{
     ServiceEmployee.createEmployee(inputsData, profileBlob).then(
-      ()=>navigator(-1)
-    )
+      ()=>{
+        successNotificator('Create success', `Created new employee: ${inputsData.name}`)
+        navigator(-1)
+      }
+    ).catch(error=>errorNotificator('Create error', error.message))
   }
 
   const saveChanges:MouseEventHandler=()=>{
     ServiceEmployee.changeItemEmployee(inputsData, id, profileBlob).then(
-      ()=>navigator(-1)
-    )
+      ()=>{
+        successNotificator('Change success', `Changed employee: ${inputsData.name}`)
+        navigator(-1)
+      }
+    ).catch(error=>errorNotificator('Change error', error.message))
   }
   
   const changeRange = (dates: null | (Dayjs | null)[], dateStrings: string[]) => {

@@ -33,7 +33,8 @@ class ServiceEmployee{
       return {isError: false}
     }catch(error){
       if(isAxiosError(error)){
-        throw new Error(error.message)
+        const message=error.response?.data.message||error.message
+        throw new Error(message)
       }
       throw new Error('error in algoritm frontEnd part')
     }
@@ -49,7 +50,8 @@ class ServiceEmployee{
       return {isError: false, payload}
     }catch(error){
       if(isAxiosError(error)){
-        throw new Error(error.message)
+        const message=error.response?.data.message||error.message
+        throw new Error(message)
       }
       throw new Error('error in algoritm frontEnd part')
     }
@@ -71,7 +73,8 @@ class ServiceEmployee{
       return {isError: false, dataList, pages}
     }catch(error){
       if(isAxiosError(error)){
-        throw new Error(error.message)
+        const message=error.response?.data.message||error.message
+        throw new Error(message)
       }
       throw new Error('error in algoritm frontEnd part')
     }
@@ -93,7 +96,8 @@ class ServiceEmployee{
       return {isError: false, payload, countOfFinded }
     }catch(error){
       if(isAxiosError(error)){
-        throw new Error(error.message)
+        const message=error.response?.data.message||error.message
+        throw new Error(message)
       }
       throw new Error('error in algoritm frontEnd part')
     }
@@ -106,7 +110,8 @@ class ServiceEmployee{
       return {isError:false, message: resultRequest.data.message}
     }catch(error){
       if(isAxiosError(error)){
-        throw new Error(error.message)
+        const message=error.response?.data.message||error.message
+        throw new Error(message)
       }
       throw new Error('error in algoritm frontEnd part')
     }

@@ -6,6 +6,7 @@ import ImageUploader from '../components/ImageUploader'
 import ImgSelector from '../components/ImgSelector'
 import { iService } from '../interfaces/modelInterfaces'
 import ServicesOfServices from '../services/ServicesOfServices'
+import { errorNotificator, successNotificator } from '../utils/notificator'
 
 const ServiceItem=()=>{
   const [imgBlob, setImgBlob] = useState<Blob>()
@@ -14,7 +15,7 @@ const ServiceItem=()=>{
 
   const{servicesId} = useParams()
   const navigator = useNavigate()
-
+  
   const changeInputHandler:ChangeEventHandler<HTMLInputElement|HTMLTextAreaElement>=(event)=>{
     setInputsData({...inputsData, [event.target.name]:event.target.value})
   }
@@ -25,22 +26,29 @@ const ServiceItem=()=>{
 
   const createService:MouseEventHandler=()=>{
     ServicesOfServices.createItem(inputsData, imgBlob).then(
-      ()=>navigator(-1)
-    )
+      ()=>{
+        successNotificator('Created success', `Created new service: ${inputsData.name}`)
+        navigator(-1)
+      }
+    ).catch(error=>errorNotificator('Create error', error.message))
   }
 
   const changeService:MouseEventHandler=()=>{
-    ServicesOfServices.changeService(inputsData, imgBlob).then(
-      ()=>navigator(-1)
-    )
+    ServicesOfServices.changeService(inputsData, servicesId, imgBlob).then(
+      ()=>{
+        successNotificator('Changed success', `Changed service: ${inputsData.name}`)
+        navigator(-1)
+      }
+    ).catch(error=>errorNotificator('Create error', error.message))
   }
 
   useEffect(()=>{
     if(servicesId !=='new'){ 
       ServicesOfServices.getServiceItem(servicesId).then(
         ({payload})=>setInputsData(payload)
-      )
+      ).catch(error=>errorNotificator('Read error', error.message))
     }
+  // eslint-disable-next-line
   },[servicesId])
 
   return(

@@ -23,7 +23,8 @@ const ImgSelector=({ searchString, setVisibleSelector, setUrl }:iPropsImgSelecto
   
   useEffect(()=>{
     executeRequest()
-  },[executeRequest])
+  // eslint-disable-next-line
+  },[])
   
   const submitSearchForm:FormEventHandler<HTMLElement>=(event)=>{
     event.preventDefault()
