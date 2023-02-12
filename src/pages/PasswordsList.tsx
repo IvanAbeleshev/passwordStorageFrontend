@@ -8,9 +8,11 @@ import TableRowDataPassword from '../components/tableComponents/TableRowDataPass
 import { BACKEND_URL, LIMIT_ITEMS_ON_PAGE } from '../constans'
 import { useSelector } from 'react-redux'
 import { searchEmployeeParam, searchServiceParam } from '../store/sliceSearchParam'
-import BottomPageNavigator from '../components/Paginator'
 import generallyStyles from '../styles/generallyStyles.module.css'
 import axiosInstance, { defaultErrorHandler } from '../common'
+import DefaultContainerData from '../components/DefaultContainerData'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 export interface IDataPassword{
     id?: number,
@@ -28,56 +30,61 @@ export interface IDataPassword{
 }
 
 const PasswordsList=()=>{
-    const [rowsState, setRowState]:[IDataPassword[], Function] = useState([])
-    const [countState, setCountState] = useState(0)
+  const [rowsState, setRowState]:[IDataPassword[], Function] = useState([])
 
-    const navigator = useNavigate()
-    const employeeState = useSelector(searchEmployeeParam)
-    const serviceState = useSelector(searchServiceParam)
-    const {pageIndex} = useParams()
+  const navigator = useNavigate()
+  const employeeState = useSelector(searchEmployeeParam)
+  const serviceState = useSelector(searchServiceParam)
+  const {pageIndex} = useParams()
 
-    useEffect(()=>{
+  // useEffect(()=>{
 
-        axiosInstance.get(`${BACKEND_URL}/passwords?page=${pageIndex}
-                    &limit=${LIMIT_ITEMS_ON_PAGE}
-                    ${employeeState.selectedId?`&employeeId=${employeeState.selectedId}`:''}
-                    ${serviceState.selectedId?`&serviceId=${serviceState.selectedId}`:''}`).then(replyRequest =>{
-                setRowState(replyRequest.data.data.rows)
-                setCountState(replyRequest.data.data.count)
-        }).catch(defaultErrorHandler)
-    },[employeeState.selectedId, serviceState.selectedId, pageIndex])
+  //   axiosInstance.get(`${BACKEND_URL}/passwords?page=${pageIndex}
+  //               &limit=${LIMIT_ITEMS_ON_PAGE}
+  //               ${employeeState.selectedId?`&employeeId=${employeeState.selectedId}`:''}
+  //               ${serviceState.selectedId?`&serviceId=${serviceState.selectedId}`:''}`).then(replyRequest =>{
+  //           setRowState(replyRequest.data.data.rows)
+  //           setCountState(replyRequest.data.data.count)
+  //   }).catch(defaultErrorHandler)
+  // },[employeeState.selectedId, serviceState.selectedId, pageIndex])
 
-    const navigateByPath=(path:number)=>{
-        const handleOnClick:React.MouseEventHandler=()=>{
-            navigator(`/passwordItem/${path}`)    
-        }
-        return handleOnClick
-    }
-    return (<>
-    <div className={generallyStyles.commandPanel}>
-        <label htmlFor="employee">Employee</label>
-        <InputSelect mode={searchMode.employee} />
-        
-        <label htmlFor="service">Service</label>
-        <InputSelect mode={searchMode.service} />
-    </div>
-    
-    <div className={generallyStyles.commandPanel}>
-        <Button onClick={()=>{navigator('/passwordItem/new')}}>Add</Button>
-    </div>
+  return (
+  <>
+    <DefaultContainerData>
+      <button 
+          className='
+            px-7 
+            py-2 
+            border-2 
+            border-transparent 
+            rounded-full
+            bg-btn
+            hover:bg-btn-hover
+            text-hover'
+          onClick={()=>navigator('/passwordItem/new')}  
+        >
+          <FontAwesomeIcon
+              className=''
+              icon={faPlus}
+            />
+        </button>
+    </DefaultContainerData>
+      
+    <div className='h-10' />
 
-    <div className={generallyStyles.wrapper}>
-        <table cellSpacing={0}>
-            <thead>
-                <TableRowHead data={['Id', 'Employee', 'Service', 'Comment', 'Creation date', 'Update date']} />    
-            </thead>
-            <tbody>
-                {rowsState.map(element=><TableRowDataPassword onClick={navigateByPath(Number(element.id))} data={element} key={element.id}/>)}   
-            </tbody>
-        </table>
-    </div>
-
-    </>)
+    <DefaultContainerData>
+      <div className='table w-full'>
+        <div className='table-header-group'>
+          <TableRowHead 
+            data={['Password group', 'Employee', 'Service', 'Login', 'Comment']}
+          />    
+        </div>
+        <div className='table-row-group'>
+          
+        </div>
+      </div>
+    </DefaultContainerData>
+  </>)
 }
 
 export default PasswordsList

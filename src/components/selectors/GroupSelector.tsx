@@ -1,24 +1,24 @@
 
 import { Image } from 'antd'
 import { ChangeEventHandler, useEffect, useRef, useState } from 'react'
-import { iEmployee } from '../../interfaces/modelInterfaces'
-import ServiceEmployee from '../../services/ServiceEmployee'
+import { iPasswordGroup } from '../../interfaces/modelInterfaces'
+import ServicePasswordGroup from '../../services/ServicePasswordGroup'
 import CustomPlaceholderInput from '../CustomPlaceholderInput'
 
-interface iSelectedEmployee{
-  value?: iEmployee,
+interface iSelectedGroup{
+  value?: iPasswordGroup,
   label: string
 }
 
-interface iPropsEmployeeSelector{
+interface iPropsGroupSelector{
   validation?: boolean,
-  setSelectedEmployee: Function
+  setSelectedGroup: Function
 }
 
-const EmployeeSelector=({validation=false, setSelectedEmployee}:iPropsEmployeeSelector)=>{
-  const [findedData, setFindedData] = useState<iEmployee[]>([])
+const GroupSelector=({validation=false, setSelectedGroup}:iPropsGroupSelector)=>{
+  const [findedData, setFindedData] = useState<iPasswordGroup[]>([])
   const [countOfFinded, setCountOfFinded] = useState(0)
-  const [value, setValue] = useState<iSelectedEmployee>({label:''})
+  const [value, setValue] = useState<iSelectedGroup>({label:''})
   const [keyTimeout, setKeyTimeout] = useState<NodeJS.Timeout>()
   const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -31,16 +31,16 @@ const EmployeeSelector=({validation=false, setSelectedEmployee}:iPropsEmployeeSe
     window.addEventListener('click', clickHandle)
     return ()=>window.removeEventListener('click', clickHandle)
   },[])
-
+  
   useEffect(()=>{
     if(value.label){
       clearTimeout(keyTimeout)
       setKeyTimeout(
         setTimeout(
           ()=>{
-            ServiceEmployee.getEmployeeForSelector( value.label).then(
+            ServicePasswordGroup.getGroupsForSelect(value.label).then(
               ({payload, countOfFinded})=>{
-                setFindedData(payload.map(item=>item.getStructureData()))
+                setFindedData(payload.map(item=>item.getStucturedData()))
                 setCountOfFinded(countOfFinded)
               }
             )
@@ -53,19 +53,19 @@ const EmployeeSelector=({validation=false, setSelectedEmployee}:iPropsEmployeeSe
 
   useEffect(()=>{
     if(value.value){
-      setSelectedEmployee(value.value)
+      setSelectedGroup(value.value)
     }
   },[value.value])
 
   const changeInput:ChangeEventHandler<HTMLInputElement>=(event)=>{
     setValue({value:undefined, label:event.target.value})
     setFindedData([])
-    setSelectedEmployee()
+    setSelectedGroup()
   }
 
-  const selectElement=(item:iEmployee)=>{
+  const selectElement=(item:iPasswordGroup)=>{
     setValue({value:item, label: item.name})
-    setSelectedEmployee(item)
+    setSelectedGroup(item)
   }
 
   return (
@@ -73,7 +73,7 @@ const EmployeeSelector=({validation=false, setSelectedEmployee}:iPropsEmployeeSe
       className='relative'
     >
       <CustomPlaceholderInput
-        placeholder='Select employee'
+        placeholder='Select group'
         value={value.label}
       >
         <input 
@@ -116,7 +116,7 @@ const EmployeeSelector=({validation=false, setSelectedEmployee}:iPropsEmployeeSe
             <Image 
               className='rounded-full'
               preview={false}
-              src={element.img}
+              src={element.icon}
               width={40}
               height={40}
               loading='lazy'
@@ -133,4 +133,4 @@ const EmployeeSelector=({validation=false, setSelectedEmployee}:iPropsEmployeeSe
   )
 }
 
-export default EmployeeSelector
+export default GroupSelector

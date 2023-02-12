@@ -22,3 +22,13 @@ export interface iService{
   description?:string,
   img?: string
 }
+
+export interface iPassword{
+  id?: number, 
+  login?: string,
+  password: string,
+  comment?: string,
+  serviceId: number,
+  employeeId: number,
+  passwordGroupId: number
+}

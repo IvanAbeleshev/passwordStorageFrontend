@@ -68,9 +68,7 @@ const EmployeesList=()=>{
         </div>
       </DefaultContainerData>
 
-      <div>
-        <Paginator countPages={countPages} currentPage={currentPage} onChange={setCurrentPage}/>
-      </div>
+      <Paginator countPages={countPages} currentPage={currentPage} onChange={setCurrentPage}/>
     </>
   )
 }

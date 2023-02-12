@@ -1,24 +1,24 @@
 
 import { Image } from 'antd'
 import { ChangeEventHandler, useEffect, useRef, useState } from 'react'
-import { iEmployee } from '../../interfaces/modelInterfaces'
-import ServiceEmployee from '../../services/ServiceEmployee'
+import { iService } from '../../interfaces/modelInterfaces'
+import ServicesOfServices from '../../services/ServicesOfServices'
 import CustomPlaceholderInput from '../CustomPlaceholderInput'
 
-interface iSelectedEmployee{
-  value?: iEmployee,
+interface iSelectedSevice{
+  value?: iService,
   label: string
 }
 
-interface iPropsEmployeeSelector{
+interface iPropsServiceSelector{
   validation?: boolean,
-  setSelectedEmployee: Function
+  setSelectedService: Function
 }
 
-const EmployeeSelector=({validation=false, setSelectedEmployee}:iPropsEmployeeSelector)=>{
-  const [findedData, setFindedData] = useState<iEmployee[]>([])
+const ServiceSelector=({validation=false, setSelectedService}:iPropsServiceSelector)=>{
+  const [findedData, setFindedData] = useState<iService[]>([])
   const [countOfFinded, setCountOfFinded] = useState(0)
-  const [value, setValue] = useState<iSelectedEmployee>({label:''})
+  const [value, setValue] = useState<iSelectedSevice>({label:''})
   const [keyTimeout, setKeyTimeout] = useState<NodeJS.Timeout>()
   const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -31,14 +31,14 @@ const EmployeeSelector=({validation=false, setSelectedEmployee}:iPropsEmployeeSe
     window.addEventListener('click', clickHandle)
     return ()=>window.removeEventListener('click', clickHandle)
   },[])
-
+  
   useEffect(()=>{
     if(value.label){
       clearTimeout(keyTimeout)
       setKeyTimeout(
         setTimeout(
           ()=>{
-            ServiceEmployee.getEmployeeForSelector( value.label).then(
+            ServicesOfServices.getServicesForSelector( value.label).then(
               ({payload, countOfFinded})=>{
                 setFindedData(payload.map(item=>item.getStructureData()))
                 setCountOfFinded(countOfFinded)
@@ -53,19 +53,19 @@ const EmployeeSelector=({validation=false, setSelectedEmployee}:iPropsEmployeeSe
 
   useEffect(()=>{
     if(value.value){
-      setSelectedEmployee(value.value)
+      setSelectedService(value.value)
     }
   },[value.value])
 
   const changeInput:ChangeEventHandler<HTMLInputElement>=(event)=>{
     setValue({value:undefined, label:event.target.value})
     setFindedData([])
-    setSelectedEmployee()
+    setSelectedService()
   }
 
-  const selectElement=(item:iEmployee)=>{
+  const selectElement=(item:iService)=>{
     setValue({value:item, label: item.name})
-    setSelectedEmployee(item)
+    setSelectedService(item)
   }
 
   return (
@@ -73,7 +73,7 @@ const EmployeeSelector=({validation=false, setSelectedEmployee}:iPropsEmployeeSe
       className='relative'
     >
       <CustomPlaceholderInput
-        placeholder='Select employee'
+        placeholder='Select service'
         value={value.label}
       >
         <input 
@@ -133,4 +133,4 @@ const EmployeeSelector=({validation=false, setSelectedEmployee}:iPropsEmployeeSe
   )
 }
 
-export default EmployeeSelector
+export default ServiceSelector

@@ -6,8 +6,8 @@ import Employee from '../models/ModelEmployee'
 import { axiosSecureInstance } from './axiosInstances'
 
 interface iGetEmployeeForSelector extends iDefaultResponseService{
-  payload?: Employee[],
-  countOfFinded?: number
+  payload: Employee[],
+  countOfFinded: number
 }
 
 interface iEmployeeList extends iDefaultResponseService{

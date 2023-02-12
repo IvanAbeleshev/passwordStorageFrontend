@@ -100,7 +100,7 @@ const PasswordGroupItem=()=>{
               id='name'
             />
           </CustomPlaceholderInput>
-          <EmployeeSelector setSelect={setSelectedEmployee} />
+          <EmployeeSelector setSelectedEmployee={setSelectedEmployee} />
         </div>
       </div>
       
