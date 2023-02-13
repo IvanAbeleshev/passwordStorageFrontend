@@ -10,6 +10,7 @@ import ServiceEmployee from '../services/ServiceEmployee'
 import Paginator from '../components/Paginator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { errorNotificator } from '../utils/notificator'
 
 const EmployeesList=()=>{
   const [dataList, setDataList] = useState<iEmployee[]>([])
@@ -26,7 +27,7 @@ const EmployeesList=()=>{
         setDataList(dataList.map(element=>element.getStructureData()))
         setCountPages(pages)
       }
-    )
+    ).catch(error=>errorNotificator('List error', error.message))
     
   },[currentPage, searchString])
 

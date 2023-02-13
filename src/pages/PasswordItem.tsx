@@ -1,14 +1,5 @@
 import { ChangeEventHandler, MouseEventHandler, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import Button from '../components/Button'
-import InputSelect from '../components/InputSelect'
-import { searchMode } from '../interfaces'
-import { searchEmployeeParam, searchServiceParam, setValue } from '../store/sliceSearchParam'
-import styles from '../styles/pages/passwordItem.module.css'
-import { faEyeSlash, faLock } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import axiosInstance, { defaultErrorHandler } from '../common'
+import { useNavigate, useParams } from 'react-router-dom'
 import DefaultContainerData from '../components/DefaultContainerData'
 import ServiceSelector from '../components/selectors/ServiceSelector'
 import EmployeeSelector from '../components/selectors/EmployeeSelector'
@@ -16,105 +7,55 @@ import { iEmployee, iPassword, iPasswordGroup, iService } from '../interfaces/mo
 import GroupSelector from '../components/selectors/GroupSelector'
 import CustomPlaceholderInput from '../components/CustomPlaceholderInput'
 import ServicePassword from '../services/ServicePassword'
-import { errorNotificator, successNotificator } from '../utils/notificator'
+import { errorNotificator, infoNotificator, successNotificator } from '../utils/notificator'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUnlock } from '@fortawesome/free-solid-svg-icons'
+import { Popconfirm } from 'antd'
 
 const PasswordItem=()=>{
   const [employee, setEmployee] = useState<iEmployee>()
   const [service, setService] = useState<iService>()
   const [group, setGroup] = useState<iPasswordGroup>()
 
-  const [visiblePassword, setVisiblePassword] = useState(false)
-  const [properPassword, setProperPassword] = useState(false)
-  const [passwordBeforeChange, setPasswordBeforeChange] = useState('')
   const [inputsData, setInputsData] = useState<iPassword>({} as iPassword)
-  const [enableSubmit, setEnableSubmit] = useState(false)
+  const [isPasswordLock, setIsPasswordLock] = useState(true)
 
   const navigator = useNavigate()
   const{id} = useParams()
 
   useEffect(()=>{
     setInputsData({...inputsData, passwordGroupId: group?.id||0})
+  // eslint-disable-next-line
   },[group])
 
   useEffect(()=>{
     setInputsData({...inputsData, serviceId: service?.id||0})
+  // eslint-disable-next-line
   },[service])
 
   useEffect(()=>{
     setInputsData({...inputsData, employeeId: employee?.id||0})
+  // eslint-disable-next-line
   },[employee])
 
   const changeInputs:ChangeEventHandler<HTMLInputElement|HTMLTextAreaElement>=(event)=>{
     setInputsData({...inputsData, [event.target.name]:event.target.value})
   }
-  // useEffect(()=>{
-  //     if(id === 'new'){
-  //         setVisiblePassword(true)
-  //         setProperPassword(true)
-  //     }
-  // },[id])
-
-  // useEffect(()=>{
-  //     if(id !== 'new'){
-  //         axiosInstance.get(`/passwords/getOne?id=${id}`).then(replyRequest =>{
-  //             const {login, password, comment, employee, service} = replyRequest.data.data
-  //             setData({login, password, comment})
-  //             dispatch(setValue({
-  //                 employee:{value: employee.name, selectedId: employee.id},
-  //                 service:{value: service.name, selectedId: service.id}
-  //             }))
-  //         }).catch(defaultErrorHandler)   
-  //     }
-  // },[id])
-
-  // useEffect(()=>{
-  //     if(employeeState.selectedId && serviceState.selectedId){
-  //         return setEnableSubmit(true)
-  //     }
-  //     setEnableSubmit(false)
-  // }, [employeeState.selectedId, serviceState.selectedId])
-
-  // const handleCreateButton=()=>{
-  //     const sendingData = {login: data.login, password: data.password, comment: data.comment, serviceId: serviceState.selectedId, employeeId: employeeState.selectedId}
-      
-  //     axiosInstance.post(`/passwords/create`, sendingData).then(replyRequest =>{navigator(-1)}).catch(defaultErrorHandler)
-  // }
-
-  // const handleChangeItem=()=>{
-  //     const sendingData = {login: data.login, password: data.password, comment: data.comment, serviceId: serviceState.selectedId, employeeId: employeeState.selectedId}
-      
-  //     axiosInstance.post(`/passwords/changeItem?id=${id}`, sendingData).then(replyRequest =>{navigator(-1)}).catch(defaultErrorHandler)
-  // }
-
-  // const changeVisible=()=>{
-  //     if(id!=='new' && !properPassword){
-  //         axiosInstance.get(`/passwords/getCorectPassword?id=${id}`).then(replyRequest =>{
-  //             setData({...data, password: replyRequest.data.data})
-  //             setProperPassword(true)
-  //             setVisiblePassword(!visiblePassword)
-  //         }).catch(defaultErrorHandler)
-  //     }else{
-  //         setVisiblePassword(!visiblePassword)
-  //     }
-
-  // }
-
-  // const onChange:React.ChangeEventHandler=(event)=>{
-  //     const target = event.target as HTMLInputElement
-  //     if(target.name === 'password' && !properPassword){
-  //         const additionalValue = target.value.replace(passwordBeforeChange, '')
-  //         axiosInstance.get(`/passwords/getCorectPassword?id=${id}`).then(replyRequest =>{
-  //             setData({...data, password: replyRequest.data.data+additionalValue})
-  //             setProperPassword(true)
-  //         }).catch(defaultErrorHandler)
-  //     }else(
-  //         setData({...data, [target.name]:target.value})
-  //     )
-  // }
-  // const passwordFocus: React.FocusEventHandler =(event)=>{
-  //     const target = event.target as HTMLInputElement
-  //     setPasswordBeforeChange(target.value)    
-  // }
+  
+  useEffect(()=>{
+    if(id !== 'new'){
+      ServicePassword.getPasswordItem(id).then(
+        ({payload})=>{
+          setInputsData(payload.getStructureData())
+        }
+      ).catch(error=>{
+        errorNotificator('Read error', error.message)
+        navigator('/')
+      })
+    }else{
+      setIsPasswordLock(false)
+    }
+  },[id, navigator])
 
   const createPassword:MouseEventHandler=()=>{
     ServicePassword.createPassword(inputsData).then(
@@ -125,15 +66,48 @@ const PasswordItem=()=>{
     ).catch(error=>errorNotificator('Create error', error.message))
   }
 
+  const changeItem:MouseEventHandler=()=>{
+    if(isPasswordLock){
+      const sendingData:Partial<iPassword> = {...inputsData}
+      delete sendingData.password
+      ServicePassword.changePassword(sendingData, id).then(
+        ()=>{
+          successNotificator('Changed success', `Item ${inputsData.login} is changed`)
+          navigator(-1)
+        }
+      ).catch(error=>errorNotificator('Create error', error.message))
+    }else{
+      ServicePassword.changePassword(inputsData, id).then(
+        ()=>{
+          successNotificator('Changed success', `Item ${inputsData.login} is changed`)
+          navigator(-1)
+        }
+      ).catch(error=>errorNotificator('Create error', error.message))
+    }
+  }
+
+  const changeLockPassword=()=>{
+    setIsPasswordLock(!isPasswordLock)
+    setInputsData({...inputsData, password: ''})
+    if(isPasswordLock){
+      ServicePassword.getPropertyPassword(id).then(
+        ({payload})=>{
+          setInputsData({...inputsData, password: payload})
+          infoNotificator('Get password', 'The password is received from db!')
+        }
+      )
+    }
+  }
+
   return(
   <>
     <DefaultContainerData>
       <div className='flex flex-col gap-5 justify-center items-center'>
         <div className='flex justify-center items-stretch gap-5 min-w-[40%]'>
           <div className='flex flex-col gap-5 basis-1/2'>
-            <ServiceSelector validation={true} setSelectedService={setService}/>
-            <EmployeeSelector validation={true} setSelectedEmployee={setEmployee} />
-            <GroupSelector validation={true} setSelectedGroup={setGroup} />
+            <ServiceSelector validation={true} setSelectedService={setService} selectedService={inputsData.service} />
+            <EmployeeSelector validation={true} setSelectedEmployee={setEmployee} selectedEmployee={inputsData.employee} />
+            <GroupSelector validation={true} setSelectedGroup={setGroup} selectedPasswordGroup={inputsData.passwordGroup} />
           </div>
           <div className='flex flex-col gap-5 basis-1/2'>
             <CustomPlaceholderInput
@@ -154,14 +128,36 @@ const PasswordItem=()=>{
               value={inputsData.password}
             >
               <input 
+                disabled={isPasswordLock}
                 name='password'
                 value={inputsData.password}
                 onChange={changeInputs}
                 autoComplete='new-password'
-                type='password' 
+                type={isPasswordLock?'password':'text'}
                 className='shadow-md border w-full rounded-full px-2'
               />
             </CustomPlaceholderInput>
+            <div>
+              {isPasswordLock&&
+                <Popconfirm
+                  overlayClassName='text-main'
+                  title='Unlock password'
+                  description='Are you sure to unlock password?'
+                  onConfirm={changeLockPassword}
+                  okText='Unlock'
+                  cancelText='Cancel'
+                >
+                  <FontAwesomeIcon
+                    className='
+                      text-btn 
+                      text-2xl 
+                      hover:text-btn-hover 
+                      hover:cursor-pointer'
+                    icon={faUnlock}
+                  />
+                </Popconfirm>
+              }
+            </div>
           </div>
         </div>
         <div>
@@ -212,6 +208,7 @@ const PasswordItem=()=>{
                 hover:cursor-pointer' 
             />:
             <input 
+              onClick={changeItem}
               type='button' 
               value='Save changes' 
               className='

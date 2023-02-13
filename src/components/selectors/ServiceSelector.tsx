@@ -1,5 +1,6 @@
-
-import { Image } from 'antd'
+import { faFolderOpen } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Image, Popover } from 'antd'
 import { ChangeEventHandler, useEffect, useRef, useState } from 'react'
 import { iService } from '../../interfaces/modelInterfaces'
 import ServicesOfServices from '../../services/ServicesOfServices'
@@ -12,15 +13,25 @@ interface iSelectedSevice{
 
 interface iPropsServiceSelector{
   validation?: boolean,
+  selectedService?: iService,
   setSelectedService: Function
 }
 
-const ServiceSelector=({validation=false, setSelectedService}:iPropsServiceSelector)=>{
+const ServiceSelector=({validation=false, setSelectedService, selectedService}:iPropsServiceSelector)=>{
   const [findedData, setFindedData] = useState<iService[]>([])
   const [countOfFinded, setCountOfFinded] = useState(0)
   const [value, setValue] = useState<iSelectedSevice>({label:''})
   const [keyTimeout, setKeyTimeout] = useState<NodeJS.Timeout>()
   const wrapperRef = useRef<HTMLDivElement>(null)
+
+  const previewImg={
+    maskClassName:'rounded-full'
+  }
+
+  useEffect(()=>{
+    if(selectedService)
+      setValue({value:selectedService, label: selectedService.name})
+  },[selectedService])
 
   useEffect(()=>{
     const clickHandle=(event:MouseEvent)=>{
@@ -31,7 +42,7 @@ const ServiceSelector=({validation=false, setSelectedService}:iPropsServiceSelec
     window.addEventListener('click', clickHandle)
     return ()=>window.removeEventListener('click', clickHandle)
   },[])
-  
+
   useEffect(()=>{
     if(value.label){
       clearTimeout(keyTimeout)
@@ -49,12 +60,14 @@ const ServiceSelector=({validation=false, setSelectedService}:iPropsServiceSelec
         )
       )
     }
+  // eslint-disable-next-line 
   },[value.label])
 
   useEffect(()=>{
     if(value.value){
       setSelectedService(value.value)
     }
+  // eslint-disable-next-line 
   },[value.value])
 
   const changeInput:ChangeEventHandler<HTMLInputElement>=(event)=>{
@@ -69,66 +82,103 @@ const ServiceSelector=({validation=false, setSelectedService}:iPropsServiceSelec
   }
 
   return (
-    <div
-      className='relative'
-    >
-      <CustomPlaceholderInput
-        placeholder='Select service'
-        value={value.label}
+    <div className='flex items-end w-full'>
+      {value.value&&
+        <Image
+          preview={previewImg}
+          className='rounded-full'
+          src={value.value?.img}
+          width={40}
+          height={40}
+          loading='lazy'
+        />
+      }
+      <div
+        className='relative w-full'
       >
-        <input 
-          className={`
+        {value.value&&
+          <Popover 
+            placement='top' 
+            title={value.value.name} 
+            content={'open in new tab'}
+          >
+            <a 
+              className='
+                absolute 
+                text-main 
+                right-2 
+                top-0 
+                z-10
+                hover:text-btn-hover
+                '
+              rel='noreferrer'
+              href={`/service/${value.value.id}`}
+              target={'_blank'}
+            >
+              <FontAwesomeIcon
+                icon={faFolderOpen}
+              />
+            </a>
+          </Popover>
+        }
+        <CustomPlaceholderInput
+          placeholder='Select service'
+          value={value.label}
+        >
+          <input 
+            className={`
+              shadow-md 
+              border 
+              w-full 
+              rounded-full 
+              px-2
+              ${validation&&!value.value?'bg-btn-err':'bg-white'}
+            `}
+            value={value?.label}
+            onChange={changeInput}
+            autoComplete='off'
+            type='text' 
+          />
+        </CustomPlaceholderInput>
+      {
+        findedData.length>0&&!value.value&&value.label&&
+        <div 
+          ref={wrapperRef}
+          className='
+            table-row-group 
+            absolute 
             shadow-md 
+            shadow-main 
             border 
             w-full 
-            rounded-full 
-            px-2
-            ${validation&&!value.value?'bg-btn-err':'bg-white'}
-          `}
-          value={value?.label}
-          onChange={changeInput}
-          autoComplete='off'
-          type='text' 
-        />
-      </CustomPlaceholderInput>
-    {
-      findedData.length>0&&!value.value&&value.label&&
-      <div 
-        ref={wrapperRef}
-        className='
-          table-row-group 
-          absolute 
-          shadow-md 
-          shadow-main 
-          border 
-          w-full 
-          rounded-xl 
-          px-2 
-          z-10 
-          bg-hover
-        '
-      >
-        {findedData.map(element=>
-          <div
-            onClick={()=>selectElement(element)}
-            className='w-full hover:bg-main hover:text-hover rounded-full'
-          >
-            <Image 
-              className='rounded-full'
-              preview={false}
-              src={element.img}
-              width={40}
-              height={40}
-              loading='lazy'
-            />
-            <span className=''>{element.name}</span>
-          </div>  
-        )}
-        {findedData.length>countOfFinded&&
-          <div>And other {countOfFinded-findedData.length} items</div>
-        }
+            rounded-xl 
+            px-2 
+            z-10 
+            bg-hover
+          '
+        >
+          {findedData.map(element=>
+            <div
+              onClick={()=>selectElement(element)}
+              className='w-full hover:bg-main hover:text-hover rounded-full'
+            >
+              <Image 
+                className='rounded-full'
+                preview={false}
+                src={element.img}
+                width={40}
+                height={40}
+                loading='lazy'
+              />
+              <span className=''>{element.name}</span>
+            </div>  
+          )}
+          {findedData.length>countOfFinded&&
+            <div>And other {countOfFinded-findedData.length} items</div>
+          }
+        </div>
+      }
       </div>
-    }
     </div>
   )
 }

@@ -30,5 +30,8 @@ export interface iPassword{
   comment?: string,
   serviceId: number,
   employeeId: number,
-  passwordGroupId: number
+  passwordGroupId: number,
+  employee?: iEmployee,
+  passwordGroup?: iPasswordGroup,
+  service?: iService
 }

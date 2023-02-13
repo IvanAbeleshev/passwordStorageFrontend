@@ -1,5 +1,7 @@
 
-import { Image } from 'antd'
+import { faFolderOpen } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Image, Popover } from 'antd'
 import { ChangeEventHandler, useEffect, useRef, useState } from 'react'
 import { iPasswordGroup } from '../../interfaces/modelInterfaces'
 import ServicePasswordGroup from '../../services/ServicePasswordGroup'
@@ -12,15 +14,25 @@ interface iSelectedGroup{
 
 interface iPropsGroupSelector{
   validation?: boolean,
+  selectedPasswordGroup?: iPasswordGroup,
   setSelectedGroup: Function
 }
 
-const GroupSelector=({validation=false, setSelectedGroup}:iPropsGroupSelector)=>{
+const GroupSelector=({validation=false, setSelectedGroup, selectedPasswordGroup}:iPropsGroupSelector)=>{
   const [findedData, setFindedData] = useState<iPasswordGroup[]>([])
   const [countOfFinded, setCountOfFinded] = useState(0)
   const [value, setValue] = useState<iSelectedGroup>({label:''})
   const [keyTimeout, setKeyTimeout] = useState<NodeJS.Timeout>()
   const wrapperRef = useRef<HTMLDivElement>(null)
+
+  const previewImg={
+    maskClassName:'rounded-full'
+  }
+
+  useEffect(()=>{
+    if(selectedPasswordGroup)
+      setValue({value:selectedPasswordGroup, label: selectedPasswordGroup.name})
+  },[selectedPasswordGroup])
 
   useEffect(()=>{
     const clickHandle=(event:MouseEvent)=>{
@@ -49,12 +61,14 @@ const GroupSelector=({validation=false, setSelectedGroup}:iPropsGroupSelector)=>
         )
       )
     }
+  // eslint-disable-next-line 
   },[value.label])
 
   useEffect(()=>{
     if(value.value){
       setSelectedGroup(value.value)
     }
+  // eslint-disable-next-line 
   },[value.value])
 
   const changeInput:ChangeEventHandler<HTMLInputElement>=(event)=>{
@@ -69,66 +83,103 @@ const GroupSelector=({validation=false, setSelectedGroup}:iPropsGroupSelector)=>
   }
 
   return (
-    <div
-      className='relative'
-    >
-      <CustomPlaceholderInput
-        placeholder='Select group'
-        value={value.label}
+    <div className='flex items-end w-full'>
+      {value.value&&
+        <Image
+          preview={previewImg}
+          className='rounded-full'
+          src={value.value.icon}
+          width={40}
+          height={40}
+          loading='lazy'
+        />
+      }
+      <div
+        className='relative w-full'
       >
-        <input 
-          className={`
+        {value.value&&
+          <Popover 
+            placement='top' 
+            title={value.value.name} 
+            content={'open in new tab'}
+          >
+            <div 
+              className='
+                absolute 
+                text-main 
+                right-2 
+                top-0 
+                z-10
+                hover:text-btn-hover
+                '
+              //rel='noreferrer'
+              //href={`/service/${value.value.id}`}
+              //target={'_blank'}
+            >
+              <FontAwesomeIcon
+                icon={faFolderOpen}
+              />
+            </div>
+          </Popover>
+        }
+        <CustomPlaceholderInput
+          placeholder='Select group'
+          value={value.label}
+        >
+          <input 
+            className={`
+              shadow-md 
+              border 
+              w-full 
+              rounded-full 
+              px-2
+              ${validation&&!value.value?'bg-btn-err':'bg-white'}
+            `}
+            value={value?.label}
+            onChange={changeInput}
+            autoComplete='off'
+            type='text' 
+          />
+        </CustomPlaceholderInput>
+      {
+        findedData.length>0&&!value.value&&value.label&&
+        <div 
+          ref={wrapperRef}
+          className='
+            table-row-group 
+            absolute 
             shadow-md 
+            shadow-main 
             border 
             w-full 
-            rounded-full 
-            px-2
-            ${validation&&!value.value?'bg-btn-err':'bg-white'}
-          `}
-          value={value?.label}
-          onChange={changeInput}
-          autoComplete='off'
-          type='text' 
-        />
-      </CustomPlaceholderInput>
-    {
-      findedData.length>0&&!value.value&&value.label&&
-      <div 
-        ref={wrapperRef}
-        className='
-          table-row-group 
-          absolute 
-          shadow-md 
-          shadow-main 
-          border 
-          w-full 
-          rounded-xl 
-          px-2 
-          z-10 
-          bg-hover
-        '
-      >
-        {findedData.map(element=>
-          <div
-            onClick={()=>selectElement(element)}
-            className='w-full hover:bg-main hover:text-hover rounded-full'
-          >
-            <Image 
-              className='rounded-full'
-              preview={false}
-              src={element.icon}
-              width={40}
-              height={40}
-              loading='lazy'
-            />
-            <span className=''>{element.name}</span>
-          </div>  
-        )}
-        {findedData.length>countOfFinded&&
-          <div>And other {countOfFinded-findedData.length} items</div>
-        }
+            rounded-xl 
+            px-2 
+            z-10 
+            bg-hover
+          '
+        >
+          {findedData.map(element=>
+            <div
+              onClick={()=>selectElement(element)}
+              className='w-full hover:bg-main hover:text-hover rounded-full'
+            >
+              <Image 
+                className='rounded-full'
+                preview={false}
+                src={element.icon}
+                width={40}
+                height={40}
+                loading='lazy'
+              />
+              <span className=''>{element.name}</span>
+            </div>  
+          )}
+          {findedData.length>countOfFinded&&
+            <div>And other {countOfFinded-findedData.length} items</div>
+          }
+        </div>
+      }
       </div>
-    }
     </div>
   )
 }

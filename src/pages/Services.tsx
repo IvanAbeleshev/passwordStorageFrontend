@@ -10,6 +10,7 @@ import TableRowHead from '../components/tableComponents/TableRowHead'
 import { iService } from '../interfaces/modelInterfaces'
 import ServicesOfServices from '../services/ServicesOfServices'
 import { searchSelectorString } from '../store/sliceSearch'
+import { errorNotificator } from '../utils/notificator'
 
 const Services=()=>{
   const [currentPage, setCurrentPage] = useState(1)
@@ -26,7 +27,7 @@ const Services=()=>{
         setData(payload.map(item=>item.getStructureData()))
         setCountPages(pages)
       }
-    )
+    ).catch(error=>errorNotificator('List error', error.message))
   }, [currentPage, searchString])
 
   return(
