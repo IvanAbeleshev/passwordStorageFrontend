@@ -3,7 +3,7 @@ export enum searchMode{
   service = 'service'
 }
 
-export enum userRoleType{
+export enum en_userRoleType{
   admin = 'admin',
   user = 'user'
 }
@@ -22,7 +22,7 @@ export interface iItemSubNavPanel{
 
 export interface iJWTDecode{
   id:number, 
-  role: userRoleType, 
+  role: en_userRoleType, 
   login:string
 }
 

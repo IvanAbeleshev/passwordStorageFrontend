@@ -1,3 +1,5 @@
+import { en_userRoleType } from "../interfaces"
+
 export interface iEmployee{
   id?: number,
   name: string,
@@ -34,4 +36,10 @@ export interface iPassword{
   employee?: iEmployee,
   passwordGroup?: iPasswordGroup,
   service?: iService
+}
+
+export interface iUser{
+  id?: number,
+  login: string,
+  role: en_userRoleType
 }

@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import styles from '../styles/components/navPanel.module.css'
 import {
   faPerson,
   faBellConcierge,
@@ -114,7 +113,7 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
         }
       >
         <div>
-          <Link className={styles.logoContainer} to='/'>
+          <Link className='flex justify-center' to='/'>
             <img
               className='w-[80px] h-[80px] p-[8px]'
               src='/ico/android-chrome-512x512.png'
@@ -180,7 +179,7 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
         </div>
         
         <div>
-          <div className={styles.listItem} onClick={clickLogOut}>
+          <div onClick={clickLogOut}>
             <div className='group transition-all hover:text-hover text-center cursor-pointer'>
               <FontAwesomeIcon 
                 className='text-5xl w-[100%] transition-all translate-y-4 group-hover:translate-y-0' 

@@ -1,21 +1,29 @@
-import React from 'react'
-import { IDataRowsUser } from '../../pages/UsersList'
-import generallyStyles from '../../styles/generallyStyles.module.css'
-
 interface IPropsTableRow{
-    data: IDataRowsUser,
-    onClick: React.MouseEventHandler
+  data: any
 }
 
-const TableRowDataUsers=({data, onClick}: IPropsTableRow)=>{
-    return(
-        <tr onClick={onClick}className={generallyStyles.tableRow}>
-            <td className={generallyStyles.cell}>{data.id}</td>
-            <td className={generallyStyles.cell}>{data.login}</td>
-            <td className={generallyStyles.cell}>{String(data.createdAt)}</td>
-            <td className={generallyStyles.cell}>{String(data.updatedAt)}</td>
-        </tr>
-    )
+const TableRowDataUsers=({data}: IPropsTableRow)=>{
+  return(
+    <div
+      className='
+        table-row 
+        text-xl 
+        hover:bg-main 
+        hover:text-hover 
+        hover:cursor-pointer 
+        align-middle'
+    >
+      <div className='table-cell'>
+        {data.name}
+      </div>
+      <div className='table-cell'>
+        {
+          data.description&&
+            (data.description.length>50?data.description?.slice(0, 47)+'...':data.description)
+        }
+      </div>
+    </div>
+  )
 }
 
 export default TableRowDataUsers
