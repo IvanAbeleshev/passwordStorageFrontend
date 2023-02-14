@@ -1,7 +1,7 @@
-import { faFolderOpen } from '@fortawesome/free-solid-svg-icons'
+import { faCircleXmark, faFolderOpen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Image, Popover } from 'antd'
-import { ChangeEventHandler, useEffect, useRef, useState } from 'react'
+import { ChangeEventHandler, MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { iService } from '../../interfaces/modelInterfaces'
 import ServicesOfServices from '../../services/ServicesOfServices'
 import CustomPlaceholderInput from '../CustomPlaceholderInput'
@@ -79,6 +79,12 @@ const ServiceSelector=({validation=false, setSelectedService, selectedService}:i
   const selectElement=(item:iService)=>{
     setValue({value:item, label: item.name})
     setSelectedService(item)
+  }
+
+  const cleanValue:MouseEventHandler=()=>{
+    setValue({value:undefined, label:''})
+    setFindedData([])
+    setSelectedService()
   }
 
   return (
@@ -159,6 +165,7 @@ const ServiceSelector=({validation=false, setSelectedService, selectedService}:i
         >
           {findedData.map(element=>
             <div
+              key={element.id}
               onClick={()=>selectElement(element)}
               className='w-full hover:bg-main hover:text-hover rounded-full'
             >
@@ -179,6 +186,16 @@ const ServiceSelector=({validation=false, setSelectedService, selectedService}:i
         </div>
       }
       </div>
+      {value.value&&
+        <div 
+          className='text-xl pl-1 hover:cursor-pointer hover:text-btn-err'
+          onClick={cleanValue}
+        >
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+          />
+        </div>
+      }
     </div>
   )
 }

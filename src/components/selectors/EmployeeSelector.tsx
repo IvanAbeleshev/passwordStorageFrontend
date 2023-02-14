@@ -1,8 +1,8 @@
 
-import { faFolderOpen } from '@fortawesome/free-solid-svg-icons'
+import { faCircleXmark, faFolderOpen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Image, Popover } from 'antd'
-import { ChangeEventHandler, useEffect, useRef, useState } from 'react'
+import { ChangeEventHandler, MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { iEmployee } from '../../interfaces/modelInterfaces'
 import ServiceEmployee from '../../services/ServiceEmployee'
 import CustomPlaceholderInput from '../CustomPlaceholderInput'
@@ -80,6 +80,12 @@ const EmployeeSelector=({validation=false, setSelectedEmployee, selectedEmployee
   const selectElement=(item:iEmployee)=>{
     setValue({value:item, label: item.name})
     setSelectedEmployee(item)
+  }
+
+  const cleanValue:MouseEventHandler=()=>{
+    setValue({value:undefined, label:''})
+    setFindedData([])
+    setSelectedEmployee()
   }
 
   return (
@@ -160,6 +166,7 @@ const EmployeeSelector=({validation=false, setSelectedEmployee, selectedEmployee
         >
           {findedData.map(element=>
             <div
+              key={element.id}
               onClick={()=>selectElement(element)}
               className='w-full hover:bg-main hover:text-hover rounded-full'
             >
@@ -180,6 +187,16 @@ const EmployeeSelector=({validation=false, setSelectedEmployee, selectedEmployee
         </div>
       }
       </div>
+      {value.value&&
+        <div 
+          className='text-xl pl-1 hover:cursor-pointer hover:text-btn-err'
+          onClick={cleanValue}
+        >
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+          />
+        </div>
+      }
     </div>
   )
 }

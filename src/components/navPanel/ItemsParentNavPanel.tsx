@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode } from 'react'
 import { iEmployee } from '../../interfaces/modelInterfaces'
 
 interface iPropsItemsParentNavPanel{
@@ -7,23 +7,10 @@ interface iPropsItemsParentNavPanel{
 }
 
 const ItemsParentNavPanel=({ item, children }:iPropsItemsParentNavPanel)=>{
-  const [visible, setVisible] = useState<boolean>(false)
-  
-  useEffect(()=>{
-    setVisible(true)
-  },[])
 
   return(
     <div 
-      className={`
-        transition-all 
-        duration-300 
-        hover:cursor-default
-        ${visible?
-          'translate-x-0 opacity-100':
-          '-translate-x-[100px] opacity-0'
-        }`
-      }
+      className='hover:cursor-default'
     >
       <div 
         className='
@@ -39,7 +26,9 @@ const ItemsParentNavPanel=({ item, children }:iPropsItemsParentNavPanel)=>{
         />
         <span>{item.name}</span>
       </div>
-      {children}
+      <div className='p-2 flex flex-col gap-y-1'>
+        {children}
+      </div>
     </div>
   )
 }

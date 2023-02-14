@@ -1,27 +1,24 @@
-import { useEffect, useState } from 'react'
+import { MouseEventHandler } from 'react'
+import { Link } from 'react-router-dom'
 import { iPasswordGroup } from '../../interfaces/modelInterfaces'
+import { useAppDispatch } from '../../store/hooks/storeHooks'
+import { setPasswordFilterItem } from '../../store/passwordFilterSlice'
 
 interface iPropsItemSubNavPanel{
   data: iPasswordGroup,
   subElement: boolean,
 }
 const ItemSubNavPanel=({ data, subElement }: iPropsItemSubNavPanel)=>{
-  const [currentVisible, setCurrentVisible] = useState<boolean>(false)
-  
-  useEffect(()=>{
-    setCurrentVisible(true)
-  },[])
+  const dispatch = useAppDispatch()
+
+  const clickItemHandle:MouseEventHandler=()=>{
+    dispatch(setPasswordFilterItem({passwordGroup:data}))
+  }
 
   return(
-    <div 
-      className={`
-        transition-all 
-        duration-500
-        ${currentVisible?
-          `${subElement?'translate-x-[12px]':'translate-x-0' } opacity-100`:
-          '-translate-x-[100px] opacity-0'
-        }`
-      }
+    <Link 
+      to={'/passwordsList/1'}
+      onClick={clickItemHandle}
     >
       <div 
         className='
@@ -38,7 +35,7 @@ const ItemSubNavPanel=({ data, subElement }: iPropsItemSubNavPanel)=>{
         />
         <span>{data.name}</span>
       </div>
-    </div>
+    </Link>
   )
 }
 

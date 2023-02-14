@@ -9,8 +9,9 @@ import CustomPlaceholderInput from '../components/CustomPlaceholderInput'
 import ServicePassword from '../services/ServicePassword'
 import { errorNotificator, infoNotificator, successNotificator } from '../utils/notificator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUnlock } from '@fortawesome/free-solid-svg-icons'
+import { faUnlock, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Popconfirm } from 'antd'
+import { useAppSelector } from '../store/hooks/storeHooks'
 
 const PasswordItem=()=>{
   const [employee, setEmployee] = useState<iEmployee>()
@@ -19,9 +20,12 @@ const PasswordItem=()=>{
 
   const [inputsData, setInputsData] = useState<iPassword>({} as iPassword)
   const [isPasswordLock, setIsPasswordLock] = useState(true)
+  const [isQuestionFill, setIsQuestionFill] = useState(false)
 
   const navigator = useNavigate()
   const{id} = useParams()
+  const countFilters = useAppSelector(state=>state.passwordFilter.countActiveFilter)
+  const filters = useAppSelector(state=>state.passwordFilter.filters)
 
   useEffect(()=>{
     setInputsData({...inputsData, passwordGroupId: group?.id||0})
@@ -42,6 +46,12 @@ const PasswordItem=()=>{
     setInputsData({...inputsData, [event.target.name]:event.target.value})
   }
   
+  useEffect(()=>{
+    if(id==='new'&&countFilters>0){
+      setIsPasswordLock(true)
+    }
+  },[id, countFilters])
+
   useEffect(()=>{
     if(id !== 'new'){
       ServicePassword.getPasswordItem(id).then(
@@ -101,13 +111,108 @@ const PasswordItem=()=>{
 
   return(
   <>
+    {isQuestionFill&&
+      <div 
+        className='
+          fixed 
+          top-0 
+          left-0 
+          bg-main/80 
+          h-screen 
+          w-screen 
+          z-10 flex 
+          justify-center 
+          items-center'
+      >
+        <div className='relative bg-hover min-w-[30%] min-h-[30%] rounded-xl p-5 flex flex-col items-center justify-between'>
+          <button 
+            onClick={()=>setIsQuestionFill(false)}
+            className='
+              group 
+              transition-all 
+              flex 
+              justify-center 
+              items-center 
+              absolute 
+              right-3 
+              top-3 
+              border-2 
+              p-1 
+              w-7 
+              h-7 
+              rounded-md 
+              border-black 
+              hover:rounded-full 
+              hover:bg-btn-err-hover'
+          >
+            <FontAwesomeIcon 
+              className='transition-all group-hover:rotate-180' 
+              icon={faXmark} 
+            /> 
+          </button>
+          <h1 className='text-xl'>Autocomplete by filter fields?</h1>
+          {filters.passwordGroup&&
+          <h3>-password group: {filters.passwordGroup.name}</h3>
+          }
+          {filters.employee&&
+          <h3>-employee: {filters.employee.name}</h3>
+          }
+          {filters.service&&
+          <h3>-service: {filters.service.name}</h3>
+          }
+          <div className='flex gap-10 text-hover'>
+            <button 
+              onClick={()=>setIsQuestionFill(false)}
+              className='
+                py-2 
+                px-6 
+                rounded-xl 
+                shadow-md 
+                bg-btn-s 
+                hover:bg-btn-s-hover 
+                hover:cursor-pointer'
+            >
+              Cancel
+            </button>
+            <button
+              onClick={()=>{
+                setInputsData({...inputsData, ...filters})
+                setIsQuestionFill(false)
+              }}
+              className='
+                py-2 
+                px-6 
+                rounded-xl 
+                shadow-md 
+                bg-btn 
+                hover:bg-btn-hover 
+                hover:cursor-pointer' 
+            >
+              Transfer
+            </button>
+          </div>
+        </div>
+      </div>
+    }
     <DefaultContainerData>
       <div className='flex flex-col gap-5 justify-center items-center'>
         <div className='flex justify-center items-stretch gap-5 min-w-[40%]'>
           <div className='flex flex-col gap-5 basis-1/2'>
-            <ServiceSelector validation={true} setSelectedService={setService} selectedService={inputsData.service} />
-            <EmployeeSelector validation={true} setSelectedEmployee={setEmployee} selectedEmployee={inputsData.employee} />
-            <GroupSelector validation={true} setSelectedGroup={setGroup} selectedPasswordGroup={inputsData.passwordGroup} />
+            <GroupSelector 
+              validation={true} 
+              setSelectedGroup={setGroup} 
+              selectedPasswordGroup={inputsData.passwordGroup} 
+            />
+            <EmployeeSelector 
+              validation={true} 
+              setSelectedEmployee={setEmployee} 
+              selectedEmployee={inputsData.employee} 
+            />
+            <ServiceSelector 
+              validation={true} 
+              setSelectedService={setService} 
+              selectedService={inputsData.service} 
+            />
           </div>
           <div className='flex flex-col gap-5 basis-1/2'>
             <CustomPlaceholderInput

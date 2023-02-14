@@ -1,8 +1,8 @@
 
-import { faFolderOpen } from '@fortawesome/free-solid-svg-icons'
+import { faCircleXmark, faFolderOpen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Image, Popover } from 'antd'
-import { ChangeEventHandler, useEffect, useRef, useState } from 'react'
+import { ChangeEventHandler, MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { iPasswordGroup } from '../../interfaces/modelInterfaces'
 import ServicePasswordGroup from '../../services/ServicePasswordGroup'
 import CustomPlaceholderInput from '../CustomPlaceholderInput'
@@ -80,6 +80,12 @@ const GroupSelector=({validation=false, setSelectedGroup, selectedPasswordGroup}
   const selectElement=(item:iPasswordGroup)=>{
     setValue({value:item, label: item.name})
     setSelectedGroup(item)
+  }
+
+  const cleanValue:MouseEventHandler=()=>{
+    setValue({value:undefined, label:''})
+    setFindedData([])
+    setSelectedGroup()
   }
 
   return (
@@ -160,6 +166,7 @@ const GroupSelector=({validation=false, setSelectedGroup, selectedPasswordGroup}
         >
           {findedData.map(element=>
             <div
+              key={element.id}
               onClick={()=>selectElement(element)}
               className='w-full hover:bg-main hover:text-hover rounded-full'
             >
@@ -180,6 +187,16 @@ const GroupSelector=({validation=false, setSelectedGroup, selectedPasswordGroup}
         </div>
       }
       </div>
+      {value.value&&
+        <div 
+          className='text-xl pl-1 hover:cursor-pointer hover:text-btn-err'
+          onClick={cleanValue}
+        >
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+          />
+        </div>
+      }
     </div>
   )
 }

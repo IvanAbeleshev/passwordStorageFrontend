@@ -23,8 +23,9 @@ import { useAppDispatch, useAppSelector } from '../store/hooks/storeHooks'
 import { selectorModalWindowVisible } from '../store/modalWindowSlice'
 import { fetchPasswordsGroups } from '../store/passwordsGroupsSlice'
 import { Spin } from 'antd'
+import { setPasswordFilterItem } from '../store/passwordFilterSlice'
 
-interface IPropsNavPanel {
+interface iPropsNavPanel {
   children: React.ReactNode,
 }
 
@@ -42,7 +43,7 @@ const arrayOfItemsNavMenu: iItemNavMenu[] = [
   { icon: faBook, title: 'Log', path: '/log/1' },
 ]
 
-const NavPanel = ({ children }: IPropsNavPanel) => {
+const NavPanel = ({ children }: iPropsNavPanel) => {
   const [currentVisible, setCurrentVisible] = useState(true)
   const [timeoutId, setTimeoutId]: [undefined | string, Function] = useState(undefined)
 
@@ -132,6 +133,10 @@ const NavPanel = ({ children }: IPropsNavPanel) => {
                       ref={nodeEl=>element.title==='Passwords'&&(refNavItemPassword.current=nodeEl)} 
                       onMouseEnter={handleShowPanel}
                       onMouseLeave={handleHidePanel}
+                      onClick={()=>{
+                        if(element.title==='Passwords')
+                          dispatch(setPasswordFilterItem({passwordGroup: undefined}))
+                      }}
                       className='px-3'
                     >
                       <Link 

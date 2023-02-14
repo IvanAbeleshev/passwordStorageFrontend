@@ -85,7 +85,12 @@ class ServicePassword{
 
   public getPasswordList=async(page:number, employeeId?:number, serviceId?:number, passwordGroupId?:number):Promise<iGetPasswordList>=>{
     try{
-      const requestResult = await axiosSecureInstance.get(`/passwords?page=${page}&limit=${this.requiredAmountItemsForList}`)
+      let additinalQueryParams = ''
+      employeeId&&(additinalQueryParams+=`&employeeId=${employeeId}`)
+      serviceId&&(additinalQueryParams+=`&serviceId=${serviceId}`)
+      passwordGroupId&&(additinalQueryParams+=`&passwordGroupId=${passwordGroupId}`)
+
+      const requestResult = await axiosSecureInstance.get(`/passwords?page=${page}&limit=${this.requiredAmountItemsForList}${additinalQueryParams}`)
       const {rows, count} = requestResult.data.data
       const payload:ModelPassword[] = []
       for(let item of rows){
