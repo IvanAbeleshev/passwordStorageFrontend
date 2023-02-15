@@ -20,3 +20,5 @@ class ModelUser implements iUser{
     })
   }
 }
+
+export default ModelUser

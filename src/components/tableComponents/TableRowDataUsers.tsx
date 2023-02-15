@@ -1,10 +1,15 @@
+import { useNavigate } from 'react-router-dom'
+import { iUser } from '../../interfaces/modelInterfaces'
+
 interface IPropsTableRow{
-  data: any
+  data: iUser
 }
 
 const TableRowDataUsers=({data}: IPropsTableRow)=>{
+  const navigator = useNavigate()
   return(
     <div
+      onClick={()=>navigator(`/userItem/${data.id}`)}
       className='
         table-row 
         text-xl 
@@ -13,14 +18,11 @@ const TableRowDataUsers=({data}: IPropsTableRow)=>{
         hover:cursor-pointer 
         align-middle'
     >
-      <div className='table-cell'>
-        {data.name}
+      <div className='table-cell pl-2 rounded-l-full'>
+        {data.login}
       </div>
-      <div className='table-cell'>
-        {
-          data.description&&
-            (data.description.length>50?data.description?.slice(0, 47)+'...':data.description)
-        }
+      <div className='table-cell pr-2 rounded-r-full'>
+        {data.role}
       </div>
     </div>
   )

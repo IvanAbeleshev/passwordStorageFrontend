@@ -1,5 +1,5 @@
-import { useState} from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState} from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { searchSelectorString } from '../store/sliceSearch'
 import DefaultContainerData from '../components/DefaultContainerData'
@@ -7,42 +7,30 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import TableRowHead from '../components/tableComponents/TableRowHead'
 import Paginator from '../components/Paginator'
+import ServiceUser from '../services/ServiceUser'
+import { iUser } from '../interfaces/modelInterfaces'
+import TableRowDataUsers from '../components/tableComponents/TableRowDataUsers'
 
 
 
 const UsersList=()=>{
+  const [dataList, setDataList] = useState<iUser[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [countPages, setCountPages] = useState(0)
 
-  const[countState, setCountState] = useState(0)
-  const[rowsState, setRowsState] = useState([])
-
-  const {pageIndex} = useParams()
   const searchString = useSelector(searchSelectorString)
 
   const navigator = useNavigate()
-    
-    // useEffect(()=>{
-    //     const resolveFunction=(response:AxiosResponse)=>{
-    //         const {count, rows}: {count:string, rows: IDataRowsUser[]} = response.data.data
-    //         setCountState(count)
-    //         setRowsState(rows)     
-    //     }
+  
+  useEffect(()=>{
 
-    //     axiosInstance.get(`/users?page=${pageIndex}&limit=${LIMIT_ITEMS_ON_PAGE}${searchString?`&searchString=${searchString}`:''}`).then(resolveFunction)
+    ServiceUser.getUserList(currentPage, searchString).then(
+      ({payload, pages})=>{
+        setCountPages(pages)
+        setDataList(payload.map(element=>element.getStructureData()))
+      })
+  },[currentPage, searchString])
 
-    // }, [pageIndex, searchString])
-
-    // const addNewItem: React.MouseEventHandler=()=>{
-    //     navigator('/userItem/new')
-    // }
-
-    // const navigateByPath=(path:number)=>{
-    //     const handleOnClick:React.MouseEventHandler=()=>{
-    //         navigator(`/userItem/${path}`)    
-    //     }
-    //     return handleOnClick
-    // }
   return(
   <>
     <DefaultContainerData>
@@ -75,7 +63,7 @@ const UsersList=()=>{
           />    
         </div>
         <div className='table-row-group'>
-          
+          {dataList.map(item=><TableRowDataUsers data={item} key={item.id} />)}
         </div>
       </div>
     </DefaultContainerData>
