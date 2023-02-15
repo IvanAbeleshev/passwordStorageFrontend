@@ -1,3 +1,5 @@
+import { faCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate } from 'react-router-dom'
 import { iUser } from '../../interfaces/modelInterfaces'
 
@@ -19,6 +21,18 @@ const TableRowDataUsers=({data}: IPropsTableRow)=>{
         align-middle'
     >
       <div className='table-cell pl-2 rounded-l-full'>
+        {data.active?
+          <FontAwesomeIcon
+            className='text-green-400'
+            icon={faCheck}
+          />:
+          <FontAwesomeIcon
+            className='text-btn-err-hover'
+            icon={faCircleXmark}
+          />
+        }
+      </div>
+      <div className='table-cell'>
         {data.login}
       </div>
       <div className='table-cell pr-2 rounded-r-full'>

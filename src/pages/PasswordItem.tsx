@@ -48,7 +48,7 @@ const PasswordItem=()=>{
   
   useEffect(()=>{
     if(id==='new'&&countFilters>0){
-      setIsPasswordLock(true)
+      setIsQuestionFill(true)
     }
   },[id, countFilters])
 

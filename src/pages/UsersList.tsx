@@ -59,7 +59,7 @@ const UsersList=()=>{
       <div className='table w-full'>
         <div className='table-header-group'>
           <TableRowHead 
-            data={['Username', 'Role']}
+            data={['Active', 'Username', 'Role']}
           />    
         </div>
         <div className='table-row-group'>

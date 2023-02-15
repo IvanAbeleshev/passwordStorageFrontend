@@ -41,5 +41,6 @@ export interface iPassword{
 export interface iUser{
   id?: number,
   login: string,
-  role: en_userRoleType
+  role: en_userRoleType,
+  active: boolean
 }

@@ -94,7 +94,7 @@ class ServiceAuthentication{
   public checkAdminUser=async():Promise<iDefaultResponseService>=>{
     try{
       const resultRequest = await axiosSecureInstance.get('/users/checkAdmin')
-      const {isError} = resultRequest.data
+      const isError = resultRequest.data.error
       return {isError}
     }catch(error){
       if(isAxiosError(error)){

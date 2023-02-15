@@ -16,14 +16,15 @@ interface iChangeItem{
   login?: string,
   password?: string,
   role?: en_userRoleType,
+  active:boolean
 }
 
 class ServiceUser{
   private requiredAmountItemsForList = 20
   
-  public changeUser=async(id:string, login?:string, password?:string, role?:en_userRoleType):Promise<iDefaultResponseService>=>{
+  public changeUser=async(id:string, active:boolean, login?:string, password?:string, role?:en_userRoleType):Promise<iDefaultResponseService>=>{
     try{
-      let sendingData:iChangeItem ={}
+      let sendingData:iChangeItem = {active}
       login&&(sendingData.login = login)
       password&&(sendingData.password = password)
       role&&(sendingData.role = role)
@@ -72,9 +73,9 @@ class ServiceUser{
     }
   }
 
-  public createUser=async(login:string, password:string, role:en_userRoleType):Promise<iDefaultResponseService>=>{
+  public createUser=async(login:string, password:string, role:en_userRoleType, active:boolean):Promise<iDefaultResponseService>=>{
     try{
-      await axiosSecureInstance.post(`/users`, {login, password, role})
+      await axiosSecureInstance.post(`/users`, {login, password, role, active})
       return {isError: false}
     }catch(error){
       if(isAxiosError(error)){

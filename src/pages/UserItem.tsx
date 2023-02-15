@@ -1,3 +1,4 @@
+import { Switch } from 'antd'
 import { useState, ChangeEventHandler, MouseEventHandler, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import CustomPlaceholderInput from '../components/CustomPlaceholderInput'
@@ -25,7 +26,7 @@ const UserItem=()=>{
 
 	const changeUser:MouseEventHandler=()=>{
 		if(id)
-			ServiceUser.changeUser(id, inputsData.login, password, inputsData.role).then(()=>{
+			ServiceUser.changeUser(id, inputsData.active, inputsData.login, password, inputsData.role).then(()=>{
 				successNotificator('User changed', `User ${inputsData.login} was changed`)
 				navigator(-1)
 			}).catch(error=>errorNotificator('Error change', error.message))
@@ -36,7 +37,7 @@ const UserItem=()=>{
 	}
 
 	const createUser:MouseEventHandler=()=>{
-		ServiceUser.createUser(inputsData.login, password, inputsData.role).then(
+		ServiceUser.createUser(inputsData.login, password, inputsData.role, inputsData.active).then(
       ()=>{
         successNotificator('Create success', `Created new user: ${inputsData.login}`)
         navigator(-1)
@@ -44,11 +45,20 @@ const UserItem=()=>{
     ).catch(error=>errorNotificator('Create error', error.message))
 	}
 
+	const changeActive=(active:boolean)=>{
+		setInputsData({...inputsData, active})
+	}
+
 	return (
 		
 		<DefaultContainerData>
 			<div className='flex justify-center'>
 				<div className='flex flex-col gap-5 w-fit min-w-[30%]'>
+					<div className='flex gap-10'>
+						<h4>Active:</h4>
+						<Switch checked={inputsData.active} onChange={changeActive} />
+					</div>
+					
 					<CustomPlaceholderInput
 						placeholder='Login'
 						value={inputsData.login}
@@ -133,10 +143,7 @@ const UserItem=()=>{
 				</div>
 			</div>
 		</DefaultContainerData>
-		
-			
 	)
-
 }
 
 export default UserItem
