@@ -1,7 +1,7 @@
-import { Image } from 'antd'
 import { MouseEventHandler, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { iPassword } from '../../interfaces/modelInterfaces'
+import SecureImage from '../SecureImage'
 
 interface iPropsTableRow{
   data: iPassword,
@@ -39,7 +39,7 @@ const TableRowDataPassword=({ data }:iPropsTableRow)=>{
         className='table-cell rounded-l-full align-middle'
       >
         <div ref={refPreviewPasswordGroupImg} className='w-fit '>
-          <Image
+          <SecureImage
             preview={previewImg} 
             src={data.passwordGroup?.icon} 
             width={40} 
@@ -53,7 +53,7 @@ const TableRowDataPassword=({ data }:iPropsTableRow)=>{
       </div>
       <div className='table-cell'>
         <div ref={refPreviewEmployeeImg} className='w-fit '>
-          <Image
+          <SecureImage
             preview={previewImg} 
             src={data.employee?.img} 
             width={40} 
@@ -67,7 +67,7 @@ const TableRowDataPassword=({ data }:iPropsTableRow)=>{
       </div>
       <div className='table-cell'>
         <div ref={refPreviewServiceImg} className='w-fit '>
-          <Image
+          <SecureImage
             preview={previewImg} 
             src={data.service?.img} 
             width={40} 

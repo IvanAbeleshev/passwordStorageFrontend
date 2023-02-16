@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { iPasswordGroup } from '../../interfaces/modelInterfaces'
 import { useAppDispatch } from '../../store/hooks/storeHooks'
 import { setPasswordFilterItem } from '../../store/passwordFilterSlice'
+import SecureImage from '../SecureImage'
 
 interface iPropsItemSubNavPanel{
   data: iPasswordGroup,
@@ -28,7 +29,10 @@ const ItemSubNavPanel=({ data, subElement }: iPropsItemSubNavPanel)=>{
           rounded-full 
           hover:cursor-pointer'
       >
-        <img 
+        <SecureImage
+          preview={false}
+          width={25}
+          height={25}
           className='w-[25px] h-[25px] rounded-full' 
           src={data.icon} 
           alt='icon' 

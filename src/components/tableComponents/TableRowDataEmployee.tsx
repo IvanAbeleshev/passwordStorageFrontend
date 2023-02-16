@@ -1,8 +1,8 @@
-import { Image } from 'antd'
 import { MouseEventHandler, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { iEmployee } from '../../interfaces/modelInterfaces'
 import { formatDateToStandartDateFormat } from '../../utils/dateFunction'
+import SecureImage from '../SecureImage'
 
 interface iPropsTableRow{
   data: iEmployee,
@@ -36,7 +36,7 @@ const TableRowDataEmployee=({ data }: iPropsTableRow)=>{
         ref={refPreviewEmployeeImg} 
         className='table-cell rounded-l-full align-middle'
       >
-        <Image 
+        <SecureImage 
           preview={previewImg} 
           src={data.img} 
           width={40} 

@@ -1,7 +1,7 @@
-import { Image } from 'antd'
 import { MouseEventHandler, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { iService } from '../../interfaces/modelInterfaces'
+import SecureImage from '../SecureImage'
 
 interface iPropsTableRow{
   data: iService,
@@ -35,7 +35,7 @@ const TableRowDataService=({data}: iPropsTableRow)=>{
         className='table-cell rounded-l-full align-middle'
       >
         <div ref={refPreviewEmployeeImg} className='w-fit '>
-          <Image 
+          <SecureImage 
             preview={previewImg} 
             src={data.img} 
             width={40} 

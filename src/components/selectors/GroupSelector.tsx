@@ -1,11 +1,12 @@
 
 import { faCircleXmark, faFolderOpen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Image, Popover } from 'antd'
+import { Popover } from 'antd'
 import { ChangeEventHandler, MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { iPasswordGroup } from '../../interfaces/modelInterfaces'
 import ServicePasswordGroup from '../../services/ServicePasswordGroup'
 import CustomPlaceholderInput from '../CustomPlaceholderInput'
+import SecureImage from '../SecureImage'
 
 interface iSelectedGroup{
   value?: iPasswordGroup,
@@ -91,7 +92,7 @@ const GroupSelector=({validation=false, setSelectedGroup, selectedPasswordGroup}
   return (
     <div className='flex items-end w-full'>
       {value.value&&
-        <Image
+        <SecureImage
           preview={previewImg}
           className='rounded-full'
           src={value.value.icon}
@@ -170,7 +171,7 @@ const GroupSelector=({validation=false, setSelectedGroup, selectedPasswordGroup}
               onClick={()=>selectElement(element)}
               className='w-full hover:bg-main hover:text-hover rounded-full'
             >
-              <Image 
+              <SecureImage 
                 className='rounded-full'
                 preview={false}
                 src={element.icon}

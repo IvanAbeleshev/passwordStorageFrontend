@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { iEmployee } from '../../interfaces/modelInterfaces'
+import SecureImage from '../SecureImage'
 
 interface iPropsItemsParentNavPanel{
   item: iEmployee,
@@ -19,7 +20,10 @@ const ItemsParentNavPanel=({ item, children }:iPropsItemsParentNavPanel)=>{
           border-b-2
           text-lg' 
       >
-        <img 
+        <SecureImage
+          width={25} 
+          height={25}
+          preview={false}
           className='w-[25px] h-[25px] rounded-full' 
           src={item.img} 
           alt='icon' 

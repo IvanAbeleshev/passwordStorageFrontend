@@ -1,11 +1,12 @@
 
 import { faCircleXmark, faFolderOpen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Image, Popover } from 'antd'
+import { Popover } from 'antd'
 import { ChangeEventHandler, MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { iEmployee } from '../../interfaces/modelInterfaces'
 import ServiceEmployee from '../../services/ServiceEmployee'
 import CustomPlaceholderInput from '../CustomPlaceholderInput'
+import SecureImage from '../SecureImage'
 
 interface iSelectedEmployee{
   value?: iEmployee,
@@ -91,7 +92,7 @@ const EmployeeSelector=({validation=false, setSelectedEmployee, selectedEmployee
   return (
      <div className='flex items-end w-full'>
       {value.value&&
-        <Image
+        <SecureImage
           preview={previewImg}
           className='rounded-full'
           src={value.value?.img}
@@ -170,7 +171,7 @@ const EmployeeSelector=({validation=false, setSelectedEmployee, selectedEmployee
               onClick={()=>selectElement(element)}
               className='w-full hover:bg-main hover:text-hover rounded-full'
             >
-              <Image 
+              <SecureImage 
                 className='rounded-full'
                 preview={false}
                 src={element.img}

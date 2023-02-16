@@ -1,7 +1,5 @@
-import axios from 'axios'
 import React, {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import axiosInstance from '../common'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constans'
 import ServiceAthentication from '../services/ServiceAthentication'
 import { currentUserState, setAuthValue } from '../store/authSlice'

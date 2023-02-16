@@ -1,5 +1,6 @@
-import { Image, Upload, UploadFile, UploadProps } from 'antd'
+import { Upload, UploadFile, UploadProps } from 'antd'
 import { MouseEventHandler, useEffect, useState } from 'react'
+import SecureImage from './SecureImage'
 
 interface iPropsImageUploader{
   setBlob: Function
@@ -62,7 +63,7 @@ const ImageUploader=({ setBlob, urlImg }:iPropsImageUploader)=>{
           </button>
         </Upload>:
         <div className='flex'>
-          <Image
+          <SecureImage 
             className='rounded-full'
             width={150}
             height={150}
