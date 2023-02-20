@@ -11,6 +11,8 @@ import PasswordItem from '../pages/PasswordItem'
 import UsersList from '../pages/UsersList'
 import UserItem from '../pages/UserItem'
 import { useAppSelector } from '../store/hooks/storeHooks'
+import PersonalSettings from '../pages/PersonalSettings';
+import ChangePassword from '../pages/ChangePassword';
 
 
 const Routing = () =>{
@@ -54,6 +56,9 @@ const Routing = () =>{
       <Route path='userItem' element={<NavPanel><UserItem/></NavPanel>}>
         <Route path=':id' element={<NavPanel><UserItem/></NavPanel>} />
       </Route>
+      
+      <Route path='personalSettings' element={<NavPanel><PersonalSettings/></NavPanel>} />
+      <Route path='changePassword' element={<NavPanel><ChangePassword/></NavPanel>} />
       
       <Route
         path='*'

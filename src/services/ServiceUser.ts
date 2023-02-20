@@ -86,6 +86,18 @@ class ServiceUser{
     }
   }
 
+  public changePassword=async(password:string):Promise<iDefaultResponseService>=>{
+    try{
+      await axiosSecureInstance.post('/users/changePassword', {password})
+      return {isError: false}
+    }catch(error){
+      if(isAxiosError(error)){
+        const message=error.response?.data.message||error.message
+        throw new Error(message)
+      }
+      throw new Error('error in algoritm frontEnd part')
+    }
+  }
 }
 
 export default new ServiceUser()

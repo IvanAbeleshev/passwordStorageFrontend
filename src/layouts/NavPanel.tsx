@@ -225,7 +225,7 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
               onClick={hancleOnClickChangeVisible}
             />
             <span className='text-white'>
-              {userState.login}
+              <Link to='/personalSettings'>{userState.login}</Link>
             </span>
           </div>
           <input
