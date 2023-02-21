@@ -6,6 +6,7 @@ import { searchSlice } from './sliceSearch'
 import notificationMessageSlice from './notificationMessageSlice'
 import spinerSlice from './spinerSlice'
 import passwordFilterSlice from './passwordFilterSlice'
+import passwordGeneratorSlice from './passwordGeneratorSlice'
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,8 @@ export const store = configureStore({
     notification: notificationMessageSlice,
     spiner: spinerSlice, 
     passwordsGroups: passwordsGroupsSlice,
+    passwordGenerator: passwordGeneratorSlice,
+    
   }
 })
 

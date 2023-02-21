@@ -44,3 +44,9 @@ export interface iUser{
   role: en_userRoleType,
   active: boolean
 }
+
+export interface iPasswordGenerator{
+  passwordLength:number,
+  useUpperCaseSymbols:boolean,
+  useExtraSymbols:boolean,
+}

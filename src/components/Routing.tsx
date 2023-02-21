@@ -13,6 +13,8 @@ import UserItem from '../pages/UserItem'
 import { useAppSelector } from '../store/hooks/storeHooks'
 import PersonalSettings from '../pages/PersonalSettings';
 import ChangePassword from '../pages/ChangePassword';
+import ApplicationSettings from '../pages/ApplicationSettings';
+import PasswordGenerationSetting from '../pages/PasswordGenerationSetting';
 
 
 const Routing = () =>{
@@ -58,8 +60,11 @@ const Routing = () =>{
       </Route>
       
       <Route path='personalSettings' element={<NavPanel><PersonalSettings/></NavPanel>} />
-      <Route path='changePassword' element={<NavPanel><ChangePassword/></NavPanel>} />
+      <Route path='personalSettings/changePassword' element={<NavPanel><ChangePassword/></NavPanel>} />
       
+      <Route path='applicationSettings' element={<NavPanel><ApplicationSettings /></NavPanel>} />
+      <Route path='applicationSettings/passwordGeneratorSetting' element={<NavPanel><PasswordGenerationSetting /></NavPanel>} />
+
       <Route
         path='*'
         element={<Navigate to='passwordsList/1' replace />}

@@ -8,7 +8,7 @@ const PersonalSettings=()=>{
         <li>
           <Link
             className='hover:text-btn'
-            to='/changePassword'
+            to='changePassword'
           >
             Change user password
           </Link>

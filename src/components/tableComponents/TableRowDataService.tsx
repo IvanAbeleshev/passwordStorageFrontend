@@ -49,7 +49,7 @@ const TableRowDataService=({data}: iPropsTableRow)=>{
       <div className='table-cell'>
         {data.name}
       </div>
-      <div className='table-cell'>
+      <div className='table-cell rounded-r-full'>
         {
           data.description&&
             (data.description.length>50?data.description?.slice(0, 47)+'...':data.description)

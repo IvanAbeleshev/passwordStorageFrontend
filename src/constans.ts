@@ -15,3 +15,6 @@ export let globalStore:EnhancedStore
 export const injectStore = (incomingStore:EnhancedStore) => {
   globalStore = incomingStore
 }
+
+//-------------------------------------seting--------------------------------
+export const settingPasswordGenerator = 'passwordGenerator'

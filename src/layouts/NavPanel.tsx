@@ -11,6 +11,7 @@ import {
   faLock,
   faUserLock,
   IconDefinition,
+  faGear,
 } from '@fortawesome/free-solid-svg-icons'
 import { currentUserState, setAuthInitialState } from '../store/authSlice'
 import { setValue } from '../store/sliceSearch'
@@ -179,6 +180,27 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
         </div>
         
         <div>
+          <Link
+            to='/applicationSettings'
+          >
+            <div className='group transition-all hover:text-hover text-center cursor-pointer'>
+              <FontAwesomeIcon 
+                className='text-5xl w-[100%] transition-all translate-y-4 group-hover:translate-y-0' 
+                icon={faGear} />
+              <h2 
+                className='
+                  text-md 
+                  w-[100%] 
+                  text-transparent 
+                  -translate-y-4 
+                  transition-all 
+                  group-hover:translate-y-0 
+                  group-hover:text-hover'
+              >
+                Settings
+              </h2>
+            </div>
+          </Link>
           <div onClick={clickLogOut}>
             <div className='group transition-all hover:text-hover text-center cursor-pointer'>
               <FontAwesomeIcon 

@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constans'
 import ServiceAthentication from '../services/ServiceAthentication'
 import { currentUserState, setAuthValue } from '../store/authSlice'
+import { useAppDispatch, useAppSelector } from '../store/hooks/storeHooks'
+import { fetchPasswordsGenerator } from '../store/passwordGeneratorSlice'
 import { decodeToken } from '../utils/tokensFuntion'
 
 interface iAuthWrapper{
@@ -10,8 +11,8 @@ interface iAuthWrapper{
 }
 
 const AuthWrapper=({children}:iAuthWrapper)=>{
-  const userState = useSelector(currentUserState)
-  const dispatch = useDispatch()
+  const userState = useAppSelector(currentUserState)
+  const dispatch = useAppDispatch()
 
   useEffect(()=>{
     ServiceAthentication.refresh().then((response)=>{
@@ -24,6 +25,7 @@ const AuthWrapper=({children}:iAuthWrapper)=>{
           login: resultDecodeJWT.login,
           authState:true
         }))
+        dispatch(fetchPasswordsGenerator())
       }else{
         dispatch(setAuthValue({authState: false}))
       }    

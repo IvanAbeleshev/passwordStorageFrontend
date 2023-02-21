@@ -9,9 +9,10 @@ import CustomPlaceholderInput from '../components/CustomPlaceholderInput'
 import ServicePassword from '../services/ServicePassword'
 import { errorNotificator, infoNotificator, successNotificator } from '../utils/notificator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUnlock, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { Popconfirm } from 'antd'
+import { faCode, faUnlock, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { Popconfirm, Popover } from 'antd'
 import { useAppSelector } from '../store/hooks/storeHooks'
+import PasswordGenerator from '../utils/passwordGenerator'
 
 const PasswordItem=()=>{
   const [employee, setEmployee] = useState<iEmployee>()
@@ -26,6 +27,7 @@ const PasswordItem=()=>{
   const{id} = useParams()
   const countFilters = useAppSelector(state=>state.passwordFilter.countActiveFilter)
   const filters = useAppSelector(state=>state.passwordFilter.filters)
+  const pgSetting = useAppSelector(state=>state.passwordGenerator.passwordGenerationSetting)
 
   useEffect(()=>{
     setInputsData({...inputsData, passwordGroupId: group?.id||0})
@@ -107,6 +109,15 @@ const PasswordItem=()=>{
         }
       )
     }
+  }
+
+  const generateNewPassword:MouseEventHandler=()=>{
+    const pg = new PasswordGenerator(
+      pgSetting.passwordLength, 
+      pgSetting.useUpperCaseSymbols, 
+      pgSetting.useExtraSymbols
+    )
+    setInputsData({...inputsData, password: pg.generatePassword()})
   }
 
   return(
@@ -262,6 +273,25 @@ const PasswordItem=()=>{
                   />
                 </Popconfirm>
               }
+              {
+                !isPasswordLock&&
+                <Popover
+                  placement='bottom' 
+                  title='Generate new password' 
+                  content={'automaticaly generate new password'}
+                >
+                  <FontAwesomeIcon
+                    onClick={generateNewPassword}
+                    className='
+                      text-btn 
+                      text-2xl 
+                      hover:text-btn-hover 
+                      hover:cursor-pointer'
+                    icon={faCode}
+                  />
+                </Popover>
+              }
+              
             </div>
           </div>
         </div>

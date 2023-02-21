@@ -6,6 +6,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constans'
 import ServiceAthentication from '../services/ServiceAthentication'
 import { setAuthValue } from '../store/authSlice'
 import { useAppDispatch } from '../store/hooks/storeHooks'
+import { fetchPasswordsGenerator } from '../store/passwordGeneratorSlice'
 import { errorNotificator, infoNotificator } from '../utils/notificator'
 import { decodeToken } from '../utils/tokensFuntion'
 
@@ -40,7 +41,7 @@ const Auth = () =>{
 		// eslint-disable-next-line
 	},[])
 
-	const subminAut:FormEventHandler=(event)=>{
+	const submitAut:FormEventHandler=(event)=>{
 		event.preventDefault()
 		if(checkAdminRole){
 			ServiceAthentication.createFirstUser(login, password).then(
@@ -74,6 +75,7 @@ const Auth = () =>{
 					login:result.login, 
 					authState:true
 				}))
+				dispatch(fetchPasswordsGenerator())
 			}
 		).catch(error=>errorNotificator('Authentication error', error.message))
 	}
@@ -89,7 +91,7 @@ const Auth = () =>{
 						</h3>
 						<form 
 							className='flex flex-col gap-5 text-lg text-main' 
-							onSubmit={subminAut}
+							onSubmit={submitAut}
 						>
 							<div className='flex justyfy-center'>
 								<CustomPlaceholderInput
