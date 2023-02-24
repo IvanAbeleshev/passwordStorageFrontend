@@ -50,3 +50,12 @@ export interface iPasswordGenerator{
   useUpperCaseSymbols:boolean,
   useExtraSymbols:boolean,
 }
+
+export interface iLogItem{
+  id:number,
+  createdAt: Date,
+  actionUser?:number,
+  actionType:string,
+  metaData?:string,
+  details?:string,
+}

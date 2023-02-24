@@ -15,6 +15,7 @@ import PersonalSettings from '../pages/PersonalSettings';
 import ChangePassword from '../pages/ChangePassword';
 import ApplicationSettings from '../pages/ApplicationSettings';
 import PasswordGenerationSetting from '../pages/PasswordGenerationSetting';
+import ChangeLogList from '../pages/ChangeLogList';
 
 
 const Routing = () =>{
@@ -64,6 +65,13 @@ const Routing = () =>{
       
       <Route path='applicationSettings' element={<NavPanel><ApplicationSettings /></NavPanel>} />
       <Route path='applicationSettings/passwordGeneratorSetting' element={<NavPanel><PasswordGenerationSetting /></NavPanel>} />
+
+      <Route path='changeLog' element={<NavPanel><ChangeLogList/></NavPanel>}>
+        <Route path=':id' element={<NavPanel><ChangeLogList/></NavPanel>} />
+      </Route>
+      <Route path='logRow' element={<NavPanel><UserItem/></NavPanel>}>
+        <Route path=':id' element={<NavPanel><UserItem/></NavPanel>} />
+      </Route>
 
       <Route
         path='*'

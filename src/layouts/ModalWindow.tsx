@@ -3,10 +3,10 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { hideModalWindow } from '../store/modalWindowSlice'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
-interface IPropsModalWindow{
+interface iPropsModalWindow{
   children: React.ReactNode,
 }
-const ModalWindow = ({children}: IPropsModalWindow) =>{
+const ModalWindow = ({children}: iPropsModalWindow) =>{
 
   const dispatch = useDispatch()
 

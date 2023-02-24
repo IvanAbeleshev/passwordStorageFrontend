@@ -40,7 +40,7 @@ const arrayOfItemsNavMenu: iItemNavMenu[] = [
   { icon: faBellConcierge, title: 'Servises', path: '/listServises/1' },
   { icon: faLock, title: 'Passwords', path: '/passwordsList/1' },
   { icon: faUserLock, title: 'Users', path: '/users/1' },
-  { icon: faBook, title: 'Log', path: '/log/1' },
+  { icon: faBook, title: 'Log', path: '/changeLog/1' },
 ]
 
 const NavPanel = ({ children }: iPropsNavPanel) => {

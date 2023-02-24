@@ -93,9 +93,11 @@ const Paginator=({countPages, currentPage, onChange }:iPropsPaginator)=>{
           px-3 
           mr-10
           rounded-full 
-          bg-hover
-          hover:bg-main
-          hover:text-hover
+          bg-main
+          text-hover
+          hover:bg-hover
+          hover:text-main
+          hover:cursor-pointer          
           flex 
           justify-center 
           items-center'
@@ -116,13 +118,12 @@ const Paginator=({countPages, currentPage, onChange }:iPropsPaginator)=>{
           py-1.5 
           px-3
           rounded-full 
-          hover:cursor-pointer
           flex 
           justify-center 
           items-center
           ${currentPage===element.path?
-            'bg-main text-hover':
-            'bg-hover hover:bg-main hover:text-hover'
+            'bg-hover text-main':
+            'bg-main text-hover hover:bg-hover hover:text-main hover:cursor-pointer'
           }`
         } 
         key={element.id} 
@@ -158,9 +159,11 @@ const Paginator=({countPages, currentPage, onChange }:iPropsPaginator)=>{
           px-3 
           ml-10
           rounded-full 
-          bg-hover
-          hover:bg-main
-          hover:text-hover
+          bg-main
+          text-hover
+          hover:bg-hover
+          hover:text-main
+          hover:cursor-pointer
           flex 
           justify-center 
           items-center'
