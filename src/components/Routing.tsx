@@ -32,30 +32,22 @@ const Routing = () =>{
 
   const pathAfterLogin = (
     <>
-      <Route path='listServises' element={<NavPanel><Services/></NavPanel>} >
-        <Route path=':servicesId' element={<NavPanel><Services/></NavPanel>} />
-      </Route>
+      <Route path='listServises' element={<NavPanel><Services/></NavPanel>} />
       <Route path='service' element={<NavPanel><ServiceItem/></NavPanel>} >
         <Route path=':servicesId' element={<NavPanel><ServiceItem/></NavPanel>} />
       </Route>
 
-      <Route path='employees' element={<NavPanel><EmployeesList/></NavPanel>}>
-        <Route path=':pageIndex' element={<NavPanel><EmployeesList/></NavPanel>} />
-      </Route>
+      <Route path='employees' element={<NavPanel><EmployeesList/></NavPanel>} />
       <Route path='employeeItem'>
         <Route path=':id' element={<NavPanel><EmployeeItem/></NavPanel>} />
       </Route>
 
-      <Route path='passwordsList' element={<NavPanel><PasswordsList/></NavPanel>}>
-        <Route path=':pageIndex' element={<NavPanel><PasswordsList/></NavPanel>} />
-      </Route>
+      <Route path='passwordsList' element={<NavPanel><PasswordsList/></NavPanel>} />
       <Route path='passwordItem' element={<NavPanel><PasswordItem/></NavPanel>}>
         <Route path=':id' element={<NavPanel><PasswordItem/></NavPanel>} />
       </Route>
 
-      <Route path='users' element={<NavPanel><UsersList/></NavPanel>}>
-        <Route path=':pageIndex' element={<NavPanel><UsersList/></NavPanel>} />
-      </Route>
+      <Route path='users' element={<NavPanel><UsersList/></NavPanel>} />
       <Route path='userItem' element={<NavPanel><UserItem/></NavPanel>}>
         <Route path=':id' element={<NavPanel><UserItem/></NavPanel>} />
       </Route>
@@ -66,16 +58,14 @@ const Routing = () =>{
       <Route path='applicationSettings' element={<NavPanel><ApplicationSettings /></NavPanel>} />
       <Route path='applicationSettings/passwordGeneratorSetting' element={<NavPanel><PasswordGenerationSetting /></NavPanel>} />
 
-      <Route path='changeLog' element={<NavPanel><ChangeLogList/></NavPanel>}>
-        <Route path=':id' element={<NavPanel><ChangeLogList/></NavPanel>} />
-      </Route>
+      <Route path='changeLog' element={<NavPanel><ChangeLogList/></NavPanel>} />
       <Route path='logRow' element={<NavPanel><UserItem/></NavPanel>}>
         <Route path=':id' element={<NavPanel><UserItem/></NavPanel>} />
       </Route>
 
       <Route
         path='*'
-        element={<Navigate to='passwordsList/1' replace />}
+        element={<Navigate to='passwordsList' replace />}
       />
     </>
   )

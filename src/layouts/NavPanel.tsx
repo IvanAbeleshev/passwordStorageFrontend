@@ -36,11 +36,11 @@ export interface iItemNavMenu {
 }
 
 const arrayOfItemsNavMenu: iItemNavMenu[] = [
-  { icon: faPerson, title: 'Employees', path: '/employees/1' },
-  { icon: faBellConcierge, title: 'Servises', path: '/listServises/1' },
-  { icon: faLock, title: 'Passwords', path: '/passwordsList/1' },
-  { icon: faUserLock, title: 'Users', path: '/users/1' },
-  { icon: faBook, title: 'Log', path: '/changeLog/1' },
+  { icon: faPerson, title: 'Employees', path: '/employees' },
+  { icon: faBellConcierge, title: 'Servises', path: '/listServises' },
+  { icon: faLock, title: 'Passwords', path: '/passwordsList' },
+  { icon: faUserLock, title: 'Users', path: '/users' },
+  { icon: faBook, title: 'Log', path: '/changeLog' },
 ]
 
 const NavPanel = ({ children }: iPropsNavPanel) => {

@@ -1,5 +1,5 @@
 import ModelLog from '../../models/ModelLog'
-import { formatDateToStandartDateFormat } from '../../utils/dateFunction'
+import { formatDateToDefaultDateFormat } from '../../utils/dateFunction'
 
 interface IPropsTableRow{
   data: ModelLog,
@@ -22,7 +22,7 @@ const TableRowDataLog=({ data, selectRow }: IPropsTableRow)=>{
         align-middle'
     >
       <div className='table-cell pl-2 rounded-l-full'>
-        {formatDateToStandartDateFormat(data.createdAt)}
+        {formatDateToDefaultDateFormat(data.createdAt)}
       </div>
       <div className='table-cell'>
         {data.actionType}

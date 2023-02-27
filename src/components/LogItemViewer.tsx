@@ -9,7 +9,7 @@ interface iPropsLogItemViewer{
 }
 
 const LogItemViewer=({ setVisible, selectedIdLog }:iPropsLogItemViewer)=>{
-
+  
 
   useEffect(()=>{
     ServiceChangeLog.getItem(selectedIdLog).then(
