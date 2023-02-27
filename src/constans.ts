@@ -1,7 +1,6 @@
 import { EnhancedStore } from '@reduxjs/toolkit'
 
-export const BACKEND_URL = 'http://localhost:7000'
-//export const BACKEND_URL = 'https://cd17-5-59-107-242.eu.ngrok.io'
+export const BACKEND_URL = 'http://localhost:7002'
 export const LIMIT_ITEMS_ON_PAGE = 10
 
 export const API_KEY_UNSPLASH = 'CKeoTf6sFeQLRgeqKdztLgEttZxnym716dMseBbKkcg'
