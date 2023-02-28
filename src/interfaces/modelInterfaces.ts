@@ -54,7 +54,7 @@ export interface iPasswordGenerator{
 export interface iLogItem{
   id:number,
   createdAt: Date,
-  actionUser?:number,
+  actionUserId?:number,
   actionType:string,
   metaData?:string,
   details?:string,

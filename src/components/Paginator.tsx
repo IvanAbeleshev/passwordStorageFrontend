@@ -29,17 +29,13 @@ const Paginator=({countPages, currentPage, onChange }:iPropsPaginator)=>{
         }
         tempPagesList.push({id: 7, title: '...', path: 7})
         tempPagesList.push({id: 8, title: String(countPages), path: countPages})
-      }
-
-      if(currentPage>=countPages-5){
+      }else if(currentPage>=countPages-5){
         tempPagesList.push({id: 0, title: '1', path: 1})
         tempPagesList.push({id: 1, title: '...', path: countPages-7})
         for(let i=0; i<7; i++){
           tempPagesList.push({id: i+2, title: String(countPages-6+i), path: countPages-6+i})
         }
-      }
-
-      if(currentPage>5 && currentPage<countPages-5){
+      }else if(currentPage>5 && currentPage<countPages-5){
         tempPagesList.push({id: 0, title: '1', path: 1})
         tempPagesList.push({id: 1, title: '...', path: currentPage-3})
 

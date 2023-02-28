@@ -1,12 +1,9 @@
-#temp various becouse use build and apache need set rewrite mode for it. 
-FROM node:alpine
+FROM nginx:alpine
 
-WORKDIR /app
+COPY build/ /usr/share/nginx/html
 
-COPY package.json .
-
-RUN npm install
-
-COPY . .
-
-CMD ["npm", "start"]
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Expose port
+EXPOSE 80
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]

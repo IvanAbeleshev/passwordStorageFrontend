@@ -19,6 +19,7 @@ class ServiceChangeLog{
     try{
       const resultRequest = await axiosSecureInstance.post(`/changeLog?page=${page}&limit=${this.amountOnPage}`)
       const {rows, count} = resultRequest.data.data
+      console.log('rows: ', rows)
       const payload:ModelLog[] = []
       for(let item of rows){
         payload.push(new ModelLog(item)) 

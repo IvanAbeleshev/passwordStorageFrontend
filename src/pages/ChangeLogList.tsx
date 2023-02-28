@@ -9,6 +9,7 @@ import TableRowDataLog from '../components/tableComponents/TableRowDataLog'
 import TableRowHead from '../components/tableComponents/TableRowHead'
 import ModelLog from '../models/ModelLog'
 import ServiceChangeLog from '../services/ServiceChangeLog'
+import { errorNotificator } from '../utils/notificator'
 
 const ChangeLogList=()=>{
   const [currentPage, setCurrentPage] = useState(1)
@@ -40,7 +41,7 @@ const ChangeLogList=()=>{
         setCountPages(pages)
         setDataList(payload)
       }
-    )
+    ).catch(error=>errorNotificator('Read list', error.message))
   }, [currentPage])
 
   return(
