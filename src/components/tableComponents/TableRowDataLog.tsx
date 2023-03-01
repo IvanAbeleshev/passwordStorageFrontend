@@ -28,7 +28,7 @@ const TableRowDataLog=({ data, selectRow }: IPropsTableRow)=>{
         {data.actionType}
       </div>
       <div className='table-cell'>
-        {data.actionUserId}
+        {data.actionUser?.login}
       </div>
       <div className='table-cell pr-2 rounded-r-full'>
         {data.metaData}

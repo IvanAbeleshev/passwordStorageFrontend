@@ -18,11 +18,13 @@ class ModelLog implements iLogItem{
   metaData?: string
   details?: string
   detailsData?: iChangeDetails[]|iErrorDetails
+  actionUser?: { id: number, login: string } | undefined
 
   constructor(data:iLogItem){
     this.id = data.id
     this.actionType = data.actionType
     this.actionUserId = data.actionUserId
+    this.actionUser = data.actionUser
     this.metaData = data.metaData
     this.details = data.details
     this.createdAt = data.createdAt

@@ -102,13 +102,13 @@ const LogItemViewer=({ setVisible, selectedIdLog }:iPropsLogItemViewer)=>{
 
             <CustomPlaceholderInput
               placeholder='User'
-              value={data?.actionUserId}
+              value={data?.actionUser?.login}
             >
               <input 
                 className='shadow-md border w-full rounded-full px-2'
                 type='text'
                 readOnly
-                value={data?.actionUserId}
+                value={data?.actionUser?.login}
               />  
             </CustomPlaceholderInput> 
           </div>

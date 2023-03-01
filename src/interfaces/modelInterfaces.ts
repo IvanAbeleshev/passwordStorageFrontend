@@ -55,7 +55,12 @@ export interface iLogItem{
   id:number,
   createdAt: Date,
   actionUserId?:number,
+  actionUser?: {
+    id:number,
+    login:string,
+  },
   actionType:string,
   metaData?:string,
   details?:string,
+
 }

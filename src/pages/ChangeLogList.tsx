@@ -1,7 +1,8 @@
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Drawer } from 'antd'
-import { useEffect, useState } from 'react'
+import { DatePicker, DatePickerProps, Drawer } from 'antd'
+import { ChangeEventHandler, useEffect, useState } from 'react'
+import CustomPlaceholderInput from '../components/CustomPlaceholderInput'
 import DefaultContainerData from '../components/DefaultContainerData'
 import LogItemViewer from '../components/LogItemViewer'
 import Paginator from '../components/Paginator'
@@ -10,18 +11,32 @@ import TableRowHead from '../components/tableComponents/TableRowHead'
 import ModelLog from '../models/ModelLog'
 import ServiceChangeLog from '../services/ServiceChangeLog'
 import { errorNotificator } from '../utils/notificator'
+import dayjs from 'dayjs'
+import { iFilterList } from '../interfaces'
 
 const ChangeLogList=()=>{
   const [currentPage, setCurrentPage] = useState(1)
   const [countPages, setCountPages] = useState(0)
   const [idRow, setIdRow] = useState(0)
   const [isVisibleDetails, setIsVisibleDetails] = useState(false)
+  const [actionsOption, setActionsOption] = useState<string[]>([])
+  const [metadataOption, setMetadataOption] = useState<string[]>([])
+
+  const [filterList, setFilterList] = useState({} as iFilterList)
 
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false)
   const [countActiveFilters, setCountActiveFilters] = useState(0)
 
   const [dataList, setDataList] = useState<ModelLog[]>([])
 
+  useEffect(()=>{
+    ServiceChangeLog.getActions().then(({payload})=>{
+      setActionsOption(payload)
+    }).catch(error=>errorNotificator('Error read filter list', error.message))
+    ServiceChangeLog.getMetadata().then(({payload})=>{
+      setMetadataOption(payload)
+    }).catch(error=>errorNotificator('Error read filter list', error.message))
+  },[])
 
   useEffect(()=>{
     if(idRow){
@@ -36,13 +51,24 @@ const ChangeLogList=()=>{
   },[isVisibleDetails])
 
   useEffect(()=>{
-    ServiceChangeLog.getAll(currentPage).then(
+    ServiceChangeLog.getAll(currentPage, filterList).then(
       ({pages, payload})=>{
         setCountPages(pages)
         setDataList(payload)
       }
     ).catch(error=>errorNotificator('Read list', error.message))
-  }, [currentPage])
+  }, [currentPage, filterList])
+
+  const onChangeDate = (name:string, 
+    value: DatePickerProps['value'],
+    dateString: [string, string] | string,
+  ) => {
+    setFilterList({ ...filterList, [name]:dateString })
+  }
+
+  const changeActionSelector:ChangeEventHandler<HTMLSelectElement>=(event)=>{
+    setFilterList({...filterList, [event.target.name]: event.target.value})
+  }
 
   return(
     <>
@@ -53,6 +79,75 @@ const ChangeLogList=()=>{
         open={isFilterPanelOpen}
       >
         <div className='flex flex-col gap-7'>
+          <CustomPlaceholderInput
+            placeholder='Start date'
+            value={filterList.startDate?dayjs(filterList.startDate):null}
+          >
+            <DatePicker 
+              value={filterList.startDate?dayjs(filterList.startDate):null}
+              onChange={
+                (value, dateString)=>
+                  onChangeDate('startDate', value, dateString)
+              }
+              placeholder=''
+              showTime 
+              className='shadow-md border w-full rounded-full px-2' 
+            />
+          </CustomPlaceholderInput>
+
+          <CustomPlaceholderInput
+            placeholder='End date'
+            value={filterList.endDate?dayjs(filterList.endDate):null}
+          >
+            <DatePicker 
+              value={filterList.endDate?dayjs(filterList.endDate):null}
+              onChange={
+                (value, dateString)=>
+                  onChangeDate('endDate', value, dateString)
+              }
+              placeholder=''
+              showTime 
+              className='shadow-md border w-full rounded-full px-2' 
+            />
+          </CustomPlaceholderInput>
+
+          <select 
+            name='actionFilterValue'
+            className='shadow-md border w-full rounded-full px-2 bg-hover text-lg' 
+            value={filterList.actionFilterValue}
+            onChange={changeActionSelector}
+          >
+            <option>
+              choose action filter
+            </option>
+            {actionsOption.map(element=>
+            <option 
+              value={element}
+              key={element}
+            >
+              {element}
+            </option>)
+            }
+          </select>
+
+          <select 
+            name='metadataTypes'
+            className='shadow-md border w-full rounded-full px-2 bg-hover text-lg' 
+            value={filterList.metadataTypes}
+            onChange={changeActionSelector}
+          >
+            <option>
+              choose metadata filter
+            </option>
+            {metadataOption.map(element=>
+            <option 
+              value={element}
+              key={element}
+            >
+              {element}
+            </option>)
+            }
+          </select>
         </div>
       </Drawer>
       <DefaultContainerData>
@@ -90,8 +185,8 @@ const ChangeLogList=()=>{
               text-hover'
           >
             <FontAwesomeIcon
-                icon={faFilter}
-              />
+              icon={faFilter}
+            />
           </button>
         </div>
       </DefaultContainerData>

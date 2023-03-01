@@ -32,3 +32,10 @@ export enum en_notificationStatus{
   info,
   warning
 }
+
+export interface iFilterList{
+  startDate:string,
+  endDate:string,
+  actionFilterValue: string,
+  metadataTypes: string,
+}
