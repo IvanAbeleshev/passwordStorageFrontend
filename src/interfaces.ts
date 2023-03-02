@@ -1,3 +1,5 @@
+import { iUser } from "./interfaces/modelInterfaces"
+
 export enum searchMode{
   employee = 'employee',
   service = 'service'
@@ -38,4 +40,5 @@ export interface iFilterList{
   endDate:string,
   actionFilterValue: string,
   metadataTypes: string,
+  user?:iUser
 }

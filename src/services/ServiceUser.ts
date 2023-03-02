@@ -19,8 +19,13 @@ interface iChangeItem{
   active:boolean
 }
 
+interface iGetUsersForSelector extends iDefaultResponseService{
+  payload: ModelUser[],
+  countOfFinded: number
+}
 class ServiceUser{
   private requiredAmountItemsForList = 20
+  private requiredAmountItems = 5
   
   public changeUser=async(id:string, active:boolean, login?:string, password?:string, role?:en_userRoleType):Promise<iDefaultResponseService>=>{
     try{
@@ -43,6 +48,28 @@ class ServiceUser{
     try{
       const requestResult = await axiosSecureInstance.get(`/users/getOne?id=${userId}`)
       return {isError: false, payload: new ModelUser(requestResult.data.data)}
+    }catch(error){
+      if(isAxiosError(error)){
+        const message=error.response?.data.message||error.message
+        throw new Error(message)
+      }
+      throw new Error('error in algoritm frontEnd part')
+    }
+  }
+
+  public getUsersForSelector=async(search:string):Promise<iGetUsersForSelector>=>{
+    try{
+      const payload: ModelUser[] = []
+      let countOfFinded = 0
+      const requestResult = await axiosSecureInstance.get(`/users?page=1&limit=${this.requiredAmountItems}${search?`&searchString=${search}`:''}`)
+      if(requestResult.data.data){
+        const {count, rows} = requestResult.data.data
+        for(let item of rows){
+          payload.push(new ModelUser(item))
+        }
+        countOfFinded = count
+      }
+      return {isError: false, payload, countOfFinded }
     }catch(error){
       if(isAxiosError(error)){
         const message=error.response?.data.message||error.message

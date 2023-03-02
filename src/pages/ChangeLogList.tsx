@@ -13,6 +13,8 @@ import ServiceChangeLog from '../services/ServiceChangeLog'
 import { errorNotificator } from '../utils/notificator'
 import dayjs from 'dayjs'
 import { iFilterList } from '../interfaces'
+import UserSelector from '../components/selectors/UserSelector'
+import { iUser } from '../interfaces/modelInterfaces'
 
 const ChangeLogList=()=>{
   const [currentPage, setCurrentPage] = useState(1)
@@ -37,6 +39,28 @@ const ChangeLogList=()=>{
       setMetadataOption(payload)
     }).catch(error=>errorNotificator('Error read filter list', error.message))
   },[])
+
+  useEffect(()=>{
+    let counterActiveFilters = 0
+    let currentKey: keyof typeof filterList
+    for(currentKey in filterList){
+      if(currentKey==='actionFilterValue'&&actionsOption.includes(filterList[currentKey])){
+        counterActiveFilters++
+      }else if(currentKey==='metadataTypes'&&metadataOption.includes(filterList[currentKey])){
+        counterActiveFilters++
+      }else{
+        if(
+          filterList[currentKey]&&
+          currentKey!=='actionFilterValue'&&
+          currentKey!=='metadataTypes'
+          ){
+          counterActiveFilters++
+        }
+      } 
+    }
+    setCountActiveFilters(counterActiveFilters)
+    setCountPages(1)
+  },[filterList, actionsOption, metadataOption])
 
   useEffect(()=>{
     if(idRow){
@@ -68,6 +92,10 @@ const ChangeLogList=()=>{
 
   const changeActionSelector:ChangeEventHandler<HTMLSelectElement>=(event)=>{
     setFilterList({...filterList, [event.target.name]: event.target.value})
+  }
+
+  const setFilterUser=(user?:iUser)=>{
+    setFilterList({...filterList, user})
   }
 
   return(
@@ -132,7 +160,7 @@ const ChangeLogList=()=>{
 
           <select 
             name='metadataTypes'
-            className='shadow-md border w-full rounded-full px-2 bg-hover text-lg' 
+            className='shadow-md border w-full rounded-full px-2 bg-hover text-lg'
             value={filterList.metadataTypes}
             onChange={changeActionSelector}
           >
@@ -148,6 +176,8 @@ const ChangeLogList=()=>{
             </option>)
             }
           </select>
+
+          <UserSelector setSelectedService={setFilterUser} selectedUser={filterList.user} />
         </div>
       </Drawer>
       <DefaultContainerData>
