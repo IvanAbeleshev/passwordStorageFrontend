@@ -104,13 +104,13 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
   }
 
   return (
-    <div className='flex h-screen w-screen'>
+    <div className='flex h-full w-full'>
       {visibleModalWindow&&<ModalWindow><PasswordGroupItem /></ModalWindow>}
       <div 
         className={
           currentVisible?
-            'flex flex-col justify-between items-stretch shadow-2xl transition-all':
-            'transition-all flex flex-col justify-between items-stretch shadow-2xl bg-white hidden'
+            'flex flex-col justify-between items-stretch shadow-2xl transition-all dark:text-hover':
+            'hidden'
         }
       >
         <div>
@@ -142,8 +142,8 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
                       <Link 
                         className={
                           navigationLocation.pathname===element.path?
-                          'group text-white text-center':
-                          'group transition-all hover:text-hover text-center'
+                          'group text-white dark:text-dlink text-center':
+                          'group transition-all hover:text-hover dark:hover:text-dlink text-center'
                         } 
                         to={element.path}
                       >
@@ -166,7 +166,8 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
                             text-transparent 
                             -translate-y-4 
                             group-hover:translate-y-0 
-                            group-hover:text-hover`
+                            group-hover:text-hover
+                            dark:group-hover:text-dlink`
                           }
                         >
                           {element.title}
@@ -183,7 +184,7 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
           <Link
             to='/applicationSettings'
           >
-            <div className='group transition-all hover:text-hover text-center cursor-pointer'>
+            <div className='group transition-all hover:text-hover dark:hover:text-dlink text-center cursor-pointer'>
               <FontAwesomeIcon 
                 className='text-5xl w-[100%] transition-all translate-y-4 group-hover:translate-y-0' 
                 icon={faGear} />
@@ -195,14 +196,15 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
                   -translate-y-4 
                   transition-all 
                   group-hover:translate-y-0 
-                  group-hover:text-hover'
+                  group-hover:text-hover
+                  dark:group-hover:text-dlink'
               >
                 Settings
               </h2>
             </div>
           </Link>
           <div onClick={clickLogOut}>
-            <div className='group transition-all hover:text-hover text-center cursor-pointer'>
+            <div className='group transition-all hover:text-hover dark:hover:text-btn-err text-center cursor-pointer'>
               <FontAwesomeIcon 
                 className='text-5xl w-[100%] transition-all translate-y-4 group-hover:translate-y-0' 
                 icon={faDoorOpen} />
@@ -214,7 +216,8 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
                   -translate-y-4 
                   transition-all 
                   group-hover:translate-y-0 
-                  group-hover:text-hover'
+                  group-hover:text-hover
+                  dark:group-hover:text-btn-err-hover'
               >
                 Log out
               </h2>

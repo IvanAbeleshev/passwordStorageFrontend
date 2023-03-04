@@ -11,12 +11,12 @@ import PasswordItem from '../pages/PasswordItem'
 import UsersList from '../pages/UsersList'
 import UserItem from '../pages/UserItem'
 import { useAppSelector } from '../store/hooks/storeHooks'
-import PersonalSettings from '../pages/PersonalSettings';
-import ChangePassword from '../pages/ChangePassword';
-import ApplicationSettings from '../pages/ApplicationSettings';
-import PasswordGenerationSetting from '../pages/PasswordGenerationSetting';
-import ChangeLogList from '../pages/ChangeLogList';
-
+import PersonalSettings from '../pages/PersonalSettings'
+import ChangePassword from '../pages/ChangePassword'
+import ApplicationSettings from '../pages/ApplicationSettings'
+import PasswordGenerationSetting from '../pages/PasswordGenerationSetting'
+import ChangeLogList from '../pages/ChangeLogList'
+import SwitchDarkMode from '../pages/SwitchDarkMode';
 
 const Routing = () =>{
   const {authState} = useAppSelector(currentUserState)
@@ -54,6 +54,7 @@ const Routing = () =>{
       
       <Route path='personalSettings' element={<NavPanel><PersonalSettings/></NavPanel>} />
       <Route path='personalSettings/changePassword' element={<NavPanel><ChangePassword/></NavPanel>} />
+      <Route path='personalSettings/darkMode' element={<NavPanel><SwitchDarkMode/></NavPanel>} />
       
       <Route path='applicationSettings' element={<NavPanel><ApplicationSettings /></NavPanel>} />
       <Route path='applicationSettings/passwordGeneratorSetting' element={<NavPanel><PasswordGenerationSetting /></NavPanel>} />

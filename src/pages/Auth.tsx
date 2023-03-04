@@ -7,7 +7,7 @@ import ServiceAthentication from '../services/ServiceAthentication'
 import { setAuthValue } from '../store/authSlice'
 import { useAppDispatch } from '../store/hooks/storeHooks'
 import { fetchPasswordsGenerator } from '../store/passwordGeneratorSlice'
-import { errorNotificator, infoNotificator } from '../utils/notificator'
+import { errorNotificator, infoNotificator, successNotificator } from '../utils/notificator'
 import { decodeToken } from '../utils/tokensFuntion'
 
 enum en_authPages{
@@ -81,11 +81,30 @@ const Auth = () =>{
 	}
 
 	return(
-		<div className='w-screen h-screen flex flex-col justify-center items-center'>
-			<div className='p-6 rounded-2xl shadow-2xl bg-white/25 text-white'>
-				<h1 className='text-4xl py-2 text-center'>Wellcome to passwords storage</h1>
+		<div 
+			className='
+				w-screen 
+				h-screen
+				overflow-y-auto
+				flex 
+				flex-col 
+				md:justify-center 
+				items-center'
+		>
+			<div 
+				className='
+					p-6 
+					max-sm:p-0
+					rounded-2xl 
+					shadow-2xl 
+					bg-white/25 
+					dark:bg-dcontainer/90 
+					dark:shadow-main 
+					text-white min-w-[40%]'
+			>
+				<h1 className='text-4xl py-2 text-center'>Wellcome</h1>
 				{currentAuthPage===en_authPages.auth&&
-					<>
+					<div className='p-6'>
 						<h3 className='text-center pb-2'>
 							{checkAdminRole?'Create first admin user':'Sign in'}
 						</h3>
@@ -127,20 +146,33 @@ const Auth = () =>{
 
 							<div className='flex flex-row-reverse'>
 									<input 
-										className='py-2 px-6 rounded-xl shadow-md bg-btn hover:cursor-pointer hover:bg-btn-hover border' 
+										className='
+											py-2 
+											px-6 
+											rounded-xl 
+											shadow-md 
+											bg-btn 
+											dark:bg-dbtn
+											dark:text-hover
+											dark:hover:bg-dbtn-h
+											hover:cursor-pointer 
+											hover:bg-btn-hover 
+											border' 
 										type='submit' 
 										value={checkAdminRole?'Register':'Sign in'} 
 									/>
 							</div>	
 						</form>
-					</>
+					</div>
 				}
 				{currentAuthPage===en_authPages.auth2FAWithTutorial&&
-					<div className='flex items-stretch'>
+					<div className='flex items-stretch max-lg:flex-col max-lg:gap-7'>
 						<div className='basis-1/3 text-center'>
 							<h1 className='text-2xl'>Step 1:</h1>
-							<h3 className='text-main py-2'>Download app for your mobile device</h3>
-							<h3 className='text-main'>For example that would be most popular application Google Authenticator:</h3>
+							<h3 className='text-main dark:text-hover py-2'>Download app for your mobile device</h3>
+							<h3 className='text-main dark:text-hover '>
+								For example that would be most popular application Google Authenticator:
+							</h3>
 							<div className='flex justify-around'>
 								<div>
 									<h3>for Android os:</h3>
@@ -175,7 +207,7 @@ const Auth = () =>{
 
 						<div className='basis-1/3 text-center'>
 							<h1 className='text-2xl'>Step 2:</h1>
-							<h3 className='text-main py-2'>
+							<h3 className='text-main dark:text-hover py-2'>
 								Scan following QR-code in your profile via application or handle add secure code
 							</h3>
 							<div className='flex flex-col items-center'>
@@ -185,7 +217,15 @@ const Auth = () =>{
 									value={totpData?totpData.urlForAutintificator:''}
 								/>
 								<h3>secure code:</h3>
-								<h2 className='text-main'>{totpData?totpData.totpBase32:''}</h2>
+								<h2 
+									onClick={()=>{
+										navigator.clipboard.writeText(totpData!.totpBase32)
+										successNotificator('Copy to clipboard', 'Security code copy to clipboard')
+									}}
+									className='text-main dark:text-dlink break-all hover:cursor-pointer'
+								>
+									{totpData?totpData.totpBase32:''}
+								</h2>
 							</div>
 						</div>
 
@@ -195,7 +235,7 @@ const Auth = () =>{
 						>
 							<div>
 								<h1 className='text-2xl'>Step 3:</h1>
-								<h3 className='text-main py-2'>
+								<h3 className='text-main dark:text-hover py-2'>
 									Enter 6 number in following field from your app
 								</h3>
 							</div>
@@ -206,11 +246,22 @@ const Auth = () =>{
 								containerClassName='flex gap-2'
 								onChange={setCode2FA}
 							/>
-							<div className='w-full flex flex-row-reverse justify-around'>
+							<div className='w-full flex flex-row-reverse justify-around max-lg:py-5'>
 								<input 
 									type='submit' 
 									value='Sign in' 
-									className='py-2 px-6 rounded-xl shadow-md bg-btn hover:cursor-pointer hover:bg-btn-hover border' 
+									className='
+											py-2 
+											px-6 
+											rounded-xl 
+											shadow-md 
+											bg-btn 
+											dark:bg-dbtn
+											dark:text-hover
+											dark:hover:bg-dbtn-h
+											hover:cursor-pointer 
+											hover:bg-btn-hover 
+											border'
 								/>
 								<button
 									className='py-2 px-6 rounded-xl shadow-md bg-btn-s hover:bg-btn-s-hover border'
@@ -224,11 +275,11 @@ const Auth = () =>{
 				}
 				{currentAuthPage===en_authPages.auth2Fa&&
 					<form 
-					className='flex flex-col justify-around items-center gap-8' 
+					className='flex flex-col justify-around items-center p-6 gap-8' 
 					onSubmit={submit2FAWithTutorial}
 				>
 					<div>
-						<h1 className='text-main text-lg py-2'>
+						<h1 className='text-main dark:text-hover text-lg py-2 text-center'>
 							Enter 6 number in following field from your app
 						</h1>
 					</div>
@@ -243,13 +294,24 @@ const Auth = () =>{
 						<input 
 							type='submit' 
 							value='Sign in' 
-							className='py-2 px-6 rounded-xl shadow-md bg-btn hover:cursor-pointer hover:bg-btn-hover border' 
+							className='
+											py-2 
+											px-6 
+											rounded-xl 
+											shadow-md 
+											bg-btn 
+											dark:bg-dbtn
+											dark:text-hover
+											dark:hover:bg-dbtn-h
+											hover:cursor-pointer 
+											hover:bg-btn-hover 
+											border'
 						/>
 						<button
 							className='py-2 px-6 rounded-xl shadow-md bg-btn-s hover:bg-btn-s-hover border'
 							onClick={()=>setCurrentAuthPage(en_authPages.auth)}
 						>
-							back
+							Back
 						</button>
 					</div>
 				</form>

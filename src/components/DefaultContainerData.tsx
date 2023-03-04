@@ -6,8 +6,15 @@ interface iDefaultContainerData{
 
 const DefaultContainerData=({ children }:iDefaultContainerData)=>{
   return(
-    <div className='w-full px-12'>
-      <div className='w-full shadow-xl shadow-main rounded-xl bg-hover p-5'>
+    <div className='w-full px-12 max-sm:px-1 max-lg:px-6'>
+      <div className='
+        w-full 
+        shadow-xl 
+        shadow-main/60 
+        rounded-xl 
+        bg-hover/75 
+        dark:bg-dcontainer/80
+        p-5'>
         {children}
       </div>
     </div>

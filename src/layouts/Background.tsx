@@ -3,6 +3,7 @@ import { notification } from 'antd'
 import type { NotificationPlacement } from 'antd/es/notification/interface'
 import { useAppSelector } from '../store/hooks/storeHooks'
 import { en_notificationStatus } from '../interfaces'
+import { getDarkModeValue } from '../store/darkModeSlice'
 
 interface iPropsBackground{
   children: ReactNode
@@ -10,6 +11,8 @@ interface iPropsBackground{
 const Background=({ children }:iPropsBackground)=>{
   const [api, contextHolder] = notification.useNotification()
   
+  const isDarkMode = useAppSelector(getDarkModeValue)
+
   const notificationMessages=useAppSelector(state=>state.notification)
 
   const openNotification = (status:en_notificationStatus, title:string, description:string) => {
@@ -57,16 +60,28 @@ const Background=({ children }:iPropsBackground)=>{
   },[notificationMessages.time])
 
   return(
-    <div 
-      className='
-        w-screen 
-        h-screen 
-        bg-main-background 
-        bg-400% 
-        animate-movebg'
+    <div
+      className={`w-screen h-screen ${isDarkMode?'dark':'light'}`}
     >
-      {contextHolder}
-      {children}
+      <div 
+        className={`
+          w-full 
+          h-full 
+          ${isDarkMode?'':
+          `bg-main-background 
+          bg-400% 
+          animate-movebg`}
+          
+          dark:bg-dark-bg
+          dark:bg-cover
+          dark:bg-100%
+          dark:max-md:bg-auto
+        `}
+          
+      >
+        {contextHolder}
+        {children}
+      </div>
     </div>
   )
 }
