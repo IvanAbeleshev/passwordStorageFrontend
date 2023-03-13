@@ -1,4 +1,4 @@
-import { iUser } from "./interfaces/modelInterfaces"
+import { iEmployee, iPasswordGroup, iUser } from "./interfaces/modelInterfaces"
 
 export enum searchMode{
   employee = 'employee',
@@ -41,4 +41,13 @@ export interface iFilterList{
   actionFilterValue: string,
   metadataTypes: string,
   user?:iUser
+}
+
+export interface iWithParents{
+  parent: iEmployee,
+  groups: iPasswordGroup[]
+}
+export interface iGroupFilter{
+  withoutParent:iPasswordGroup[],
+  withParent:iWithParents[]
 }

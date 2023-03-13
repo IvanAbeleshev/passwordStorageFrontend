@@ -53,8 +53,8 @@ const UserItem=()=>{
 		
 		<DefaultContainerData>
 			<div className='flex justify-center'>
-				<div className='flex flex-col gap-5 w-fit min-w-[30%]'>
-					<div className='flex gap-10'>
+				<div className='flex flex-col gap-5 w-fit min-w-[30%] dark:text-main'>
+					<div className='flex gap-10 dark:text-hover'>
 						<h4>Active:</h4>
 						<Switch checked={inputsData.active} onChange={changeActive} />
 					</div>
@@ -122,7 +122,9 @@ const UserItem=()=>{
 										rounded-xl 
 										shadow-md 
 										bg-btn 
+										dark:bg-dbtn
 										hover:bg-btn-hover 
+										dark:hover:bg-dbtn-h
 										hover:cursor-pointer' 
 								/>:
 								<input 
@@ -135,7 +137,9 @@ const UserItem=()=>{
 										rounded-xl 
 										shadow-md 
 										bg-btn 
+										dark:bg-dbtn
 										hover:bg-btn-hover 
+										dark:hover:bg-dbtn-h
 										hover:cursor-pointer' 
 								/>
 							}

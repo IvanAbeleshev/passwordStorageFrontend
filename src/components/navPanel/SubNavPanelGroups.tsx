@@ -8,15 +8,8 @@ import { fetchPasswordsGroups } from '../../store/passwordsGroupsSlice'
 import { useEffect, useState } from 'react'
 import { iEmployee, iPasswordGroup } from '../../interfaces/modelInterfaces'
 import ItemsParentNavPanel from './ItemsParentNavPanel'
+import { iGroupFilter, iWithParents } from '../../interfaces'
 
-interface iWithParents{
-  parent: iEmployee,
-  groups: iPasswordGroup[]
-}
-interface iGroupFilter{
-  withoutParent:iPasswordGroup[],
-  withParent:iWithParents[]
-}
 const SubNavPanelGroups=()=>{
   const [filtredGroups, setFiltredGroups] = useState<iGroupFilter>()
   const passwordsGroupSelector = useAppSelector(store=>store.passwordsGroups.passwordsGroups)

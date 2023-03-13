@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { MouseEventHandler, useEffect, useRef, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   faPerson,
   faBellConcierge,
@@ -12,6 +12,8 @@ import {
   faUserLock,
   IconDefinition,
   faGear,
+  faIdCardClip,
+  faLayerGroup,
 } from '@fortawesome/free-solid-svg-icons'
 import { currentUserState, setAuthInitialState } from '../store/authSlice'
 import { setValue } from '../store/sliceSearch'
@@ -24,6 +26,8 @@ import { selectorModalWindowVisible } from '../store/modalWindowSlice'
 import { fetchPasswordsGroups } from '../store/passwordsGroupsSlice'
 import { Spin } from 'antd'
 import { setPasswordFilterItem } from '../store/passwordFilterSlice'
+import menuStyles from '../styles/buttonMenuMobile.module.css'
+import { getDarkModeValue } from '../store/darkModeSlice'
 
 interface iPropsNavPanel {
   children: React.ReactNode,
@@ -35,30 +39,25 @@ export interface iItemNavMenu {
   path: string,
 }
 
-const arrayOfItemsNavMenu: iItemNavMenu[] = [
-  { icon: faPerson, title: 'Employees', path: '/employees' },
-  { icon: faBellConcierge, title: 'Servises', path: '/listServises' },
-  { icon: faLock, title: 'Passwords', path: '/passwordsList' },
-  { icon: faUserLock, title: 'Users', path: '/users' },
-  { icon: faBook, title: 'Log', path: '/changeLog' },
-]
-
 const NavPanel = ({ children }: iPropsNavPanel) => {
   const [currentVisible, setCurrentVisible] = useState(true)
   const [timeoutId, setTimeoutId]: [undefined | string, Function] = useState(undefined)
+  const [isMobileMenuActive, setIsMobileMenuActive] = useState(false)
 
   const [subNavPanelVisible, setSubPanelVisible] = useState(false)
   const refSubPanel = useRef<HTMLDivElement>(null)
   const refNavItemPassword = useRef<HTMLLIElement>(null)
 
   const visibleModalWindow = useAppSelector(selectorModalWindowVisible)
+  const isDarkMode = useAppSelector(getDarkModeValue)
 
   const userState = useAppSelector(currentUserState)
   const spinStatus = useAppSelector(state=>state.spiner.status)
 
   const dispatch = useAppDispatch()
   const navigationLocation = useLocation()
-  
+  const navigator = useNavigate()
+
   useEffect(()=>{
     dispatch(fetchPasswordsGroups())
   },[dispatch])
@@ -103,13 +102,175 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
     setSubPanelVisible(false)
   }
 
+  const mobileMenu: iItemNavMenu[] = [
+    { icon: faIdCardClip, title: 'My profile ('+userState.login+')', path: '/personalSettings' },
+    { icon: faPerson, title: 'Employees', path: '/employees' },
+    { icon: faBellConcierge, title: 'Servises', path: '/listServises' },
+    { icon: faLayerGroup, title: 'Password groups', path: '/passwordsGroupList' },
+    { icon: faLock, title: 'Passwords', path: '/passwordsList' },
+    { icon: faUserLock, title: 'Users', path: '/users' },
+    { icon: faBook, title: 'Log', path: '/changeLog' },
+    { icon: faGear, title: 'Settings', path:'/applicationSettings'},
+  ]
+
+  const arrayOfItemsNavMenu: iItemNavMenu[] = [
+    { icon: faPerson, title: 'Employees', path: '/employees' },
+    { icon: faBellConcierge, title: 'Servises', path: '/listServises' },
+    { icon: faLock, title: 'Passwords', path: '/passwordsList' },
+    { icon: faUserLock, title: 'Users', path: '/users' },
+    { icon: faBook, title: 'Log', path: '/changeLog' },
+  ]
   return (
-    <div className='flex h-full w-full'>
+    <div className='flex h-full w-full max-sm:flex-col relative overflow-hidden '>
       {visibleModalWindow&&<ModalWindow><PasswordGroupItem /></ModalWindow>}
+      {/* mobile menu navigation panel */}
+      <div 
+        className='
+          sm:hidden 
+          sticky 
+          top-0 
+          flex 
+          justify-between 
+          items-center 
+          w-full 
+          px-5 
+          py-3 
+          z-20'
+      >
+        <Link className='flex justify-center' to='/'>
+          <img
+            className='w-[30px] h-[30px]'
+            src={
+              isDarkMode?
+                '/ico/android-chrome-light-192x192.png':
+                '/ico/android-chrome-192x192.png'
+            }
+            alt='logo'
+          />
+        </Link>
+        <input
+          type='text'
+          name='searchString'
+          id='searchString'
+          placeholder='fing'
+          className='shadow-md border border-main rounded-full px-2'
+          onChange={handleChangeSearch}
+        />
+
+        <div 
+          onClick={()=>setIsMobileMenuActive(!isMobileMenuActive)}
+          className={`${menuStyles.container} ${isMobileMenuActive&&menuStyles.active}`}
+        >
+          <svg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 200 200'>
+            <g strokeWidth='6.5' strokeLinecap='round'>
+              <path
+                d='M72 82.286h28.75'
+                fill='#009100'
+                fillRule='evenodd'
+                stroke={isDarkMode?'#fff':'#000'}
+              />
+              <path
+                d='M100.75 103.714l72.482-.143c.043 39.398-32.284 71.434-72.16 71.434-39.878 0-72.204-32.036-72.204-71.554'
+                fill='none'
+                stroke={isDarkMode?'#fff':'#000'}
+              />
+              <path
+                d='M72 125.143h28.75'
+                fill='#009100'
+                fillRule='evenodd'
+                stroke={isDarkMode?'#fff':'#000'}
+              />
+              <path
+                d='M100.75 103.714l-71.908-.143c.026-39.638 32.352-71.674 72.23-71.674 39.876 0 72.203 32.036 72.203 71.554'
+                fill='none'
+                stroke={isDarkMode?'#fff':'#000'}
+              />
+              <path
+                d='M100.75 82.286h28.75'
+                fill='#009100'
+                fillRule='evenodd'
+                stroke={isDarkMode?'#fff':'#000'}
+              />
+              <path
+                d='M100.75 125.143h28.75'
+                fill='#009100'
+                fillRule='evenodd'
+                stroke={isDarkMode?'#fff':'#000'}
+              />
+            </g>
+          </svg>
+        </div>
+      </div>
+      {/* mobile menu */}
+      <ul 
+        className={`
+          h-full 
+          w-full 
+          bg-white 
+          dark:bg-dcontainer
+          absolute 
+          top-0 
+          z-10
+          transition-all
+          duration-500
+          text-lg
+          text-main
+          dark:text-hover
+          pt-16
+          flex
+          flex-col
+          items-end
+          gap-3
+          px-3
+          ${!isMobileMenuActive&&'translate-x-full'}
+          `}
+        >
+          {
+            mobileMenu.map(element=>
+            <li 
+              className={`
+                flex 
+                gap-3 
+                items-center
+                hover:cursor-pointer
+                ${navigationLocation.pathname===element.path&&
+                  'text-btn dark:text-dlink'}
+              `}
+              key={element.path}
+              onClick={()=>{
+                navigator(element.path)
+                setIsMobileMenuActive(false)
+              }}
+            >
+              <span>{element.title}</span>
+              <div className='w-6 h-6 flex justify-center items-center'>
+                <FontAwesomeIcon
+                  icon={element.icon} 
+                />
+              </div>
+            </li>
+            )
+          }
+          <li 
+              className={`
+                flex 
+                gap-3 
+                items-center
+                hover:cursor-pointer
+              `}
+              onClick={clickLogOut}
+            >
+              <span>Log out</span>
+              <FontAwesomeIcon  
+                icon={faDoorOpen} 
+              />
+            </li>
+      </ul>
+
       <div 
         className={
           currentVisible?
-            'flex flex-col justify-between items-stretch shadow-2xl transition-all dark:text-hover':
+            'flex flex-col justify-between items-stretch shadow-2xl transition-all dark:text-hover max-sm:hidden':
             'hidden'
         }
       >
@@ -117,7 +278,11 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
           <Link className='flex justify-center' to='/'>
             <img
               className='w-[80px] h-[80px] p-[8px]'
-              src='/ico/android-chrome-512x512.png'
+              src={
+                isDarkMode?
+                  '/ico/android-chrome-light-192x192.png':
+                  '/ico/android-chrome-192x192.png'
+              }
               alt='logo'
             />
           </Link>
@@ -184,9 +349,22 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
           <Link
             to='/applicationSettings'
           >
-            <div className='group transition-all hover:text-hover dark:hover:text-dlink text-center cursor-pointer'>
+            <div 
+              className='
+                group 
+                transition-all 
+                hover:text-hover 
+                dark:hover:text-dlink 
+                text-center 
+                cursor-pointer'
+              >
               <FontAwesomeIcon 
-                className='text-5xl w-[100%] transition-all translate-y-4 group-hover:translate-y-0' 
+                className='
+                  text-5xl 
+                  w-[100%] 
+                  transition-all 
+                  translate-y-4 
+                  group-hover:translate-y-0' 
                 icon={faGear} />
               <h2 
                 className='
@@ -204,9 +382,22 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
             </div>
           </Link>
           <div onClick={clickLogOut}>
-            <div className='group transition-all hover:text-hover dark:hover:text-btn-err text-center cursor-pointer'>
+            <div 
+              className='
+                group 
+                transition-all 
+                hover:text-hover 
+                dark:hover:text-btn-err 
+                text-center 
+                cursor-pointer'
+            >
               <FontAwesomeIcon 
-                className='text-5xl w-[100%] transition-all translate-y-4 group-hover:translate-y-0' 
+                className='
+                  text-5xl 
+                  w-[100%] 
+                  transition-all 
+                  translate-y-4 
+                  group-hover:translate-y-0' 
                 icon={faDoorOpen} />
               <h2 
                 className='
@@ -230,7 +421,7 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
         subNavPanelVisible&&
         <div 
           ref={refSubPanel}
-          className='sticky left-0 bg-white/10'
+          className='sticky left-0 bg-white/10 dark:text-hover'
           onMouseEnter={handleShowPanel}
           onMouseLeave={handleHidePanel}
         >
@@ -238,18 +429,46 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
         </div>
       }
 
-      <main className='w-[100%] overflow-y-auto'>
-        <div className='flex justify-between items-center py-1 pr-5 text-md'>
+      <main className='w-[100%] overflow-y-auto dark:text-hover'>
+        <div 
+          className='
+            flex 
+            justify-between 
+            items-center 
+            pr-5 
+            py-2 
+            text-md 
+            shadow-2xl
+            max-sm:hidden'
+        >
           <div>
             <FontAwesomeIcon
               icon={faAnglesRight}
               className={
                 currentVisible
-                  ? 'hover:text-hover transition-all rotate-180 cursor-pointer'
-                  : 'hover:text-hover transition-all cursor-pointer'}
+                  ? `transition-all 
+                      rotate-180 
+                      cursor-pointer 
+                      hover:text-hover 
+                      dark:text-hover
+                      dark:hover:text-dlink`
+                  : `transition-all 
+                      cursor-pointer 
+                      hover:text-hover
+                      dark:text-hover
+                      dark:hover:text-dlink
+                    `
+              }
               onClick={hancleOnClickChangeVisible}
             />
-            <span className='text-white'>
+            <span 
+              className='
+                text-main 
+                pl-2 
+                hover:text-hover 
+                dark:hover:text-dlink
+                dark:text-hover'
+            >
               <Link to='/personalSettings'>{userState.login}</Link>
             </span>
           </div>
@@ -270,7 +489,7 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
               />
           }
         </div>
-        <div className='p-6 box-border '>
+        <div className='p-6 max-sm:p-2 max-sm:pb-10 box-border '>
           {children}
         </div>
       </main>

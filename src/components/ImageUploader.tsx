@@ -53,11 +53,14 @@ const ImageUploader=({ setBlob, urlImg }:iPropsImageUploader)=>{
               transition-all 
               border-8 
               border-btn 
+              dark:border-dbtn
               h-[150px] 
               w-[150px] 
               rounded-full 
               shadow-xl 
-              hover:border-btn-hover'
+              hover:border-btn-hover
+              dark:hover:border-dbtn-h
+              dark:text-hover'
           >
             upload
           </button>

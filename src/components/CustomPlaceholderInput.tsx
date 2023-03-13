@@ -3,10 +3,11 @@ import { ReactNode, useEffect, useState } from 'react'
 interface iPropsCustomPlaceholderInput{
   children: ReactNode,
   placeholder: string,
-  value?:any
+  value?:any,
+  bias?:number
 }
 
-const CustomPlaceholderInput=({ value, children, placeholder }:iPropsCustomPlaceholderInput)=>{
+const CustomPlaceholderInput=({ value, children, placeholder, bias=0 }:iPropsCustomPlaceholderInput)=>{
   const [focusGroup, setFocusGroup] = useState<boolean>(false)
   const [fillInput, setFillInput] = useState<boolean>(false)
 
@@ -31,7 +32,12 @@ const CustomPlaceholderInput=({ value, children, placeholder }:iPropsCustomPlace
         absolute 
         pointer-events-none
         left-2
-        top-0
+        ${bias===0&&'top-0'}
+        ${bias===1&&'top-[5px]'}
+        ${bias===2&&'top-[10px]'}
+        ${bias===3&&'top-[15px]'}
+        ${bias===4&&'top-[20px]'}
+        ${bias>=5&&'top-[25px]'}
         transition-all`}
     >
       {placeholder}

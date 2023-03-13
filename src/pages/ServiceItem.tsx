@@ -58,7 +58,16 @@ const ServiceItem=()=>{
           onSubmit={event=>event.preventDefault()}
           className='flex flex-col justify-center items-center gap-5 p-5'
         >
-          <div className='flex justify-center gap-10 p-5'>
+          <div 
+            className='
+              flex 
+              justify-center 
+              gap-10 
+              p-5 
+              max-sm:flex-col 
+              max-sm:items-center 
+              dark:text-main'
+          >
             <div className='flex flex-col items-center gap-3'>
               <ImageUploader urlImg={inputsData.img} setBlob={setImgBlob} />
               <button 
@@ -69,8 +78,10 @@ const ServiceItem=()=>{
                   rounded-xl 
                   shadow-md 
                   bg-btn 
+                  dark:bg-dbtn
                   text-hover
-                  hover:bg-btn-hover 
+                  hover:bg-btn-hover
+                  dark:hover:bg-dbtn-h
                   hover:cursor-pointer' >
                 Select from net
               </button>
@@ -134,7 +145,9 @@ const ServiceItem=()=>{
                   rounded-xl 
                   shadow-md 
                   bg-btn 
+                  dark:bg-dbtn
                   hover:bg-btn-hover 
+                  dark:hover:bg-dbtn-h
                   hover:cursor-pointer' 
               />:
               <input 
@@ -147,7 +160,9 @@ const ServiceItem=()=>{
                   rounded-xl 
                   shadow-md 
                   bg-btn 
+                  dark:bg-dbtn
                   hover:bg-btn-hover 
+                  dark:hover:bg-dbtn-h
                   hover:cursor-pointer' 
               />
             }

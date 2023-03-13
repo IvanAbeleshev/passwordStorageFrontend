@@ -26,10 +26,9 @@ const TableRowDataService=({data}: iPropsTableRow)=>{
       className='
         table-row 
         text-xl 
-        hover:bg-main 
+        hover:bg-main/80 
         hover:text-hover 
-        hover:cursor-pointer 
-        align-middle'
+        hover:cursor-pointer'
     >
       <div 
         className='table-cell rounded-l-full align-middle'
@@ -46,10 +45,10 @@ const TableRowDataService=({data}: iPropsTableRow)=>{
           />
         </div>
       </div>
-      <div className='table-cell'>
+      <div className='table-cell align-middle max-sm:rounded-r-full'>
         {data.name}
       </div>
-      <div className='table-cell rounded-r-full'>
+      <div className='table-cell rounded-r-full align-middle max-sm:hidden'>
         {
           data.description&&
             (data.description.length>50?data.description?.slice(0, 47)+'...':data.description)

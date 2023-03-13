@@ -67,9 +67,9 @@ const EmployeeItem=()=>{
         onSubmit={event=>event.preventDefault()}
         className='flex flex-col justify-center items-center w-full'
       >
-        <div className='flex'>
+        <div className='flex max-sm:flex-col max-sm:justify-center max-sm:items-center'>
           <ImageUploader setBlob={setProfileBlob} urlImg={inputsData.img} />
-          <div className='flex flex-col justify-between p-5'>
+          <div className='flex flex-col justify-between p-5 gap-5 dark:text-main'>
             <CustomPlaceholderInput
               placeholder='Name'
               value={inputsData.name}
@@ -108,7 +108,7 @@ const EmployeeItem=()=>{
             />
           </div>
         </div>
-        <div className='pt-7'>
+        <div className='pt-7 dark:text-main'>
           <CustomPlaceholderInput
             placeholder='Comment'
             value={inputsData.comment}
@@ -152,7 +152,9 @@ const EmployeeItem=()=>{
                 rounded-xl 
                 shadow-md 
                 bg-btn 
+                dark:bg-dbtn
                 hover:bg-btn-hover 
+                dark:hover:bg-dbtn-h
                 hover:cursor-pointer' 
             />:
             <input 
@@ -165,7 +167,9 @@ const EmployeeItem=()=>{
                 rounded-xl 
                 shadow-md 
                 bg-btn 
+                dark:bg-dbtn
                 hover:bg-btn-hover 
+                dark:hover:bg-dbtn-h
                 hover:cursor-pointer' 
             />
           }

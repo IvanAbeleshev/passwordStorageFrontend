@@ -15,7 +15,7 @@ const TableRowDataUsers=({data}: IPropsTableRow)=>{
       className='
         table-row 
         text-xl 
-        hover:bg-main 
+        hover:bg-main/80 
         hover:text-hover 
         hover:cursor-pointer 
         align-middle'

@@ -17,6 +17,7 @@ import ApplicationSettings from '../pages/ApplicationSettings'
 import PasswordGenerationSetting from '../pages/PasswordGenerationSetting'
 import ChangeLogList from '../pages/ChangeLogList'
 import SwitchDarkMode from '../pages/SwitchDarkMode';
+import PasswordGroupsList from '../pages/PasswordGroupsList';
 
 const Routing = () =>{
   const {authState} = useAppSelector(currentUserState)
@@ -46,6 +47,8 @@ const Routing = () =>{
       <Route path='passwordItem' element={<NavPanel><PasswordItem/></NavPanel>}>
         <Route path=':id' element={<NavPanel><PasswordItem/></NavPanel>} />
       </Route>
+
+      <Route path='passwordsGroupList' element={<NavPanel><PasswordGroupsList/></NavPanel>} />
 
       <Route path='users' element={<NavPanel><UsersList/></NavPanel>} />
       <Route path='userItem' element={<NavPanel><UserItem/></NavPanel>}>

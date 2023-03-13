@@ -34,8 +34,8 @@ const ChangePassword=()=>{
 
   return(
     <DefaultContainerData>
-      <form className='flex flex-col items-center gap-7 p-3'>
-        <h1 className='text-2xl'>Change your password</h1>
+      <form className='flex flex-col items-center gap-7 p-3 dark:text-main'>
+        <h1 className='text-2xl dark:text-hover'>Change your password</h1>
         <CustomPlaceholderInput
           placeholder='Password'
           value={passwordsInput.confirmPassword}
@@ -66,7 +66,13 @@ const ChangePassword=()=>{
         <Popover content='Change visible passwords' title='Visible'>
           <FontAwesomeIcon
             onClick={()=>setIsShowPasswords(!isShowPasswords)}
-            className='text-btn hover:text-btn-hover hover:cursor-pointer text-xl'
+            className='
+              text-btn 
+              dark:text-dbtn 
+              hover:text-btn-hover 
+              c
+              hover:cursor-pointer 
+              text-xl'
             icon={isShowPasswords?faEyeSlash:faEye}
           />
         </Popover>
@@ -102,7 +108,7 @@ const ChangePassword=()=>{
               ${
                 passwordsInput.password!==passwordsInput.confirmPassword?
                   'bg-btn-err hover:bg-btn-err-hover':
-                  'bg-btn hover:bg-btn-hover'
+                  'bg-btn dark:bg-dbtn hover:bg-btn-hover dark:hover:bg-dbtn-h'
               }
               py-2 
               px-6 

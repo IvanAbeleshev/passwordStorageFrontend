@@ -14,7 +14,7 @@ module.exports = {
         'btn-err': 'rgb(253 164 175)',
         'btn-err-hover': 'rgb(251 113 133)',
 
-        'dcontainer': '#0C0C0C',
+        'dcontainer': '#333333',
         'dlink': '#00BFFF',
         'dbtn-h': '#00157F',
         'dbtn': '#00094B'

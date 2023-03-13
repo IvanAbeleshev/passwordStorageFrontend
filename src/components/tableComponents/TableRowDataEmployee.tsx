@@ -27,10 +27,10 @@ const TableRowDataEmployee=({ data }: iPropsTableRow)=>{
       className='
         table-row 
         text-xl 
-        hover:bg-main 
+        hover:bg-main/80 
         hover:text-hover 
         hover:cursor-pointer 
-        align-middle'
+        '
     >
       <div 
         ref={refPreviewEmployeeImg} 
@@ -46,19 +46,19 @@ const TableRowDataEmployee=({ data }: iPropsTableRow)=>{
           className='rounded-full pt-1'
         />
       </div>
-      <div className='table-cell'>
+      <div className='table-cell align-middle'>
         {data.name}
       </div>
-      <div className='table-cell'>
+      <div className='table-cell max-sm:rounded-r-full align-middle'>
         {data.jobTitle}
       </div>
-      <div className='table-cell'>
+      <div className='table-cell max-sm:hidden align-middle'>
         {data.employmentDate&&formatDateToStandartDateFormat(data.employmentDate)}
       </div>
-      <div className='table-cell'>
+      <div className='table-cell max-sm:hidden max-lg:rounded-r-full align-middle'>
         {data.dismissDate&&formatDateToStandartDateFormat(data.dismissDate)}
       </div>
-      <div className='table-cell rounded-r-full'>
+      <div className='table-cell rounded-r-full max-lg:hidden align-middle'>
         {
           data.comment&&
             (data.comment.length>50?data.comment?.slice(0, 47)+'...':data.comment)

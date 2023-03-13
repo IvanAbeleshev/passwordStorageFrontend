@@ -41,7 +41,9 @@ const Services=()=>{
           border-transparent 
           rounded-full
           bg-btn
+          dark:bg-dbtn
           hover:bg-btn-hover
+          dark:hover:bg-dbtn-h
           text-hover'
         onClick={()=>navigator('/service/new')}  
       >
@@ -59,6 +61,7 @@ const Services=()=>{
         <div className='table-header-group'>
           <TableRowHead 
             data={['Image', 'Name', 'Description']}
+            excludeSm={['Description']}
           />    
         </div>
         <div className='table-row-group'>

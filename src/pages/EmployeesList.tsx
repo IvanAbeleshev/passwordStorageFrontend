@@ -43,7 +43,9 @@ const EmployeesList=()=>{
             border-transparent 
             rounded-full
             bg-btn
+            dark:bg-dbtn
             hover:bg-btn-hover
+            dark:hover:bg-dbtn-h
             text-hover'
           onClick={()=>navigator('/employeeItem/new')}  
         >
@@ -60,7 +62,18 @@ const EmployeesList=()=>{
         <div className='table w-full'>
           <div className='table-header-group'>
             <TableRowHead 
-              data={['Photo', 'Name', 'Job title', 'Employment date', 'Dismiss date', 'Comment']}
+              data={
+                [
+                  'Photo', 
+                  'Name', 
+                  'Job title', 
+                  'Employment date', 
+                  'Dismiss date', 
+                  'Comment'
+                ]
+              }
+              excludeLg={['Comment']}
+              excludeSm={['Dismiss date', 'Employment date']}
             />    
           </div>
           <div className='table-row-group'>

@@ -42,7 +42,9 @@ const UsersList=()=>{
           border-transparent 
           rounded-full
           bg-btn
+          dark:bg-dbtn
           hover:bg-btn-hover
+          dark:hover:bg-dbtn-h
           text-hover'
         onClick={()=>navigator('/userItem/new')}  
       >

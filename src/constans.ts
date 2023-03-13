@@ -1,6 +1,6 @@
 import { EnhancedStore } from '@reduxjs/toolkit'
 
-export const BACKEND_URL = 'http://192.168.0.107:7001'
+export const BACKEND_URL = 'http://abeleshev.pp.ua:7001'
 export const LIMIT_ITEMS_ON_PAGE = 10
 
 export const API_KEY_UNSPLASH = 'CKeoTf6sFeQLRgeqKdztLgEttZxnym716dMseBbKkcg'

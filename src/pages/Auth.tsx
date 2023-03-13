@@ -88,12 +88,14 @@ const Auth = () =>{
 				overflow-y-auto
 				flex 
 				flex-col 
-				md:justify-center 
+				justify-center 
 				items-center'
 		>
 			<div 
 				className='
 					p-6 
+					max-h-full
+					overflow-y-auto
 					max-sm:p-0
 					rounded-2xl 
 					shadow-2xl 
@@ -116,6 +118,7 @@ const Auth = () =>{
 								<CustomPlaceholderInput
 									placeholder='login'
 									value={login}
+									bias={1}
 								>
 									<input 	
 										className='flex-3 text-black w-full rounded-full p-2'
@@ -132,6 +135,7 @@ const Auth = () =>{
 								<CustomPlaceholderInput
 									placeholder='password'
 									value={password}
+									bias={1}
 								>
 									<input 	
 										className='flex-3 text-black w-full rounded-full p-2'
