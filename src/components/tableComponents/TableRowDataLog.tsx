@@ -27,10 +27,10 @@ const TableRowDataLog=({ data, selectRow }: IPropsTableRow)=>{
       <div className='table-cell'>
         {data.actionType}
       </div>
-      <div className='table-cell'>
+      <div className='table-cell max-sm:rounded-r-full'>
         {data.actionUser?.login}
       </div>
-      <div className='table-cell pr-2 rounded-r-full'>
+      <div className='table-cell pr-2 rounded-r-full max-sm:hidden'>
         {data.metaData}
       </div>
     </div>

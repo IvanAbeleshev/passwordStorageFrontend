@@ -7,7 +7,7 @@ const ApplicationSettings=()=>{
       <ul className='list-disc pl-3'>
         <li>
           <Link
-            className='hover:text-btn'
+            className='hover:text-btn dark:hover:text-dlink'
             to='passwordGeneratorSetting'
           >
             Password generator settings

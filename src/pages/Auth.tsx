@@ -1,3 +1,5 @@
+import { faCloudMoon, faSun } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { QRCode } from 'antd'
 import { FormEventHandler, useEffect, useState } from 'react'
 import AuthCode from 'react-auth-code-input'
@@ -5,7 +7,8 @@ import CustomPlaceholderInput from '../components/CustomPlaceholderInput'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constans'
 import ServiceAthentication from '../services/ServiceAthentication'
 import { setAuthValue } from '../store/authSlice'
-import { useAppDispatch } from '../store/hooks/storeHooks'
+import { getDarkModeValue, setDarkMode } from '../store/darkModeSlice'
+import { useAppDispatch, useAppSelector } from '../store/hooks/storeHooks'
 import { fetchPasswordsGenerator } from '../store/passwordGeneratorSlice'
 import { errorNotificator, infoNotificator, successNotificator } from '../utils/notificator'
 import { decodeToken } from '../utils/tokensFuntion'
@@ -30,6 +33,7 @@ const Auth = () =>{
 	const [code2FA, setCode2FA] = useState<string>('')
 	
 	const dispatch = useAppDispatch()
+	const isDarkMode = useAppSelector(getDarkModeValue)
 
 	useEffect(()=>{
 		ServiceAthentication.checkAdminUser().then(
@@ -83,14 +87,47 @@ const Auth = () =>{
 	return(
 		<div 
 			className='
+				relative
 				w-screen 
 				h-screen
 				overflow-y-auto
+				overflow-x-hidden
 				flex 
 				flex-col 
 				justify-center 
 				items-center'
 		>
+			<div
+				className='absolute top-2 left-2 text-2xl'
+			>
+				{
+					isDarkMode?
+					<FontAwesomeIcon
+						onClick={()=>dispatch(setDarkMode(false))}
+						className='
+							text-main
+							dark:text-hover 
+							z-10
+							hover:cursor-pointer 
+							transition-all 
+							dark:hover:text-dbtn-h 
+							hover:text-btn-hover'
+						icon={faSun}
+					/>:
+					<FontAwesomeIcon
+						onClick={()=>dispatch(setDarkMode(true))}
+						className='
+							text-main
+							dark:text-hover 
+							z-10
+							hover:cursor-pointer 
+							transition-all 
+							dark:hover:text-dbtn-h 
+							hover:text-btn-hover'
+						icon={faCloudMoon}
+					/>
+				}
+			</div>
 			<div 
 				className='
 					p-6 

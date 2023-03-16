@@ -119,8 +119,10 @@ const PasswordGenerationSetting=()=>{
               px-6 
               rounded-xl 
               shadow-md 
-              bg-btn 
+              bg-btn
+              dark:bg-dbtn 
               hover:bg-btn-hover 
+              dark:hover:bg-dbtn-h
               hover:cursor-pointer' 
           />
         </div>

@@ -125,6 +125,7 @@ const PasswordItem=()=>{
     {isQuestionFill&&
       <div 
         className='
+          dark:text-main
           fixed 
           top-0 
           left-0 
@@ -135,7 +136,20 @@ const PasswordItem=()=>{
           justify-center 
           items-center'
       >
-        <div className='relative bg-hover min-w-[30%] min-h-[30%] rounded-xl p-5 flex flex-col items-center justify-between'>
+        <div 
+          className='
+            relative 
+            bg-hover 
+            min-w-[30%] 
+            min-h-[30%] 
+            rounded-xl 
+            p-5
+            pt-10 
+            flex 
+            flex-col 
+            items-center 
+            justify-between'
+        >
           <button 
             onClick={()=>setIsQuestionFill(false)}
             className='
@@ -196,7 +210,9 @@ const PasswordItem=()=>{
                 rounded-xl 
                 shadow-md 
                 bg-btn 
+                dark:bg-dbtn
                 hover:bg-btn-hover 
+                dark:hover:bg-dbtn-h
                 hover:cursor-pointer' 
             >
               Transfer
@@ -206,8 +222,8 @@ const PasswordItem=()=>{
       </div>
     }
     <DefaultContainerData>
-      <div className='flex flex-col gap-5 justify-center items-center'>
-        <div className='flex justify-center items-stretch gap-5 min-w-[40%]'>
+      <div className='flex flex-col gap-5 justify-center items-center dark:text-main'>
+        <div className='flex justify-center items-stretch gap-5 min-w-[40%] max-sm:flex-col pb-5'>
           <div className='flex flex-col gap-5 basis-1/2'>
             <GroupSelector 
               validation={true} 
@@ -255,19 +271,21 @@ const PasswordItem=()=>{
             </CustomPlaceholderInput>
             <div>
               {isPasswordLock&&
-                <Popconfirm
-                  overlayClassName='text-main'
+                <Popconfirm                
                   title='Unlock password'
                   description='Are you sure to unlock password?'
                   onConfirm={changeLockPassword}
                   okText='Unlock'
                   cancelText='Cancel'
+                  okType='danger'
                 >
                   <FontAwesomeIcon
                     className='
                       text-btn 
+                      dark:text-dbtn
                       text-2xl 
                       hover:text-btn-hover 
+                      dark:hover:text-dbtn-h
                       hover:cursor-pointer'
                     icon={faUnlock}
                   />
@@ -276,7 +294,7 @@ const PasswordItem=()=>{
               {
                 !isPasswordLock&&
                 <Popover
-                  placement='bottom' 
+                  placement='bottomRight' 
                   title='Generate new password' 
                   content={'automaticaly generate new password'}
                 >
@@ -284,8 +302,10 @@ const PasswordItem=()=>{
                     onClick={generateNewPassword}
                     className='
                       text-btn 
+                      dark:text-dbtn
                       text-2xl 
                       hover:text-btn-hover 
+                      dark:hover:text-dbtn-h
                       hover:cursor-pointer'
                     icon={faCode}
                   />
@@ -339,7 +359,9 @@ const PasswordItem=()=>{
                 rounded-xl 
                 shadow-md 
                 bg-btn 
+                dark:bg-dbtn
                 hover:bg-btn-hover 
+                dark:hover:bg-dbtn-h
                 hover:cursor-pointer' 
             />:
             <input 
@@ -352,7 +374,9 @@ const PasswordItem=()=>{
                 rounded-xl 
                 shadow-md 
                 bg-btn 
+                dark:bg-dbtn
                 hover:bg-btn-hover 
+                dark:hover:bg-dbtn-h
                 hover:cursor-pointer' 
             />
           }

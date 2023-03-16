@@ -103,7 +103,7 @@ const Paginator=({countPages, currentPage, onChange }:iPropsPaginator)=>{
       </div>
     }
 
-    <div className='flex flex-row gap-[15px]'>
+    <div className='flex flex-row flex-wrap gap-[15px]'>
       {listPages.map(element=>
       <div 
         onClick={()=>onChange(element.path)}

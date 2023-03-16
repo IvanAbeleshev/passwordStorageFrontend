@@ -25,7 +25,8 @@ const ItemSubNavPanel=({ data, subElement }: iPropsItemSubNavPanel)=>{
         className='
           flex 
           items-center 
-          hover:bg-white 
+          hover:bg-hover 
+          dark:hover:bg-main/80
           rounded-full 
           hover:cursor-pointer'
       >

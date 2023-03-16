@@ -15,6 +15,8 @@ import dayjs from 'dayjs'
 import { iFilterList } from '../interfaces'
 import UserSelector from '../components/selectors/UserSelector'
 import { iUser } from '../interfaces/modelInterfaces'
+import { useAppSelector } from '../store/hooks/storeHooks'
+import { getDarkModeValue } from '../store/darkModeSlice'
 
 const ChangeLogList=()=>{
   const [currentPage, setCurrentPage] = useState(1)
@@ -30,6 +32,8 @@ const ChangeLogList=()=>{
   const [countActiveFilters, setCountActiveFilters] = useState(0)
 
   const [dataList, setDataList] = useState<ModelLog[]>([])
+
+  const isDarkMode = useAppSelector(getDarkModeValue)
 
   useEffect(()=>{
     ServiceChangeLog.getActions().then(({payload})=>{
@@ -105,11 +109,13 @@ const ChangeLogList=()=>{
         placement='right' 
         onClose={()=>setIsFilterPanelOpen(false)} 
         open={isFilterPanelOpen}
+        bodyStyle ={isDarkMode?{background: '#333333'}:{}}
       >
         <div className='flex flex-col gap-7'>
           <CustomPlaceholderInput
             placeholder='Start date'
             value={filterList.startDate?dayjs(filterList.startDate):null}
+            bias={1}
           >
             <DatePicker 
               value={filterList.startDate?dayjs(filterList.startDate):null}
@@ -126,6 +132,7 @@ const ChangeLogList=()=>{
           <CustomPlaceholderInput
             placeholder='End date'
             value={filterList.endDate?dayjs(filterList.endDate):null}
+            bias={1}
           >
             <DatePicker 
               value={filterList.endDate?dayjs(filterList.endDate):null}
@@ -211,7 +218,9 @@ const ChangeLogList=()=>{
               border-transparent 
               rounded-full
               bg-btn
+              dark:bg-dbtn
               hover:bg-btn-hover
+              dark:hover:bg-dbtn-h
               text-hover'
           >
             <FontAwesomeIcon
@@ -228,6 +237,7 @@ const ChangeLogList=()=>{
           <div className='table-header-group'>
             <TableRowHead 
               data={['Date', 'Action type', 'User', 'Meta data']}
+              excludeSm={['Meta data']}
             />    
           </div>
           <div className='table-row-group'>

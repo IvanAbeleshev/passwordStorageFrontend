@@ -40,16 +40,23 @@ const LogItemViewer=({ setVisible, selectedIdLog }:iPropsLogItemViewer)=>{
         left-0 
         h-full 
         overflow-full 
-        w-screen flex 
+        w-screen 
+        flex 
         justify-center 
         items-center 
         backdrop-blur 
-        bg-black/50' 
+        bg-black/50
+        dark:text-main' 
       onMouseDown={handleOcClickBackground}
     >
       <div 
         className='
+          max-h-screen
+          max-w-screen
+          overflow-y-auto
+          overflow-x-hidden
           relative
+          pt-10
           flex 
           flex-col 
           justify-center 
@@ -87,7 +94,7 @@ const LogItemViewer=({ setVisible, selectedIdLog }:iPropsLogItemViewer)=>{
         </button>
         <div className='flex flex-col gap-7'>
 
-          <div className='flex gap-7'>
+          <div className='flex gap-7 max-sm:flex-col'>
             <CustomPlaceholderInput
               placeholder='Time'
               value={formatDateToDefaultDateFormat(data?.createdAt)}
@@ -112,7 +119,7 @@ const LogItemViewer=({ setVisible, selectedIdLog }:iPropsLogItemViewer)=>{
               />  
             </CustomPlaceholderInput> 
           </div>
-          <div className='flex gap-7'>
+          <div className='flex gap-7 max-sm:flex-col'>
             <CustomPlaceholderInput
               placeholder='Action'
               value={data?.actionType}
@@ -157,10 +164,10 @@ const LogItemViewer=({ setVisible, selectedIdLog }:iPropsLogItemViewer)=>{
                       <div className='table-cell px-1 border-r-2 border-main'>
                         {element.field}
                       </div>
-                      <div className='table-cell px-1 border-r-2 border-main max-w-[400px] truncate'>
+                      <div className='table-cell px-1 border-r-2 border-main max-w-[400px] max-sm:max-w-[100px] truncate'>
                         {element.previousValue}
                       </div>
-                      <div className='table-cell max-w-[400px] truncate'>
+                      <div className='table-cell max-w-[400px] max-sm:max-w-[100px] truncate'>
                         {element.currentValue}
                       </div>
                     </div>

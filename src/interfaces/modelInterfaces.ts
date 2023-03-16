@@ -62,5 +62,10 @@ export interface iLogItem{
   actionType:string,
   metaData?:string,
   details?:string,
+}
 
+export interface iUpdateLog{
+  date: Date,
+  title: string,
+  description: string,
 }

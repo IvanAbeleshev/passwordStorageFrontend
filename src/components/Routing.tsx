@@ -61,6 +61,7 @@ const Routing = () =>{
       
       <Route path='applicationSettings' element={<NavPanel><ApplicationSettings /></NavPanel>} />
       <Route path='applicationSettings/passwordGeneratorSetting' element={<NavPanel><PasswordGenerationSetting /></NavPanel>} />
+      <Route path='update' element={<NavPanel><PasswordGenerationSetting /></NavPanel>} />
 
       <Route path='changeLog' element={<NavPanel><ChangeLogList/></NavPanel>} />
       <Route path='logRow' element={<NavPanel><UserItem/></NavPanel>}>

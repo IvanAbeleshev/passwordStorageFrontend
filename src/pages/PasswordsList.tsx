@@ -15,6 +15,7 @@ import EmployeeSelector from '../components/selectors/EmployeeSelector'
 import GroupSelector from '../components/selectors/GroupSelector'
 import { useAppDispatch, useAppSelector } from '../store/hooks/storeHooks'
 import { setPasswordFilterItem } from '../store/passwordFilterSlice'
+import { getDarkModeValue } from '../store/darkModeSlice'
 
 const PasswordsList=()=>{
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false)
@@ -26,6 +27,7 @@ const PasswordsList=()=>{
   const dispatch = useAppDispatch()
   const countActiveFilters = useAppSelector(state=>state.passwordFilter.countActiveFilter)
   const filters = useAppSelector(state=>state.passwordFilter.filters)
+  const isDarkMode = useAppSelector(getDarkModeValue)
 
   const setFilterGroup=(passwordGroup?:iPasswordGroup)=>{
     dispatch(setPasswordFilterItem({passwordGroup}))
@@ -58,6 +60,7 @@ const PasswordsList=()=>{
       placement='right' 
       onClose={()=>setIsFilterPanelOpen(false)} 
       open={isFilterPanelOpen}
+      bodyStyle ={isDarkMode?{background: '#333333'}:{}}
     >
       <div className='flex flex-col gap-7'>
         <GroupSelector setSelectedGroup={setFilterGroup} selectedPasswordGroup={filters.passwordGroup} />
@@ -76,7 +79,9 @@ const PasswordsList=()=>{
               border-transparent 
               rounded-full
               bg-btn
+              dark:bg-dbtn
               hover:bg-btn-hover
+              dark:hover:bg-dbtn-h
               text-hover'
             onClick={()=>navigator('/passwordItem/new')}  
           >
@@ -101,7 +106,9 @@ const PasswordsList=()=>{
               border-transparent 
               rounded-full
               bg-btn
+              dark:bg-dbtn
               hover:bg-btn-hover
+              dark:hover:bg-dbtn-h
               text-hover'
           >
             <FontAwesomeIcon
@@ -119,6 +126,7 @@ const PasswordsList=()=>{
         <div className='table-header-group'>
           <TableRowHead 
             data={['Password group', 'Employee', 'Service', 'Login', 'Comment']}
+            excludeSm={['Comment', 'Login']}
           />    
         </div>
         <div className='table-row-group'>

@@ -30,15 +30,19 @@ const TableRowDataPassword=({ data }:iPropsTableRow)=>{
       className='
         table-row 
         text-xl 
-        hover:bg-main 
+        hover:bg-main/80 
         hover:text-hover 
         hover:cursor-pointer 
-        align-middle'
+        align-middle
+        text-center'
     >
       <div 
-        className='table-cell rounded-l-full align-middle'
+        className='table-cell rounded-l-full align-middle max-sm:align-top'
       >
-        <div ref={refPreviewPasswordGroupImg} className='w-fit '>
+        <div 
+          ref={refPreviewPasswordGroupImg} 
+          className='w-fit flex items-center max-sm:flex-col'
+        >
           <SecureImage
             preview={previewImg} 
             src={data.passwordGroup?.icon} 
@@ -51,8 +55,11 @@ const TableRowDataPassword=({ data }:iPropsTableRow)=>{
           <span>{data.passwordGroup?.name}</span>
         </div>
       </div>
-      <div className='table-cell'>
-        <div ref={refPreviewEmployeeImg} className='w-fit '>
+      <div className='table-cell align-middle max-sm:align-top px-1'>
+        <div 
+          ref={refPreviewEmployeeImg} 
+          className='w-fit flex items-center max-sm:flex-col'
+        >
           <SecureImage
             preview={previewImg} 
             src={data.employee?.img} 
@@ -65,8 +72,11 @@ const TableRowDataPassword=({ data }:iPropsTableRow)=>{
           <span>{data.employee?.name}</span>
         </div>
       </div>
-      <div className='table-cell'>
-        <div ref={refPreviewServiceImg} className='w-fit '>
+      <div className='table-cell align-middle max-sm:align-top max-sm:rounded-r-full px-1'>
+        <div 
+          ref={refPreviewServiceImg} 
+          className='w-fit flex items-center max-sm:flex-col'
+        >
           <SecureImage
             preview={previewImg} 
             src={data.service?.img} 
@@ -79,14 +89,14 @@ const TableRowDataPassword=({ data }:iPropsTableRow)=>{
           <span>{data.service?.name}</span>
         </div>
       </div>
-      <div className='table-cell'>
+      <div className='table-cell max-sm:hidden align-middle max-sm:align-top px-1'>
         {data.login}
       </div>
-      <div className='table-cell rounded-r-full'>
+      <div className='table-cell rounded-r-full max-sm:hidden align-middle max-sm:align-top'>
       {
-          data.comment&&
-            (data.comment.length>50?data.comment?.slice(0, 47)+'...':data.comment)
-        }
+        data.comment&&
+          (data.comment.length>50?data.comment?.slice(0, 47)+'...':data.comment)
+      }
       </div>
     </div>
   )

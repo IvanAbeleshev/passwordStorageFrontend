@@ -7,13 +7,13 @@ import {
   faBook,
   faDoorOpen,
   faAnglesRight,
-  faQuestion,
   faLock,
   faUserLock,
   IconDefinition,
   faGear,
   faIdCardClip,
   faLayerGroup,
+  faCircleInfo,
 } from '@fortawesome/free-solid-svg-icons'
 import { currentUserState, setAuthInitialState } from '../store/authSlice'
 import { setValue } from '../store/sliceSearch'
@@ -24,10 +24,14 @@ import PasswordGroupItem from '../pages/PasswordGroupItem'
 import { useAppDispatch, useAppSelector } from '../store/hooks/storeHooks'
 import { selectorModalWindowVisible } from '../store/modalWindowSlice'
 import { fetchPasswordsGroups } from '../store/passwordsGroupsSlice'
-import { Spin } from 'antd'
+import { Popover, Spin } from 'antd'
 import { setPasswordFilterItem } from '../store/passwordFilterSlice'
 import menuStyles from '../styles/buttonMenuMobile.module.css'
 import { getDarkModeValue } from '../store/darkModeSlice'
+import ServiceDescriptionOfUpdate from '../services/ServiceDescriptionOfUpdate'
+import ModelUpdate from '../models/ModelUpdete'
+import { errorNotificator } from '../utils/notificator'
+import { formatDateToStandartDateFormat } from '../utils/dateFunction'
 
 interface iPropsNavPanel {
   children: React.ReactNode,
@@ -43,6 +47,7 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
   const [currentVisible, setCurrentVisible] = useState(true)
   const [timeoutId, setTimeoutId]: [undefined | string, Function] = useState(undefined)
   const [isMobileMenuActive, setIsMobileMenuActive] = useState(false)
+  const [updateList, setUpdateList] = useState<ModelUpdate[]>([])
 
   const [subNavPanelVisible, setSubPanelVisible] = useState(false)
   const refSubPanel = useRef<HTMLDivElement>(null)
@@ -57,6 +62,14 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
   const dispatch = useAppDispatch()
   const navigationLocation = useLocation()
   const navigator = useNavigate()
+
+  useEffect(()=>{
+    ServiceDescriptionOfUpdate.getChangeList(5).then(
+      ({payload})=>{
+        setUpdateList(payload)
+      }
+    ).catch(error=>errorNotificator('Error read update list', error.message))
+  },[])
 
   useEffect(()=>{
     dispatch(fetchPasswordsGroups())
@@ -90,6 +103,25 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
     )
   }
 
+  const lastUpdate =(
+    <ul className='max-w-[400px]'>
+      {updateList.map(element=>
+        <li key={formatDateToStandartDateFormat(element.date)}>
+          <h3 className='text-lg'>{formatDateToStandartDateFormat(element.date)} {element.title}</h3>
+          <p>{element.description}</p>
+        </li>  
+      )}
+      <li>
+        <Link 
+          className='text-btn dark:text-dlink hover:cursor-pointer'
+          to='/update'
+        >
+          See all
+        </Link>
+      </li>
+    </ul>
+  )
+
   const handleShowPanel:MouseEventHandler=(event)=>{
     if((refNavItemPassword.current&&refNavItemPassword.current?.contains(event.target as HTMLElement))||
     (refSubPanel.current&&refSubPanel.current?.contains(event.target as HTMLElement)))
@@ -120,6 +152,7 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
     { icon: faUserLock, title: 'Users', path: '/users' },
     { icon: faBook, title: 'Log', path: '/changeLog' },
   ]
+
   return (
     <div className='flex h-full w-full max-sm:flex-col relative overflow-hidden '>
       {visibleModalWindow&&<ModalWindow><PasswordGroupItem /></ModalWindow>}
@@ -151,7 +184,6 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
         <input
           type='text'
           name='searchString'
-          id='searchString'
           placeholder='fing'
           className='shadow-md border border-main rounded-full px-2'
           onChange={handleChangeSearch}
@@ -475,7 +507,6 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
           <input
             type='text'
             name='searchString'
-            id='searchString'
             placeholder='fing'
             className='p-2 rounded-full'
             onChange={handleChangeSearch}
@@ -483,10 +514,20 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
           {
             spinStatus?
               <Spin />:
-              <FontAwesomeIcon
-                className=''
-                icon={faQuestion}
-              />
+              <Popover
+                title='Description of last update'
+                content={lastUpdate}
+                placement='bottomRight'
+              >
+                <FontAwesomeIcon
+                  className='
+                    text-xl 
+                    hover:text-btn-hover 
+                    dark:hover:text-dbtn-h
+                    hover:cursor-pointer'
+                  icon={faCircleInfo}
+                />
+              </Popover>
           }
         </div>
         <div className='p-6 max-sm:p-2 max-sm:pb-10 box-border '>

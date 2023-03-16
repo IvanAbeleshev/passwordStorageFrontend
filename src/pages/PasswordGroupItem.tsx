@@ -76,7 +76,7 @@ const PasswordGroupItem=()=>{
       className='flex flex-col items-center gap-3 p-5' 
       onSubmit={submitForm}
     >
-      <div className='flex items-center gap-3'>
+      <div className='flex items-center gap-3 max-sm:flex-col'>
         <ImageUploader setBlob={setIconBlob} />
         
         <div className='flex flex-col gap-7'>
@@ -88,11 +88,11 @@ const PasswordGroupItem=()=>{
               autoComplete='off'
               className={`
                 ${!validation.name&&'bg-rose-300'}
-                border 
-                border-main 
-                shadow-black 
                 shadow-md 
-                rounded-md`}
+                border 
+                w-full 
+                rounded-full 
+                px-2`}
               value={inputsData?.name}
               onChange={changeInputHandler} 
               type='text' 
@@ -112,9 +112,10 @@ const PasswordGroupItem=()=>{
           py-3 
           text-xl 
           rounded-full 
+          dark:text-hover
           ${
             getSummaryValidationStatus()?
-            'bg-btn hover:bg-btn-hover':
+            'bg-btn dark:bg-dbtn hover:bg-btn-hover dark:hover:bg-dbtn-h':
             'bg-rose-300 hover:bg-rose-400'
           }
         `}

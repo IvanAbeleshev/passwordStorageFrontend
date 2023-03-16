@@ -68,7 +68,9 @@ const EmployeeItem=()=>{
         className='flex flex-col justify-center items-center w-full'
       >
         <div className='flex max-sm:flex-col max-sm:justify-center max-sm:items-center'>
-          <ImageUploader setBlob={setProfileBlob} urlImg={inputsData.img} />
+          <div className='text-main dark:text-hover'>
+            <ImageUploader setBlob={setProfileBlob} urlImg={inputsData.img} />
+          </div>
           <div className='flex flex-col justify-between p-5 gap-5 dark:text-main'>
             <CustomPlaceholderInput
               placeholder='Name'

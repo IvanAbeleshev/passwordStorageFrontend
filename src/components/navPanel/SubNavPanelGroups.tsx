@@ -62,6 +62,8 @@ const SubNavPanelGroups=()=>{
             border-transparent 
             rounded-full 
             hover:bg-white 
+            dark:hover:bg-dbtn-h
+            dark:hover:text-hover
             hover:text-black'
           onClick={()=>dispatch(showModalWindow())}  
         >
@@ -78,6 +80,8 @@ const SubNavPanelGroups=()=>{
             border-2 
             border-transparent 
             rounded-full 
+            dark:hover:bg-dbtn-h
+            dark:hover:text-hover
             hover:bg-white 
             hover:text-black'
           onClick={()=>{
