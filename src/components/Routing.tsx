@@ -18,6 +18,7 @@ import PasswordGenerationSetting from '../pages/PasswordGenerationSetting'
 import ChangeLogList from '../pages/ChangeLogList'
 import SwitchDarkMode from '../pages/SwitchDarkMode';
 import PasswordGroupsList from '../pages/PasswordGroupsList';
+import ReleaseChanges from '../pages/ReleaseChanges';
 
 const Routing = () =>{
   const {authState} = useAppSelector(currentUserState)
@@ -61,7 +62,7 @@ const Routing = () =>{
       
       <Route path='applicationSettings' element={<NavPanel><ApplicationSettings /></NavPanel>} />
       <Route path='applicationSettings/passwordGeneratorSetting' element={<NavPanel><PasswordGenerationSetting /></NavPanel>} />
-      <Route path='update' element={<NavPanel><PasswordGenerationSetting /></NavPanel>} />
+      <Route path='update' element={<NavPanel><ReleaseChanges /></NavPanel>} />
 
       <Route path='changeLog' element={<NavPanel><ChangeLogList/></NavPanel>} />
       <Route path='logRow' element={<NavPanel><UserItem/></NavPanel>}>

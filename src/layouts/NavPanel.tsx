@@ -64,7 +64,7 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
   const navigator = useNavigate()
 
   useEffect(()=>{
-    ServiceDescriptionOfUpdate.getChangeList(5).then(
+    ServiceDescriptionOfUpdate.getChangeList(3).then(
       ({payload})=>{
         setUpdateList(payload)
       }
@@ -104,7 +104,7 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
   }
 
   const lastUpdate =(
-    <ul className='max-w-[400px]'>
+    <ul className='max-w-[400px] flex flex-col gap-3'>
       {updateList.map(element=>
         <li key={formatDateToStandartDateFormat(element.date)}>
           <h3 className='text-lg'>{formatDateToStandartDateFormat(element.date)} {element.title}</h3>
@@ -143,6 +143,7 @@ const NavPanel = ({ children }: iPropsNavPanel) => {
     { icon: faUserLock, title: 'Users', path: '/users' },
     { icon: faBook, title: 'Log', path: '/changeLog' },
     { icon: faGear, title: 'Settings', path:'/applicationSettings'},
+    { icon: faCircleInfo, title: 'Updates', path:'/update'},
   ]
 
   const arrayOfItemsNavMenu: iItemNavMenu[] = [
